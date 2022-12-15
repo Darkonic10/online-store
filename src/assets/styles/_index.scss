@@ -1,0 +1,67 @@
+.container{
+  max-width: 1920px;
+  width: 100%;
+  margin: 0 auto;
+  height: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header{
+  padding: 10px 100px;
+  height: 10vh;
+  background-color: #ffffff;
+}
+
+.links{
+  cursor: pointer;
+  text-decoration: none;
+  &:hover{
+    background-color: #daf275;
+  }
+}
+
+.header__logo-link{
+  font-size: calc(1.5rem + 1vw);
+}
+
+.header__price-div{
+  font-size: calc(0.7rem + 1vw);
+}
+
+.header__basket{
+  width: 5%;
+  min-width: 58px;
+  height: 80%;
+  cursor: pointer;
+  background-size: contain;
+  background: url("../images/basket-logo.svg") no-repeat center;
+  position: relative;
+  .header__counter-div{
+    position: absolute;
+    width: 40%;
+    font-size: calc(0.3rem + 1vw);
+    background-color: #daf275;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.main{
+  flex: 1 0 auto;
+}
+
+.footer{
+  padding: 10px 100px;
+  .footer__left-items{
+    display: flex;
+    flex-direction: column;
+  }
+  .footer__rs-logo{
+    width: 150px;
+    height: 55px;
+  }
+}
