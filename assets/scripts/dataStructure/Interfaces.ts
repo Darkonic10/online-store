@@ -5,7 +5,7 @@ interface book {
   price: number,
   title: string,
   author: string,
-  genre: string,
+  genre: "Young Adult" | "Race and Civil Rights" | "Science" | "Hardcover Graphic Books" | "Paperback Business Books",
   book_image: string[],
   stock_balance: number,
 }
