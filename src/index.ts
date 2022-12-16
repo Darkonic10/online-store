@@ -1,1 +1,2 @@
-console.log("Hello World!");
+import './assets/styles/style.scss';
+import './assets/scripts/test';
