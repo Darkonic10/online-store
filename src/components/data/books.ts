@@ -4,7 +4,7 @@ const books: book[] = [
   {
     id: 1,
     publisher: "Ember",
-    description: "",
+    description: "Charlotte Davis is in pieces. At seventeen she’s already lost more than most people lose in a lifetime. But she’s learned how to forget.",
     price: 10,
     title: "GIRL IN PIECES",
     author: "Kathleen Glasgow",
@@ -16,7 +16,7 @@ const books: book[] = [
   {
     id: 2,
     publisher: "Quill Tree",
-    description: "",
+    description: "Adam Silvera reminds us that there’s no life without death and no love without loss in this devastating yet uplifting story about two people whose lives change over the course of one unforgettable day.",
     price: 30,
     title: "THEY BOTH DIE AT THE END",
     author: "Adam Silvera",
@@ -28,7 +28,7 @@ const books: book[] = [
   {
     id: 3,
     publisher: "Sourcebooks Fire",
-    description: "",
+    description: "When a girl disappears, who do you suspect?",
     price: 30,
     title: "SHE'S GONE",
     author: "David Bell",
@@ -40,7 +40,7 @@ const books: book[] = [
   {
     id: 4,
     publisher: "Ember",
-    description: "",
+    description: "A beautiful and distinguished family. A private island. A brilliant, damaged girl; a passionate, political boy. A group of four friends—the Liars—whose friendship turns destructive. A revolution. An accident. A secret.",
     price: 20,
     title: "WE WERE LIARS",
     author: "E. Lockhart",
@@ -52,7 +52,7 @@ const books: book[] = [
   {
     id: 5,
     publisher: "Simon & Schuster",
-    description: "",
+    description: "Liz Buxbaum has always known that Wes Bennett was not boyfriend material. You would think that her next-door neighbor would be a prince candidate for her romantic comedy fantasies, but Wes has only proven himself to be a pain in the butt, ever since they were little. Wes was the kid who put a frog in her Barbie Dreamhouse, the monster who hid a lawn gnome's severed head in her little homemade neighborhood book exchange.",
     price: 20,
     title: "BETTER THAN THE MOVIES",
     author: "Lynn Painter",
@@ -64,7 +64,7 @@ const books: book[] = [
   {
     id: 6,
     publisher: "Viz Media",
-    description: "",
+    description: "Revisit the Demon Slayer Corps in these novels that each contain five tales of love, friendship, and courage!",
     price: 30,
     title: "DEMON SLAYER: KIMETSU NO YAIBA--THE FLOWER OF HAPPINESS",
     author: "Aya Yajima.",
@@ -76,7 +76,7 @@ const books: book[] = [
   {
     id: 7,
     publisher: "Knopf",
-    description: "",
+    description: "It is 1939. Nazi Germany. The country is holding its breath. Death has never been busier, and will be busier still.",
     price: 15,
     title: "THE BOOK THIEF",
     author: "Markus Zusak",
@@ -89,7 +89,7 @@ const books: book[] = [
   {
     id: 8,
     publisher: "Margaret K. McElderry",
-    description: "",
+    description: "After her mother dies in an accident, sixteen-year-old Bree Matthews wants nothing to do with her family memories or childhood home.",
     price: 10,
     title: "LEGENDBORN",
     author: "Tracy Deonn",
@@ -101,7 +101,7 @@ const books: book[] = [
   {
     id: 9,
     publisher: "Ember",
-    description: "",
+    description: "The Fault in Our Stars meets Eleanor and Park in this exhilarating and heart-wrenching love story about a girl who learns to live from a boy who intends to die.",
     price: 30,
     title: "ALL THE BRIGHT PLACES",
     author: "Jennifer Niven",
@@ -113,7 +113,7 @@ const books: book[] = [
   {
     id: 10,
     publisher: "Square Fish",
-    description: "",
+    description: "Ketterdam: a bustling hub of international trade where anything can be had for the right price—and no one knows that better than criminal prodigy Kaz Brekker. Kaz is offered a chance at a deadly heist that could make him rich beyond his wildest dreams. But he can’t pull it off alone. . . ",
     price: 15,
     title: "SIX OF CROWS",
     author: "Leigh Bardugo",
@@ -245,7 +245,7 @@ const books: book[] = [
   {
     id: 21,
     publisher: "Harper Perennial",
-    description: "",
+    description: "100,000 years ago, at least six human species inhabited the earth. Today there is just one. Us. Homo sapiens.",
     price: 15,
     title: "SAPIENS",
     author: "Yuval Noah Harari",
@@ -257,7 +257,7 @@ const books: book[] = [
   {
     id: 22,
     publisher: "Penguin",
-    description: "",
+    description: "A pioneering researcher and one of the world’s foremost experts on traumatic stress offers a bold new paradigm for healing.",
     price: 10,
     title: "THE BODY KEEPS THE SCORE",
     author: "Bessel van der Kolk",
@@ -269,7 +269,7 @@ const books: book[] = [
   {
     id: 23,
     publisher: "Picador",
-    description: "",
+    description: "In Being Mortal, author Atul Gawande tackles the hardest challenge of his profession: how medicine can not only improve life but also the process of its ending",
     price: 10,
     title: "BEING MORTAL",
     author: "Atul Gawande",
@@ -281,7 +281,7 @@ const books: book[] = [
   {
     id: 24,
     publisher: "Farrar, Straus & Giroux",
-    description: "",
+    description: "In the highly anticipated Thinking, Fast and Slow, Kahneman takes us on a groundbreaking tour of the mind and explains the two systems that drive the way we think. System 1 is fast, intuitive, and emotional; System 2 is slower, more deliberative, and more logical.",
     price: 10,
     title: "THINKING, FAST AND SLOW",
     author: "Daniel Kahneman",
@@ -293,7 +293,7 @@ const books: book[] = [
   {
     id: 25,
     publisher: "Dutton",
-    description: "",
+    description: "A pioneering and groundbreaking work of narrative nonfiction that offers a dramatic new perspective on the history of humankind, showing how through millennia, the mosquito has been the single most powerful force in determining humanity's fate",
     price: 25,
     title: "THE MOSQUITO",
     author: "Timothy C Winegard",
@@ -305,7 +305,7 @@ const books: book[] = [
   {
     id: 26,
     publisher: "Broadway",
-    description: "",
+    description: "Her name was Henrietta Lacks, but scientists know her as HeLa. She was a poor Southern tobacco farmer who worked the same land as her enslaved ancestors, yet her cells—taken without her knowledge—became one of the most important tools in medicine. The first “immortal” human cells grown in culture, they are still alive today, though she has been dead for more than sixty years.",
     price: 20,
     title: "THE IMMORTAL LIFE OF HENRIETTA LACKS",
     author: "Rebecca Skloot",
@@ -317,7 +317,7 @@ const books: book[] = [
   {
     id: 27,
     publisher: "Little, Brown",
-    description: "",
+    description: "Beth Macy takes us into the epicenter of America's twenty-plus year struggle with opioid addiction. From distressed small communities in Central Appalachia to wealthy suburbs; from disparate cities to once-idyllic farm towns; it's a heartbreaking trajectory that illustrates how this national crisis has persisted for so long and become so firmly entrenched.",
     price: 25,
     title: "DOPESICK",
     author: "Beth Macy",
@@ -331,7 +331,7 @@ const books: book[] = [
   {
     id: 28,
     publisher: "Scribner",
-    description: "",
+    description: "Neuroscientist and sleep expert Matthew Walker provides a revolutionary exploration of sleep, examining how it affects every aspect of our physical and mental well-being.",
     price: 25,
     title: "WHY WE SLEEP",
     author: "Matthew Walker",
@@ -343,7 +343,7 @@ const books: book[] = [
   {
     id: 29,
     publisher: "Spiegel & Grau",
-    description: "",
+    description: "In Sapiens, he explored our past. In Homo Deus, he looked to our future. Now, one of the most innovative thinkers on the planet turns to the present to make sense of today's most pressing issues.",
     price: 25,
     title: "21 LESSONS FOR THE 21ST CENTURY",
     author: "Yuval Noah Harari",
@@ -355,7 +355,7 @@ const books: book[] = [
   {
     id: 30,
     publisher: "Broadway",
-    description: "",
+    description: "The Power of Introverts in a World That Can't Stop Talking",
     price: 15,
     title: "QUIET",
     author: "Susan Cain",
