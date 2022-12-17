@@ -1,4 +1,4 @@
-import { book } from "../dataStructure/Interfaces"
+import { book } from "../types/Interfaces"
 
 const books: book[] = [
   {
