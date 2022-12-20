@@ -1,2 +1,5 @@
 import './assets/styles/style.scss';
-import './assets/scripts/goods';
+import App from './assets/scripts/pages/app'
+
+const app = new App();
+app.run()
