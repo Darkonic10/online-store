@@ -1,18 +1,16 @@
 import {getElementBySelector} from "../../types/Interfaces";
 import {books} from "../../data/books";
 import noUiSlider from "nouislider";
+import Page from "../../core/page";
 
-class MainPage {
-  private readonly containerMain: HTMLElement;
-  private readonly containerFilters: HTMLElement;
+class MainPage extends Page{
 
   constructor(id: string) {
-    this.containerFilters = getElementBySelector(document, HTMLDivElement, '.filters__container');
-    this.containerMain = getElementBySelector(document, HTMLDivElement, '.main__container');
-    this.containerMain.id = id;
+    super(id)
   }
 
-  private renderFilter(): void {
+  private createFilter(): HTMLElement {
+    this.containerFilters.className = 'container filters__container';
     this.containerFilters.innerHTML = `
       <div class="filters__wrapper">
         <div class="filters__genre">
@@ -49,8 +47,8 @@ class MainPage {
           <input class="filters__search-submit" type="submit" value="">
         </form>
       </div>`
-    const filterGenre: HTMLDivElement = getElementBySelector(document, HTMLDivElement, '.filters__genre');
-    const filterAuthor: HTMLDivElement = getElementBySelector(document, HTMLDivElement, '.filters__author');
+    const filterGenre: HTMLDivElement = getElementBySelector(this.containerFilters, HTMLDivElement, '.filters__genre');
+    const filterAuthor: HTMLDivElement = getElementBySelector(this.containerFilters, HTMLDivElement, '.filters__author');
     const genreCheckboxList: HTMLUListElement = document.createElement('ul');
     genreCheckboxList.className = 'filters__genre-list';
     const authorCheckboxList: HTMLUListElement = document.createElement('ul');
@@ -93,11 +91,11 @@ class MainPage {
     filterGenre.append(genreCheckboxList);
     filterAuthor.append(authorCheckboxList)
 
-    const sliderPrice: HTMLDivElement = getElementBySelector(document, HTMLDivElement, '#slider-price');
+    const sliderPrice: HTMLDivElement = getElementBySelector(this.containerFilters, HTMLDivElement, '#slider-price');
     const minPrice = Math.min(...prices);
     const maxPrice = Math.max(...prices);
-    const minPriceHTML: HTMLParagraphElement = getElementBySelector(document, HTMLParagraphElement, '.filters__price-min');
-    const maxPriceHTML: HTMLParagraphElement = getElementBySelector(document, HTMLParagraphElement, '.filters__price-max');
+    const minPriceHTML: HTMLParagraphElement = getElementBySelector(this.containerFilters, HTMLParagraphElement, '.filters__price-min');
+    const maxPriceHTML: HTMLParagraphElement = getElementBySelector(this.containerFilters, HTMLParagraphElement, '.filters__price-max');
     minPriceHTML.innerText = String(minPrice);
     maxPriceHTML.innerText = String(maxPrice);
     noUiSlider.create(sliderPrice, {
@@ -109,11 +107,11 @@ class MainPage {
       }
     })
 
-    const sliderStock: HTMLDivElement = getElementBySelector(document, HTMLDivElement, '#slider-stock');
+    const sliderStock: HTMLDivElement = getElementBySelector(this.containerFilters, HTMLDivElement, '#slider-stock');
     const minStock = Math.min(...stocks);
     const maxStock = Math.max(...stocks);
-    const minStockHTML: HTMLParagraphElement = getElementBySelector(document, HTMLParagraphElement, '.filters__stock-min');
-    const maxStockHTML: HTMLParagraphElement = getElementBySelector(document, HTMLParagraphElement, '.filters__stock-max');
+    const minStockHTML: HTMLParagraphElement = getElementBySelector(this.containerFilters, HTMLParagraphElement, '.filters__stock-min');
+    const maxStockHTML: HTMLParagraphElement = getElementBySelector(this.containerFilters, HTMLParagraphElement, '.filters__stock-max');
     minStockHTML.innerText = String(minStock);
     maxStockHTML.innerText = String(maxStock);
     noUiSlider.create(sliderStock, {
@@ -124,9 +122,11 @@ class MainPage {
         'max': maxPrice
       }
     })
+    return this.containerFilters
   }
 
-  private createMain(): void {
+  private createMain(): HTMLElement {
+    this.container.className = 'container main__container'
     for (const book of books) {
       const bookDiv: HTMLDivElement = document.createElement('div');
       bookDiv.className = 'main__book-card'
@@ -150,13 +150,17 @@ class MainPage {
 
       bookInfo.append(bookTitle, bookGenre, bookAuthor, bookPrice, bookStock);
       bookDiv.append(bookImg, bookInfo);
-      this.containerMain.append(bookDiv)
+      this.container.append(bookDiv)
     }
+    return this.container
   }
 
-  render(): void {
-    this.renderFilter();
-    this.createMain();
+  renderFilters(): HTMLElement {
+    return this.createFilter();
+  }
+
+  render(): HTMLElement {
+    return this.createMain();
   }
 }
 
