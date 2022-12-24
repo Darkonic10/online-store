@@ -1,7 +1,7 @@
 $base-color: #daf275;
 $alt-color: #041e41;
 
-.container{
+.container {
   max-width: 1920px;
   width: 100%;
   margin: 0 auto;
@@ -11,37 +11,37 @@ $alt-color: #041e41;
   justify-content: space-between;
 }
 
-.header{
+.header {
   padding: 10px 100px 0 100px;
   height: 10vh;
   background-color: #ffffff;
 }
 
-.links{
+.links {
   cursor: pointer;
   text-decoration: none;
-  &:hover{
+  &:hover {
     background-color: $base-color;
   }
 }
 
-.header__logo-link{
+.header__logo-link {
   font-size: calc(1.5rem + 1vw);
 }
 
-.header__price-div{
+.header__price-div {
   font-size: calc(0.7rem + 1vw);
 }
 
-.header__basket{
+.header__basket {
   width: 5%;
   min-width: 58px;
   height: 80%;
   cursor: pointer;
   background-size: contain;
-  background: url("../images/basket-logo.svg") no-repeat center;
+  background: url('../images/basket-logo.svg') no-repeat center;
   position: relative;
-  .header__counter-div{
+  .header__counter-div {
     position: absolute;
     width: 40%;
     font-size: calc(0.3rem + 1vw);
@@ -53,24 +53,24 @@ $alt-color: #041e41;
   }
 }
 
-.filters__container{
+.filters__container {
   flex-direction: column;
 }
 
-.filters{
+.filters {
   padding: 0 100px;
   background-color: $alt-color;
-  .filters__search{
+  .filters__search {
     padding: 30px 0;
     width: 100%;
     display: flex;
     justify-content: center;
-    .filters__search-form{
+    .filters__search-form {
       display: flex;
       justify-content: center;
       align-items: center;
       position: relative;
-      .filters__search-input{
+      .filters__search-input {
         border-radius: 10px 0 0 10px;
         width: 40vw;
         height: 65px;
@@ -82,7 +82,7 @@ $alt-color: #041e41;
           padding-left: 30px;
         }
       }
-      .filters__search-submit{
+      .filters__search-submit {
         width: 80px;
         height: 65px;
         cursor: pointer;
@@ -90,41 +90,43 @@ $alt-color: #041e41;
         position: absolute;
         right: -80px;
         border: none;
-        background: $base-color url("../images/search_icon.svg") no-repeat center;
+        background: $base-color url('../images/search_icon.svg') no-repeat center;
         background-size: 50%;
       }
     }
   }
 }
 
-.filters__wrapper{
+.filters__wrapper {
   display: flex;
   column-gap: 20px;
   width: 100%;
   color: white;
   .filters__genre,
   .filters__author,
-  .filters__sliders{
+  .filters__sliders {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
     width: 33%;
     min-width: min-content;
   }
-  .filters__genre-list, .filters__author-list{
+  .filters__genre-list,
+  .filters__author-list {
     list-style-type: none;
     height: 142px;
   }
-  .filters__author-list{
+  .filters__author-list {
     overflow-y: scroll;
   }
-  .filters__price-minmax, .filters__stock-minmax{
+  .filters__price-minmax,
+  .filters__stock-minmax {
     display: flex;
     justify-content: space-between;
   }
 }
 
-.filters__filter-reset{
+.filters__filter-reset {
   background-color: $base-color;
   border-radius: 10px;
   width: 20%;
@@ -132,18 +134,22 @@ $alt-color: #041e41;
   height: 50px;
 }
 
-.noUi-connect{
+.noUi-connect {
   background-color: $base-color !important;
 }
 
-.noUi-handle{
+.noUi-handle {
   border-radius: 10px !important;
 }
 
-.main{
+main {
   flex: 1 0 auto;
+}
+
+.main {
   padding: 0 100px;
-  .main__container{
+  background-color: #eee;
+  .main__container {
     flex-wrap: wrap;
     column-gap: 10px;
     row-gap: 10px;
@@ -151,31 +157,38 @@ $alt-color: #041e41;
   }
 }
 
-.main__book-card{
+.main__container_center {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+}
+
+.main__book-card {
   width: 20%;
   min-width: 350px;
-  .main__book-img{
+  .main__book-img {
     width: 330px;
     height: 495px;
   }
-  .main__book-info{
+  .main__book-info {
     height: 300px;
     overflow: auto;
   }
-  .main__book-title{
+  .main__book-title {
     color: red;
     font-weight: 600;
   }
 }
 
-
-.footer{
+.footer {
   padding: 10px 100px;
-  .footer__left-items{
+  .footer__left-items {
     display: flex;
     flex-direction: column;
   }
-  .footer__rs-logo{
+  .footer__rs-logo {
     width: 150px;
     height: 55px;
   }
