@@ -143,12 +143,21 @@ $alt-color: #041e41;
 .main{
   flex: 1 0 auto;
   padding: 0 100px;
+  background-color: #eee;
   .main__container{
     flex-wrap: wrap;
     column-gap: 10px;
     row-gap: 10px;
     padding: 10px 0;
   }
+}
+
+.main__container_center{
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
 }
 
 .main__book-card{
