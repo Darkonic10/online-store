@@ -1,4 +1,4 @@
-import Component from './componenet';
+import Component from './component';
 import { Buttons } from '../data/pages';
 
 class Header extends Component {
