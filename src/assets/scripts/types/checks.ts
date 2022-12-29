@@ -7,3 +7,10 @@ export function getElementBySelector <T extends typeof Element>(
   if (!(result instanceof type)) throw new TypeError(`Selector ${selector} have wrong type`);
   return result as InstanceType<T>;
 }
+
+export function getLocalStorage (element: Storage, selector: string): string {
+  const result = element.getItem(selector);
+  if(!result && selector === 'totalPrice') return '0';
+  if (!result) return '[]';
+  return result;
+}

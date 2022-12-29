@@ -7,7 +7,7 @@ abstract class Page {
   }
 
   protected createHeaderTitle(text: string) {
-    const headerTitle = document.createElement('h1');
+    const headerTitle: HTMLHeadingElement = document.createElement('h1');
     headerTitle.innerText = text;
     return headerTitle;
   }
