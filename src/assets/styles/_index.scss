@@ -142,12 +142,8 @@ $alt-color: #041e41;
   border-radius: 10px !important;
 }
 
-main {
-  flex: 1 0 auto;
-}
-
 .main {
-  padding: 0 100px;
+  flex: 1 0 auto;
   background-color: #eee;
   .main__container {
     flex-wrap: wrap;
@@ -155,6 +151,10 @@ main {
     row-gap: 10px;
     padding: 10px 0;
   }
+}
+
+.main-div{
+  padding: 0 100px;
 }
 
 .main__container_center {
@@ -179,6 +179,10 @@ main {
   .main__book-title {
     color: red;
     font-weight: 600;
+  }
+  .main__book-buttons{
+    display: flex;
+    justify-content: space-around;
   }
 }
 
