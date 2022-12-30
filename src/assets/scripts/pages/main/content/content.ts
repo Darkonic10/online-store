@@ -42,8 +42,6 @@ class Content {
       bookStock.innerText = `Stock: ${book.stock_balance}`;
       const bookButtons: HTMLDivElement = document.createElement('div');
       bookButtons.className = 'main__book-buttons';
-      const bookLinkAdd: HTMLAnchorElement = document.createElement('a');
-      bookLinkAdd.className = 'link main__link-add';
       const bookButtonAdd: HTMLButtonElement = document.createElement('button');
       bookButtonAdd.className = 'button main__button-add';
       if(!countBasket.includes(book.id)) {
@@ -52,8 +50,6 @@ class Content {
         bookButtonAdd.innerText = 'Remove';
       }
 
-      const bookLinkDetail: HTMLAnchorElement = document.createElement('a');
-      bookLinkDetail.className = 'link main__link-detail';
       const bookButtonDetail: HTMLButtonElement = document.createElement('button');
       bookButtonDetail.className = 'button main__button-detail';
       bookButtonDetail.innerText = 'Detail';
@@ -79,10 +75,7 @@ class Content {
         }
       })
 
-
-      bookLinkAdd.append(bookButtonAdd);
-      bookLinkDetail.append(bookButtonDetail)
-      bookButtons.append(bookLinkAdd, bookLinkDetail)
+      bookButtons.append(bookButtonAdd, bookButtonDetail)
 
       bookInfo.append(bookTitle, bookGenre, bookAuthor, bookPrice, bookStock);
       bookDiv.append(bookImg, bookInfo, bookButtons);
