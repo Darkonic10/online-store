@@ -47,6 +47,10 @@ class App {
       const hash = window.location.hash.slice(1);
       App.renderNewPage(hash);
     });
+    window.addEventListener('load', () => {
+      const hash = window.location.hash.slice(1);
+      App.renderNewPage(hash);
+    });
   }
 
   run() {
