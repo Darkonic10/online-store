@@ -45,11 +45,19 @@ class App {
   private changedHash() {
     window.addEventListener('hashchange', () => {
       const hash = window.location.hash.slice(1);
-      App.renderNewPage(hash);
+      if (!hash) {
+        App.renderNewPage(PageIds.MainPage);
+      } else {
+        App.renderNewPage(hash);
+      }
     });
     window.addEventListener('load', () => {
       const hash = window.location.hash.slice(1);
-      App.renderNewPage(hash);
+      if (!hash) {
+        App.renderNewPage(PageIds.MainPage);
+      } else {
+        App.renderNewPage(hash);
+      }
     });
   }
 

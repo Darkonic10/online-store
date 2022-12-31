@@ -17,6 +17,11 @@ class Header extends Component {
     this.container.append(pageButtons);
   }
 
+  // renderHeaderLinks() {
+  //   const headerBasket = document.querySelector('.header__basket');
+  //   const headerLogo = document.querySelector('.header__logo');
+  // }
+
   render() {
     this.renderPageButtons();
     return this.container;
