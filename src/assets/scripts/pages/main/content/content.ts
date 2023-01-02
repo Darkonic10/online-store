@@ -25,6 +25,7 @@ class Content {
     for (const book of chosenBooks) {
       const bookDiv: HTMLDivElement = document.createElement('div');
       bookDiv.className = 'main__book-card'
+      bookDiv.id = `id-book-${book.id}`;
       const bookImg: HTMLImageElement = document.createElement('img');
       bookImg.className = 'main__book-img';
       bookImg.src = book.book_image[0];
@@ -79,7 +80,7 @@ class Content {
         if(event.target === bookButtonDetail) {
           console.log(book.id);
           BookPage.chosenBookID = book.id;
-          window.location.hash = `#${PageIds.BookPage}?id=${book.id}`;
+          window.location.hash = `#${PageIds.BookPage}?id=${BookPage.chosenBookID}`;
         }
       })
 
