@@ -63,7 +63,7 @@ class App {
 
   run() {
     App.container.append(this.header.render());
-    App.renderNewPage(PageIds.MainPage);
+    //App.renderNewPage(PageIds.MainPage);
     this.changedHash();
   }
 }

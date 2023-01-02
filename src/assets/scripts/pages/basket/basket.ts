@@ -1,6 +1,6 @@
 import Page from "../../core/page";
-import {getElementBySelector, getLocalStorage} from "../../types/checks";
-import {books} from "../../data/books";
+import { getElementBySelector, getLocalStorage } from "../../types/checks";
+import { books } from "../../data/books";
 
 class BasketPage extends Page{
   static TextObject = {
