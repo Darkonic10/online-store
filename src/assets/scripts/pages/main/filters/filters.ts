@@ -1,63 +1,63 @@
 import { books } from "../../../data/books";
-import { createElement } from "../../../types/checks";
+import { createElementByTag } from "../../../types/checks";
 import noUiSlider from "nouislider";
 
 class Filters {
   renderFilters(): HTMLElement {
     const section: HTMLElement = document.createElement('section');
     section.className = 'filters';
-    const baseDiv: HTMLDivElement = createElement('div', 'container filters__container', HTMLDivElement);
+    const baseDiv: HTMLDivElement = createElementByTag('div', 'container filters__container', HTMLDivElement);
     section.appendChild(baseDiv);
-    const fWrapper: HTMLDivElement = createElement('div', 'filters__wrapper', HTMLDivElement);
+    const fWrapper: HTMLDivElement = createElementByTag('div', 'filters__wrapper', HTMLDivElement);
     baseDiv.appendChild(fWrapper);
-    const filterGenre: HTMLDivElement = createElement('div', 'filters__genre', HTMLDivElement);
+    const filterGenre: HTMLDivElement = createElementByTag('div', 'filters__genre', HTMLDivElement);
     fWrapper.appendChild(filterGenre);
-    const filterGenreTitle: HTMLHeadingElement = createElement('h3', 'filters__genre-title', HTMLHeadingElement, 'Genre');
+    const filterGenreTitle: HTMLHeadingElement = createElementByTag('h3', 'filters__genre-title', HTMLHeadingElement, 'Genre');
     filterGenre.appendChild(filterGenreTitle);
-    const filterAuthor: HTMLDivElement = createElement('div', 'filters__author', HTMLDivElement);
+    const filterAuthor: HTMLDivElement = createElementByTag('div', 'filters__author', HTMLDivElement);
     fWrapper.appendChild(filterAuthor);
-    const filterAuthorTitle: HTMLHeadingElement = createElement('h3', 'filters__authors-title', HTMLHeadingElement, 'Author');
+    const filterAuthorTitle: HTMLHeadingElement = createElementByTag('h3', 'filters__authors-title', HTMLHeadingElement, 'Author');
     filterAuthor.appendChild(filterAuthorTitle);
-    const fSliders: HTMLDivElement = createElement('div', 'filters__sliders', HTMLDivElement);
+    const fSliders: HTMLDivElement = createElementByTag('div', 'filters__sliders', HTMLDivElement);
     fWrapper.appendChild(fSliders);
-    const fPrice: HTMLDivElement = createElement('div', 'filters__price', HTMLDivElement);
+    const fPrice: HTMLDivElement = createElementByTag('div', 'filters__price', HTMLDivElement);
     fSliders.appendChild(fPrice);
-    const fPriceTitle: HTMLHeadingElement = createElement('h3', 'filters__price-title', HTMLHeadingElement, 'Price');
+    const fPriceTitle: HTMLHeadingElement = createElementByTag('h3', 'filters__price-title', HTMLHeadingElement, 'Price');
     fPrice.appendChild(fPriceTitle);
-    const minPriceHTMLMax: HTMLDivElement = createElement('div', 'filters__price-minmax', HTMLDivElement)
+    const minPriceHTMLMax: HTMLDivElement = createElementByTag('div', 'filters__price-minmax', HTMLDivElement)
     fPrice.appendChild(minPriceHTMLMax);
-    const minPriceHTML: HTMLParagraphElement = createElement('p', 'filters__price-min', HTMLParagraphElement, '0');
+    const minPriceHTML: HTMLParagraphElement = createElementByTag('p', 'filters__price-min', HTMLParagraphElement, '0');
     minPriceHTMLMax.appendChild(minPriceHTML);
-    const maxPriceHTML: HTMLParagraphElement = createElement('p', 'filters__price-max', HTMLParagraphElement, '0');
+    const maxPriceHTML: HTMLParagraphElement = createElementByTag('p', 'filters__price-max', HTMLParagraphElement, '0');
     minPriceHTMLMax.appendChild(maxPriceHTML);
-    const sliderPrice: HTMLDivElement = createElement('div', 'slider-price', HTMLDivElement);
+    const sliderPrice: HTMLDivElement = createElementByTag('div', 'slider-price', HTMLDivElement);
     sliderPrice.id = 'slider-price';
     fPrice.appendChild(sliderPrice);
-    const fStock: HTMLDivElement = createElement('div', 'filters__stock', HTMLDivElement);
+    const fStock: HTMLDivElement = createElementByTag('div', 'filters__stock', HTMLDivElement);
     fSliders.appendChild(fStock);
-    const fStockTitle: HTMLHeadingElement = createElement('h3', 'filters__stock-title', HTMLHeadingElement, 'Stock');
+    const fStockTitle: HTMLHeadingElement = createElementByTag('h3', 'filters__stock-title', HTMLHeadingElement, 'Stock');
     fStock.appendChild(fStockTitle);
-    const minStockHTMLMax: HTMLDivElement = createElement('div', 'filters__stock-minmax', HTMLDivElement)
+    const minStockHTMLMax: HTMLDivElement = createElementByTag('div', 'filters__stock-minmax', HTMLDivElement)
     fStock.appendChild(minStockHTMLMax);
-    const minStockHTML: HTMLParagraphElement = createElement('p', 'filters__stock-min', HTMLParagraphElement, '0');
+    const minStockHTML: HTMLParagraphElement = createElementByTag('p', 'filters__stock-min', HTMLParagraphElement, '0');
     minStockHTMLMax.appendChild(minStockHTML);
-    const maxStockHTML: HTMLParagraphElement = createElement('p', 'filters__stock-max', HTMLParagraphElement, '0');
+    const maxStockHTML: HTMLParagraphElement = createElementByTag('p', 'filters__stock-max', HTMLParagraphElement, '0');
     minStockHTMLMax.appendChild(maxStockHTML);
-    const sliderStock: HTMLDivElement = createElement('div', 'slider-stock', HTMLDivElement);
+    const sliderStock: HTMLDivElement = createElementByTag('div', 'slider-stock', HTMLDivElement);
     sliderPrice.id = 'slider-stock';
     fStock.appendChild(sliderStock);
-    const fReset: HTMLButtonElement = createElement('button', 'filters__filter-reset', HTMLButtonElement, 'Reset Filters');
+    const fReset: HTMLButtonElement = createElementByTag('button', 'filters__filter-reset', HTMLButtonElement, 'Reset Filters');
     baseDiv.appendChild(fReset);
-    const fSearch: HTMLDivElement = createElement('div', 'filters__search', HTMLDivElement);
+    const fSearch: HTMLDivElement = createElementByTag('div', 'filters__search', HTMLDivElement);
     baseDiv.appendChild(fSearch);
-    const fSearchFrom: HTMLFormElement = createElement('form', 'filters__search-form', HTMLFormElement);
+    const fSearchFrom: HTMLFormElement = createElementByTag('form', 'filters__search-form', HTMLFormElement);
     fSearch.appendChild(fSearchFrom);
-    const fsearchInput: HTMLInputElement = createElement('input', 'filters__search-input', HTMLInputElement);
+    const fsearchInput: HTMLInputElement = createElementByTag('input', 'filters__search-input', HTMLInputElement);
     fsearchInput.type = 'search'
     fsearchInput.name = 'q';
     fsearchInput.placeholder = 'Search for books by keyword';
     fSearchFrom.appendChild(fsearchInput);
-    const fsearchSubmit: HTMLInputElement = createElement('input', 'filters__search-submit', HTMLInputElement);
+    const fsearchSubmit: HTMLInputElement = createElementByTag('input', 'filters__search-submit', HTMLInputElement);
     fsearchSubmit.type = 'submit';
     fsearchSubmit.value = '';
     fSearchFrom.appendChild(fsearchSubmit);

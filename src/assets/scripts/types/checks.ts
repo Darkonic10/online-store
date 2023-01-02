@@ -24,7 +24,7 @@ export function getHash(hash: string): string {
   return hash.slice(1, posOptions);
 }
 
-export function createElement <T extends typeof HTMLElement>(tagName: string, classNames: string, type: T, content?: string): InstanceType<T> {
+export function createElementByTag <T extends typeof HTMLElement>(tagName: string, classNames: string, type: T, content?: string): InstanceType<T> {
   const result = document.createElement(tagName);
   result.className = classNames;
   if (content) result.textContent = content;
