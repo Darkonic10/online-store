@@ -3,15 +3,16 @@ import { books } from "../../data/books";
 import { book } from "../../types/Interfaces";
 
 
-class BookPage extends Page{
-  public static chosenBookID = 5;
+class BookPage extends Page {
+  private chosenBookID: number;
   
   static TextObject = {
     MainTitle: 'BookPage',
   };
 
-  constructor(id: string) {
+  constructor(id: string, chosenBookID: number) {
     super(id);
+    this.chosenBookID = chosenBookID;
   }
 
   render(): HTMLElement {
@@ -19,7 +20,7 @@ class BookPage extends Page{
     content.className = 'main-div';
     this.container.append(content);
     const title = this.createHeaderTitle(BookPage.TextObject.MainTitle);
-    const currentBook:book = books[BookPage.chosenBookID - 1];
+    const currentBook:book = books[this.chosenBookID - 1];
     content.appendChild(title)
     const mainDiv: HTMLDivElement = document.createElement('div');
     mainDiv.className = 'container main__container';
