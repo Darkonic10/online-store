@@ -2,9 +2,10 @@ import Page from "../../core/page";
 import { books } from "../../data/books";
 import { book } from "../../types/Interfaces";
 
-class BookPage extends Page{
-  id = 1;
 
+class BookPage extends Page{
+  public static chosenBookID = 5;
+  
   static TextObject = {
     MainTitle: 'BookPage',
   };
@@ -18,7 +19,7 @@ class BookPage extends Page{
     content.className = 'main-div';
     this.container.append(content);
     const title = this.createHeaderTitle(BookPage.TextObject.MainTitle);
-    const currentBook:book = books[this.id];
+    const currentBook:book = books[BookPage.chosenBookID - 1];
     content.appendChild(title)
     const mainDiv: HTMLDivElement = document.createElement('div');
     mainDiv.className = 'container main__container';
@@ -54,7 +55,7 @@ class BookPage extends Page{
     desc.appendChild(stock);
     mainDiv.appendChild(buttons);
     const price: HTMLHeadingElement = document.createElement('h1');
-    price.innerText = `€${currentBook.price}.00`;
+    price.innerText = `$${currentBook.price}.00`;
     buttons.appendChild(price);
     const addButton: HTMLButtonElement = document.createElement('button');
     addButton.className = 'button main__button-add';

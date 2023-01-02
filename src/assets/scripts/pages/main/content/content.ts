@@ -1,5 +1,7 @@
 import { book } from "../../../types/Interfaces";
 import {getElementBySelector, getLocalStorage} from "../../../types/checks";
+import { PageIds } from "../../../types/enums";
+import BookPage from "../../book/book";
 
 class Content {
   renderContent(chosenBooks: book[]): HTMLDivElement {
@@ -72,6 +74,12 @@ class Content {
           }
           localStorage.setItem('totalPrice', JSON.stringify(totalPrice));
           totalPriceHTML.innerText = `$${totalPrice}.00`
+        }
+
+        if(event.target === bookButtonDetail) {
+          console.log(book.id);
+          BookPage.chosenBookID = book.id;
+          window.location.hash = `#${PageIds.BookPage}?id=${book.id}`;
         }
       })
 

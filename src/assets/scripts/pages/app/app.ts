@@ -1,22 +1,14 @@
-import {getElementBySelector} from "../../types/checks";
+import { getElementBySelector, getHash } from "../../types/checks";
 import MainPage from "../main/main";
 import Page from "../../core/page";
 import BasketPage from "../basket/basket";
 import BookPage from "../book/book";
-import Header from "../../core/nav";
 import { ErrorTypes, PageIds } from "../../types/enums";
 import ErrorPage from "../page404/page404";
 
 class App {
   private static container: HTMLElement = getElementBySelector(document, HTMLElement, 'main');
   private static defaultPageID = 'current-page';
-  private initialPage: MainPage;
-  private header: Header;
-
-  constructor() {
-    this.header = new Header('div', 'header-container-new');
-    this.initialPage = new MainPage(PageIds.MainPage);
-  }
   
   static renderNewPage(idPage: string): void {
     const currentPage = document.querySelector(`#${this.defaultPageID}`);
@@ -43,26 +35,20 @@ class App {
   }
 
   private changedHash() {
-    window.addEventListener('hashchange', () => {
-      const hash = window.location.hash.slice(1);
+    function getPageHash () {
+      const hash = getHash(window.location.hash);
       if (!hash) {
         App.renderNewPage(PageIds.MainPage);
       } else {
         App.renderNewPage(hash);
       }
-    });
-    window.addEventListener('load', () => {
-      const hash = window.location.hash.slice(1);
-      if (!hash) {
-        App.renderNewPage(PageIds.MainPage);
-      } else {
-        App.renderNewPage(hash);
-      }
-    });
+    }
+    window.addEventListener('hashchange', getPageHash);
+    window.addEventListener('load', getPageHash);
   }
 
   run() {
-    App.container.append(this.header.render());
+    // App.container.append(this.header.render());
     App.renderNewPage(PageIds.MainPage);
     this.changedHash();
   }
