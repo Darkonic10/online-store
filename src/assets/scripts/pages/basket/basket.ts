@@ -52,10 +52,19 @@ class BasketPage extends Page{
     }
 
     this.container.append(title, basket);
+
+    const itemsPerPage: HTMLInputElement = getElementBySelector(basket, HTMLInputElement, '.basket__pages-input');
+    console.log(itemsPerPage.value)
+    const pageNumber: HTMLSpanElement = getElementBySelector(basket, HTMLSpanElement, '.basket__page-curr');
+    console.log(pageNumber.innerText)
+    const activeItems = +itemsPerPage.value * (+pageNumber.innerText + 1);
+    console.log(activeItems)
+
     let i = 0;
     for (const entry of booksItemsMap) {
+      console.log(entry)
       const bookItem: HTMLDivElement = document.createElement('div');
-      bookItem.className = 'basket__item';
+      bookItem.className = `basket__item item-${i + 1}`;
       const listNumb: HTMLDivElement = document.createElement('div');
       listNumb.className = 'basket__item-number';
       listNumb.innerText = String(i + 1);
@@ -64,13 +73,13 @@ class BasketPage extends Page{
       itemInfo.className = 'basket__item-info';
       const bookImg: HTMLImageElement = document.createElement('img');
       bookImg.className = 'basket__item-img';
-      bookImg.src = books[+entry[0]].book_image[0];
+      bookImg.src = books[+entry[0] - 1].book_image[0];
       const itemDetail: HTMLDivElement = document.createElement('div');
       itemDetail.className = 'basket__item-detail';
       const itemTitle: HTMLHeadingElement = document.createElement('h3');
-      itemTitle.innerText = books[+entry[0]].title;
+      itemTitle.innerText = books[+entry[0] - 1].title;
       const itemDescription: HTMLParagraphElement = document.createElement('p');
-      itemDescription.innerText = books[+entry[0]].description;
+      itemDescription.innerText = books[+entry[0] - 1].description;
       itemDetail.append(itemTitle, itemDescription);
       itemInfo.append(bookImg, itemDetail);
 
@@ -80,7 +89,7 @@ class BasketPage extends Page{
       stockDiv.className = 'basket__item-stock';
       const stockValue: HTMLSpanElement = document.createElement('span');
       stockValue.className = 'basket__stock-value'
-      stockValue.innerText = `Stock: ${String(books[+entry[0]].stock_balance)}`;
+      stockValue.innerText = `Stock: ${String(books[+entry[0] - 1].stock_balance)}`;
       const itemNumberDiv: HTMLDivElement = document.createElement('div');
       itemNumberDiv.className = 'basket__item-number-div';
       const buttonPlus: HTMLButtonElement = document.createElement('button');
@@ -96,7 +105,7 @@ class BasketPage extends Page{
       itemPriceDiv.className = 'basket__item-price';
       const itemPrice: HTMLSpanElement = document.createElement('span');
       itemPrice.className = 'basket__price-value';
-      itemPrice.innerText = `${String(formatterUSD.format(books[+entry[0]].price))}`
+      itemPrice.innerText = `${String(formatterUSD.format(books[+entry[0] - 1].price))}`
       stockDiv.append(stockValue);
       itemNumberDiv.append(buttonPlus, currQuantity, buttonMinus);
       itemPriceDiv.append(itemPrice);

@@ -22,7 +22,7 @@ class Content {
     const basketCounter: HTMLSpanElement = getElementBySelector(document, HTMLSpanElement, '.header__counter-span');
     basketCounter.innerText = `${countItems}`;
     const totalPriceHTML: HTMLSpanElement = getElementBySelector(document, HTMLSpanElement, '.header__price-value');
-    totalPriceHTML.innerText = `${usdTotal}`
+    totalPriceHTML.innerText = `${usdTotal}`;
 
     for (const book of chosenBooks) {
       const bookDiv: HTMLDivElement = document.createElement('div');
