@@ -59,8 +59,7 @@ class App {
     window.addEventListener('load', getPageHash);
   }
 
-  run(): void {
-    App.renderNewPage(PageIds.MainPage);
+  run() {
     this.changedHash();
   }
 }
