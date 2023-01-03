@@ -1,5 +1,5 @@
 import { book } from "../../../types/Interfaces";
-import { formatterUSD, getElementBySelector, getLocalStorage } from "../../../types/checks";
+import { checkBookId, formatterUSD, getElementBySelector, getMapBasketStorage } from "../../../types/checks";
 import { PageIds } from "../../../types/enums";
 
 class Content {
@@ -9,13 +9,13 @@ class Content {
     const bookList: HTMLDivElement = document.createElement('div');
     bookList.className = 'container main__container';
     content.appendChild(bookList);
-    const booksItemsMap: Map<string, number> = new Map(Object.entries(JSON.parse(getLocalStorage(localStorage, 'basketIds')) as { [s: string]: number; }));
+    const booksItemsMap: Map<string, number> = getMapBasketStorage();
     let totalPrice = 0;
     let countItems = 0;
 
     for (const entry of booksItemsMap) {
       countItems += entry[1];
-      totalPrice += chosenBooks[+entry[0] - 1].price * entry[1];
+      totalPrice += checkBookId(+entry[0]).price * entry[1];
     }
     let usdTotal: string = formatterUSD.format(totalPrice);
 
@@ -72,7 +72,7 @@ class Content {
           countItems = 0;
           for (const entry of booksItemsMap) {
             countItems += entry[1];
-            totalPrice += chosenBooks[+entry[0] - 1].price * entry[1];
+            totalPrice += checkBookId(+entry[0]).price * entry[1];
           }
           usdTotal = formatterUSD.format(totalPrice);
           localStorage.setItem('basketIds', JSON.stringify(Object.fromEntries(booksItemsMap)))

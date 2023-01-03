@@ -1,6 +1,6 @@
 import { books } from "../data/books";
 import { PageIds } from "./enums";
-import { Options } from "./Interfaces";
+import { book, Options } from "./Interfaces";
 
 export function getElementBySelector <T extends typeof Element>(
   element: DocumentFragment | HTMLElement | Document,
@@ -25,6 +25,19 @@ export function getLocalStorage (element: Storage, selector: string): string {
     return '[]';
   }
   return result;
+}
+
+export function getMapBasketStorage(): Map<string, number> {
+  return new Map(Object.entries(JSON.parse(getLocalStorage(localStorage, 'basketIds')) as { [s: string]: number; }));
+}
+
+export function checkBookId(id: number): book {
+  for (const book of books) {
+    if(book.id === id) {
+      return book;
+    }
+  }
+  throw new Error('No such ID')
 }
 
 export function getHash(hash: string): string {

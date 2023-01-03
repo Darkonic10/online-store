@@ -1,5 +1,5 @@
 import Page from "../../core/page";
-import { formatterUSD, getElementBySelector, getLocalStorage } from "../../types/checks";
+import { formatterUSD, getElementBySelector, getMapBasketStorage } from "../../types/checks";
 import { books } from "../../data/books";
 
 class BasketPage extends Page{
@@ -42,7 +42,7 @@ class BasketPage extends Page{
     </div>
     `
     const basketItems: HTMLDivElement = getElementBySelector(basket, HTMLDivElement, '.basket__items');
-    const booksItemsMap: Map<string, number> = new Map(Object.entries(JSON.parse(getLocalStorage(localStorage, 'basketIds')) as { [s: string]: number; }))
+    const booksItemsMap: Map<string, number> = getMapBasketStorage();
     let totalPrice = 0;
     let countItems = 0;
 
