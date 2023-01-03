@@ -1,6 +1,7 @@
 import Page from "../../core/page";
 import { books } from "../../data/books";
-import { formatterUSD } from "../../types/checks";
+import { createElementByTag, formatterUSD } from "../../types/checks";
+import { PageIds } from "../../types/enums";
 import { book } from "../../types/Interfaces";
 
 
@@ -20,7 +21,21 @@ class BookPage extends Page {
     const content: HTMLDivElement = document.createElement('div');
     content.className = 'main-div';
     const title = this.createHeaderTitle(BookPage.TextObject.MainTitle);
+    
     const currentBook:book = books[this.chosenBookID - 1];
+
+    // const test = document.createElement('a');
+
+    const breadCrumps = createElementByTag('div', 'path', HTMLDivElement);
+    const breadPublisher = createElementByTag('a', 'links', HTMLAnchorElement, currentBook.publisher);
+    breadPublisher.href = `#${PageIds.MainPage}?publisher=${currentBook.publisher}   `;
+    const breadGenre = createElementByTag('a', 'links', HTMLAnchorElement, currentBook.genre);
+    breadGenre.href = `#${PageIds.MainPage}?genre=${currentBook.genre}   `;
+    const breadAuthor = createElementByTag('a', 'links', HTMLAnchorElement, currentBook.author);
+    breadAuthor.href = `#${PageIds.MainPage}?search=${currentBook.author}   `;
+    const breadTitle = createElementByTag('a', 'links', HTMLAnchorElement, currentBook.title);
+    breadTitle.href = `#${PageIds.MainPage}?search=${currentBook.title}   `;
+
     const mainDiv: HTMLDivElement = document.createElement('div');
     mainDiv.className = 'container main__container';
     const miniImgContainer: HTMLDivElement = document.createElement('div');
@@ -45,16 +60,22 @@ class BookPage extends Page {
     stock.innerText = `Stock: ${currentBook.stock_balance.toString()}`;
     const price: HTMLHeadingElement = document.createElement('h1');
     price.innerText = `${formatterUSD.format(currentBook.price)}`;
-    buttons.appendChild(price);
     const addButton: HTMLButtonElement = document.createElement('button');
     addButton.className = 'button main__button-add';
     addButton.textContent = 'Add to cart';
     const buyButton: HTMLButtonElement = document.createElement('button');
     buyButton.className = 'button basket__buy-button';
     buyButton.textContent = 'Buy Now';
-
+    
     this.container.append(content);
     content.appendChild(title)
+
+    content.appendChild(breadCrumps);
+    breadCrumps.appendChild(breadPublisher);
+    breadCrumps.appendChild(breadGenre);
+    breadCrumps.appendChild(breadAuthor);
+    breadCrumps.appendChild(breadTitle);
+
     bigImg.appendChild(img);
     mainDiv.appendChild(miniImgContainer);
     mainDiv.appendChild(bigImg);
@@ -77,6 +98,9 @@ class BookPage extends Page {
       miniImg.className = 'book__mini-img';
       miniImg.src = element;
       miniImgContainer.appendChild(miniImg);
+      miniImg.addEventListener('click', () => {
+        img.src = miniImg.src;
+      })
     }
 
     return this.container;
