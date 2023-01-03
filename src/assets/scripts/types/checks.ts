@@ -1,6 +1,6 @@
 import { books } from "../data/books";
 import { PageIds } from "./enums";
-import { Options } from "./Interfaces";
+import { book, Options } from "./Interfaces";
 
 export function getElementBySelector <T extends typeof Element>(
   element: DocumentFragment | HTMLElement | Document,
@@ -27,6 +27,19 @@ export function getLocalStorage (element: Storage, selector: string): string {
   return result;
 }
 
+export function getMapBasketStorage(): Map<string, number> {
+  return new Map(Object.entries(JSON.parse(getLocalStorage(localStorage, 'basketIds')) as { [s: string]: number; }));
+}
+
+export function checkBookId(id: number): book {
+  for (const book of books) {
+    if(book.id === id) {
+      return book;
+    }
+  }
+  throw new Error('No such ID')
+}
+
 export function getHash(hash: string): string {
   if (!hash) return PageIds.MainPage;
   const posOptions: number = hash.indexOf('?');
@@ -46,13 +59,6 @@ export function createElementByTag <T extends typeof HTMLElement>(tagName: strin
     throw new TypeError(`Selector ${tagName} have wrong type`);
   }
   return result as InstanceType<T>;
-}
-
-export function createInputElement(classNames: string, type: string): HTMLInputElement {
-  const input = document.createElement('input');
-  input.className = classNames;
-  input.type = type;
-  return input;
 }
 
 export function getOptions(opt: string): Options {
@@ -78,7 +84,7 @@ export function getBookID(options: Options): number {
   return -1;
 }
 
-export const formatterForMoney = new Intl.NumberFormat('en-US', {
+export const formatterUSD = new Intl.NumberFormat('en-US', {
   minimumFractionDigits: 2,
   style: 'currency',
   currency: 'USD',

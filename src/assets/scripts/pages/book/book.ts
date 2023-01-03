@@ -1,11 +1,11 @@
 import Page from "../../core/page";
 import { books } from "../../data/books";
-import { formatterForMoney } from "../../types/checks";
+import { formatterUSD } from "../../types/checks";
 import { book } from "../../types/Interfaces";
 
 
 class BookPage extends Page {
-  private chosenBookID: number;
+  private readonly chosenBookID: number;
   
   static TextObject = {
     MainTitle: 'BookPage',
@@ -57,7 +57,7 @@ class BookPage extends Page {
     desc.appendChild(stock);
     mainDiv.appendChild(buttons);
     const price: HTMLHeadingElement = document.createElement('h1');
-    price.innerText = `${formatterForMoney.format(currentBook.price)}`;
+    price.innerText = `${formatterUSD.format(currentBook.price)}`;
     buttons.appendChild(price);
     const addButton: HTMLButtonElement = document.createElement('button');
     addButton.className = 'button main__button-add';

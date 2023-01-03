@@ -1,5 +1,5 @@
 import { book } from "../../../types/Interfaces";
-import { getElementBySelector, getLocalStorage } from "../../../types/checks";
+import { checkBookId, formatterUSD, getElementBySelector, getMapBasketStorage } from "../../../types/checks";
 import { PageIds } from "../../../types/enums";
 
 class Content {
@@ -9,17 +9,20 @@ class Content {
     const bookList: HTMLDivElement = document.createElement('div');
     bookList.className = 'container main__container';
     content.appendChild(bookList);
-    const countBasket: Array<number> = JSON.parse(getLocalStorage(localStorage, 'basketIds')) as Array<number>;
+    const booksItemsMap: Map<string, number> = getMapBasketStorage();
+    let totalPrice = 0;
+    let countItems = 0;
+
+    for (const entry of booksItemsMap) {
+      countItems += entry[1];
+      totalPrice += checkBookId(+entry[0]).price * entry[1];
+    }
+    let usdTotal: string = formatterUSD.format(totalPrice);
 
     const basketCounter: HTMLSpanElement = getElementBySelector(document, HTMLSpanElement, '.header__counter-span');
-    basketCounter.innerText = `${countBasket.length}`;
+    basketCounter.innerText = `${countItems}`;
     const totalPriceHTML: HTMLSpanElement = getElementBySelector(document, HTMLSpanElement, '.header__price-value');
-    let totalPrice = 0;
-    for (let i = 0; i < countBasket.length; i++) {
-      totalPrice += chosenBooks[countBasket[i] - 1].price
-    }
-    localStorage.setItem('totalPrice', JSON.stringify(totalPrice));
-    totalPriceHTML.innerText = `$${totalPrice}.00`
+    totalPriceHTML.innerText = `${usdTotal}`;
 
     for (const book of chosenBooks) {
       const bookDiv: HTMLDivElement = document.createElement('div');
@@ -46,7 +49,7 @@ class Content {
       bookButtons.className = 'main__book-buttons';
       const bookButtonAdd: HTMLButtonElement = document.createElement('button');
       bookButtonAdd.className = 'button main__button-add';
-      if (!countBasket.includes(book.id)) {
+      if(!booksItemsMap.has(book.id.toString())) {
         bookButtonAdd.innerText = 'Add';
       } else {
         bookButtonAdd.innerText = 'Remove';
@@ -57,23 +60,24 @@ class Content {
       bookButtonDetail.innerText = 'Detail';
 
       bookButtons.addEventListener('click', (event) => {
-        if (event.target === bookButtonAdd) {
-          if (!countBasket.includes(book.id)) {
-            countBasket.push(book.id);
+        if(event.target === bookButtonAdd) {
+          if(!booksItemsMap.has(book.id.toString())) {
+            booksItemsMap.set(book.id.toString(), 1);
             bookButtonAdd.innerText = 'Remove';
           } else {
-            countBasket.splice(countBasket.indexOf(book.id), 1);
+            booksItemsMap.delete(book.id.toString());
             bookButtonAdd.innerText = 'Add';
           }
-          basketCounter.innerText = `${countBasket.length}`;
-          localStorage.setItem('basketIds', JSON.stringify(countBasket));
-
           totalPrice = 0;
-          for (let i = 0; i < countBasket.length; i++) {
-            totalPrice += chosenBooks[countBasket[i] - 1].price
+          countItems = 0;
+          for (const entry of booksItemsMap) {
+            countItems += entry[1];
+            totalPrice += checkBookId(+entry[0]).price * entry[1];
           }
-          localStorage.setItem('totalPrice', JSON.stringify(totalPrice));
-          totalPriceHTML.innerText = `$${totalPrice}.00`
+          usdTotal = formatterUSD.format(totalPrice);
+          localStorage.setItem('basketIds', JSON.stringify(Object.fromEntries(booksItemsMap)))
+          basketCounter.innerText = `${countItems}`;
+          totalPriceHTML.innerText = `${usdTotal}`;
         }
 
         if (event.target === bookButtonDetail) {
