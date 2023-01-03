@@ -1,5 +1,5 @@
 import Page from "../../core/page";
-import {formatterUSD, getElementBySelector, getLocalStorage} from "../../types/checks";
+import { formatterUSD, getElementBySelector, getLocalStorage } from "../../types/checks";
 import { books } from "../../data/books";
 
 class BasketPage extends Page{
