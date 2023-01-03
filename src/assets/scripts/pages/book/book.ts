@@ -19,10 +19,8 @@ class BookPage extends Page {
   render(): HTMLElement {
     const content: HTMLDivElement = document.createElement('div');
     content.className = 'main-div';
-    this.container.append(content);
     const title = this.createHeaderTitle(BookPage.TextObject.MainTitle);
     const currentBook:book = books[this.chosenBookID - 1];
-    content.appendChild(title)
     const mainDiv: HTMLDivElement = document.createElement('div');
     mainDiv.className = 'container main__container';
     const miniImgContainer: HTMLDivElement = document.createElement('div');
@@ -30,13 +28,9 @@ class BookPage extends Page {
     const img: HTMLImageElement = document.createElement('img');
     img.className = 'book__big-img';
     img.src = currentBook.book_image[0];
-    bigImg.appendChild(img);
     const desc: HTMLDivElement = document.createElement('div');
     desc.className = 'book__desc';
     const buttons: HTMLDivElement = document.createElement('div');
-    mainDiv.appendChild(miniImgContainer);
-    mainDiv.appendChild(bigImg);
-    mainDiv.appendChild(desc);
     const name: HTMLHeadingElement = document.createElement('h2');
     name.innerText = currentBook.title;
     const author: HTMLHeadingElement = document.createElement('h3');
@@ -49,13 +43,6 @@ class BookPage extends Page {
     publisher.innerText = `Publisher: ${currentBook.publisher}`;
     const stock: HTMLParagraphElement = document.createElement('p');
     stock.innerText = `Stock: ${currentBook.stock_balance.toString()}`;
-    desc.appendChild(name);
-    desc.appendChild(author);
-    desc.appendChild(description);
-    desc.appendChild(genre);
-    desc.appendChild(publisher);
-    desc.appendChild(stock);
-    mainDiv.appendChild(buttons);
     const price: HTMLHeadingElement = document.createElement('h1');
     price.innerText = `${formatterUSD.format(currentBook.price)}`;
     buttons.appendChild(price);
@@ -65,8 +52,25 @@ class BookPage extends Page {
     const buyButton: HTMLButtonElement = document.createElement('button');
     buyButton.className = 'button basket__buy-button';
     buyButton.textContent = 'Buy Now';
+
+    this.container.append(content);
+    content.appendChild(title)
+    bigImg.appendChild(img);
+    mainDiv.appendChild(miniImgContainer);
+    mainDiv.appendChild(bigImg);
+    mainDiv.appendChild(desc);
+    desc.appendChild(name);
+    desc.appendChild(author);
+    desc.appendChild(description);
+    desc.appendChild(genre);
+    desc.appendChild(publisher);
+    desc.appendChild(stock);
+    mainDiv.appendChild(buttons);
+    buttons.appendChild(price);
     buttons.appendChild(addButton);
     buttons.appendChild(buyButton);
+    content.append(mainDiv);
+
     for (let i = 0; i < currentBook.book_image.length; i++) {
       const element = currentBook.book_image[i];
       const miniImg: HTMLImageElement = document.createElement('img');
@@ -74,7 +78,7 @@ class BookPage extends Page {
       miniImg.src = element;
       miniImgContainer.appendChild(miniImg);
     }
-    content.append(mainDiv);
+
     return this.container;
   }
 }
