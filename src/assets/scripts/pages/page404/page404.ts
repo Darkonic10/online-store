@@ -14,7 +14,7 @@ class ErrorPage extends Page {
     this.errorType = errorType;
   }
 
-  render() {
+  render() : HTMLElement {
     const content: HTMLDivElement = document.createElement('div');
     content.className = 'main';
     const title = this.createHeaderTitle(ErrorPage.TextObject[this.errorType]);

@@ -3,7 +3,7 @@ import Filters from "./filters/filters";
 import Content from "./content/content";
 import { books } from "../../data/books";
 
-class MainPage extends Page{
+class MainPage extends Page {
   protected filters: Filters;
   protected content: Content;
 

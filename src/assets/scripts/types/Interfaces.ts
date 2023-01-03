@@ -12,4 +12,6 @@ interface book {
 
 type stringObject = { [key: string]: string };
 
-export { book, stringObject }
+type Options = Map<string, string>;
+
+export { book, stringObject, Options }

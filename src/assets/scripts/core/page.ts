@@ -6,7 +6,7 @@ abstract class Page {
     this.container.id = id;
   }
 
-  protected createHeaderTitle(text: string) {
+  protected createHeaderTitle(text: string): HTMLHeadingElement {
     const headerTitle: HTMLHeadingElement = document.createElement('h1');
     headerTitle.innerText = text;
     return headerTitle;

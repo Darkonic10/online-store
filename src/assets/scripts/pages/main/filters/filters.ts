@@ -1,52 +1,66 @@
 import { books } from "../../../data/books";
-import { getElementBySelector } from "../../../types/checks";
+import { createElementByTag } from "../../../types/checks";
 import noUiSlider from "nouislider";
 
 class Filters {
   renderFilters(): HTMLElement {
     const section: HTMLElement = document.createElement('section');
     section.className = 'filters';
-    const baseDiv: HTMLElement = document.createElement('div');
+    const baseDiv: HTMLDivElement = createElementByTag('div', 'container filters__container', HTMLDivElement);
+    const fWrapper: HTMLDivElement = createElementByTag('div', 'filters__wrapper', HTMLDivElement);
+    const filterGenre: HTMLDivElement = createElementByTag('div', 'filters__genre', HTMLDivElement);
+    const filterGenreTitle: HTMLHeadingElement = createElementByTag('h3', 'filters__genre-title', HTMLHeadingElement, 'Genre');
+    const filterAuthor: HTMLDivElement = createElementByTag('div', 'filters__author', HTMLDivElement);
+    const filterAuthorTitle: HTMLHeadingElement = createElementByTag('h3', 'filters__authors-title', HTMLHeadingElement, 'Author');
+    const fSliders: HTMLDivElement = createElementByTag('div', 'filters__sliders', HTMLDivElement);
+    const fPrice: HTMLDivElement = createElementByTag('div', 'filters__price', HTMLDivElement);
+    const fPriceTitle: HTMLHeadingElement = createElementByTag('h3', 'filters__price-title', HTMLHeadingElement, 'Price');
+    const minPriceHTMLMax: HTMLDivElement = createElementByTag('div', 'filters__price-minmax', HTMLDivElement)
+    const minPriceHTML: HTMLParagraphElement = createElementByTag('p', 'filters__price-min', HTMLParagraphElement, '0');
+    const maxPriceHTML: HTMLParagraphElement = createElementByTag('p', 'filters__price-max', HTMLParagraphElement, '0');
+    const sliderPrice: HTMLDivElement = createElementByTag('div', 'slider-price', HTMLDivElement);
+    const fStock: HTMLDivElement = createElementByTag('div', 'filters__stock', HTMLDivElement);
+    const fStockTitle: HTMLHeadingElement = createElementByTag('h3', 'filters__stock-title', HTMLHeadingElement, 'Stock');
+    const minStockHTMLMax: HTMLDivElement = createElementByTag('div', 'filters__stock-minmax', HTMLDivElement)
+    const minStockHTML: HTMLParagraphElement = createElementByTag('p', 'filters__stock-min', HTMLParagraphElement, '0');
+    const maxStockHTML: HTMLParagraphElement = createElementByTag('p', 'filters__stock-max', HTMLParagraphElement, '0');
+    const sliderStock: HTMLDivElement = createElementByTag('div', 'slider-stock', HTMLDivElement);
+    const fReset: HTMLButtonElement = createElementByTag('button', 'filters__filter-reset', HTMLButtonElement, 'Reset Filters');
+    const fSearch: HTMLDivElement = createElementByTag('div', 'filters__search', HTMLDivElement);
+    const fSearchFrom: HTMLFormElement = createElementByTag('form', 'filters__search-form', HTMLFormElement);
+    const fsearchInput: HTMLInputElement = createElementByTag('input', 'filters__search-input', HTMLInputElement);
+    fsearchInput.type = 'search'
+    fsearchInput.name = 'q';
+    fsearchInput.placeholder = 'Search for books by keyword';
+    const fsearchSubmit: HTMLInputElement = createElementByTag('input', 'filters__search-submit', HTMLInputElement);
+    fsearchSubmit.type = 'submit';
+    fsearchSubmit.value = '';
+    
     section.appendChild(baseDiv);
-    baseDiv.className = 'container filters__container';
-    baseDiv.innerHTML = `
-      <div class="filters__wrapper">
-        <div class="filters__genre">
-          <h3 class="filters__genre-title">Genre</h3>
-        </div>
-        <div class="filters__author">
-          <h3 class="filters__authors-title">Author</h3>
-        </div>
-        <div class="filters__sliders">
-        <div class="filters__price">
-            <h3 class="filters__price-title">Price</h3>
-            <div class="filters__price-minmax">
-              <p class="filters__price-min">0</p>
-              ⟷
-              <p class="filters__price-max">0</p>
-            </div>
-            <div id="slider-price"></div>
-          </div>
-          <div class="filters__stock">
-            <h3 class="filters__stock-title">Stock</h3>
-            <div class="filters__stock-minmax">
-              <p class="filters__stock-min">0</p>
-              ⟷
-              <p class="filters__stock-max">0</p>
-            </div>
-            <div id="slider-stock"></div>
-          </div>
-        </div>
-        </div>
-        <button class="filters__filter-reset">Reset Filters</button>
-        <div class="filters__search">
-        <form class="filters__search-form">
-          <input class="filters__search-input" type="search" name="q" placeholder="Search for books by keyword">
-          <input class="filters__search-submit" type="submit" value="">
-          </form>
-          </div>`
-    const filterGenre: HTMLDivElement = getElementBySelector(baseDiv, HTMLDivElement, '.filters__genre');
-    const filterAuthor: HTMLDivElement = getElementBySelector(baseDiv, HTMLDivElement, '.filters__author');
+    baseDiv.appendChild(fWrapper);
+    fWrapper.appendChild(filterGenre);
+    filterGenre.appendChild(filterGenreTitle);
+    fWrapper.appendChild(filterAuthor);
+    filterAuthor.appendChild(filterAuthorTitle);
+    fWrapper.appendChild(fSliders);
+    fSliders.appendChild(fPrice);
+    fPrice.appendChild(fPriceTitle);
+    fPrice.appendChild(minPriceHTMLMax);
+    minPriceHTMLMax.appendChild(minPriceHTML);
+    minPriceHTMLMax.appendChild(maxPriceHTML);
+    fPrice.appendChild(sliderPrice);
+    fSliders.appendChild(fStock);
+    fStock.appendChild(fStockTitle);
+    fStock.appendChild(minStockHTMLMax);
+    minStockHTMLMax.appendChild(minStockHTML);
+    minStockHTMLMax.appendChild(maxStockHTML);
+    fStock.appendChild(sliderStock);
+    baseDiv.appendChild(fReset);
+    baseDiv.appendChild(fSearch);
+    fSearch.appendChild(fSearchFrom);
+    fSearchFrom.appendChild(fsearchInput);
+    fSearchFrom.appendChild(fsearchSubmit);
+
     const genreCheckboxList: HTMLUListElement = document.createElement('ul');
     genreCheckboxList.className = 'filters__genre-list';
     const authorCheckboxList: HTMLUListElement = document.createElement('ul');
@@ -55,11 +69,11 @@ class Filters {
     const arrAuthors: string[] = [];
     const prices: number[] = [];
     const stocks: number[] = [];
-    
+
     for (const book of books) {
       prices.push(book.price);
       stocks.push(book.stock_balance);
-      if(!arrGenres.includes(book.genre)) {
+      if (!arrGenres.includes(book.genre)) {
         arrGenres.push(book.genre);
         const genreCheckboxItem: HTMLLIElement = document.createElement('li');
         const genreCheckboxInput: HTMLInputElement = document.createElement('input');
@@ -72,7 +86,7 @@ class Filters {
         genreCheckboxLabel.setAttribute('for', `genre ${String(book.id)}`)
         genreCheckboxList.append(genreCheckboxItem)
       }
-      if(!arrAuthors.includes(book.author)) {
+      if (!arrAuthors.includes(book.author)) {
         arrGenres.push(book.author);
         const authorCheckboxItem: HTMLLIElement = document.createElement('li');
         const authorCheckboxInput: HTMLInputElement = document.createElement('input');
@@ -88,12 +102,9 @@ class Filters {
     }
     filterGenre.append(genreCheckboxList);
     filterAuthor.append(authorCheckboxList)
-    
-    const sliderPrice: HTMLDivElement = getElementBySelector(baseDiv, HTMLDivElement, '#slider-price');
+
     const minPrice = Math.min(...prices);
     const maxPrice = Math.max(...prices);
-    const minPriceHTML: HTMLParagraphElement = getElementBySelector(baseDiv, HTMLParagraphElement, '.filters__price-min');
-    const maxPriceHTML: HTMLParagraphElement = getElementBySelector(baseDiv, HTMLParagraphElement, '.filters__price-max');
     minPriceHTML.innerText = String(minPrice);
     maxPriceHTML.innerText = String(maxPrice);
     noUiSlider.create(sliderPrice, {
@@ -104,12 +115,8 @@ class Filters {
         'max': maxPrice
       }
     })
-
-    const sliderStock: HTMLDivElement = getElementBySelector(baseDiv, HTMLDivElement, '#slider-stock');
     const minStock = Math.min(...stocks);
     const maxStock = Math.max(...stocks);
-    const minStockHTML: HTMLParagraphElement = getElementBySelector(baseDiv, HTMLParagraphElement, '.filters__stock-min');
-    const maxStockHTML: HTMLParagraphElement = getElementBySelector(baseDiv, HTMLParagraphElement, '.filters__stock-max');
     minStockHTML.innerText = String(minStock);
     maxStockHTML.innerText = String(maxStock);
     noUiSlider.create(sliderStock, {

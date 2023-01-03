@@ -1,5 +1,6 @@
 import { book } from "../../../types/Interfaces";
-import {getElementBySelector, getLocalStorage} from "../../../types/checks";
+import { getElementBySelector, getLocalStorage } from "../../../types/checks";
+import { PageIds } from "../../../types/enums";
 
 class Content {
   renderContent(chosenBooks: book[]): HTMLDivElement {
@@ -23,6 +24,7 @@ class Content {
     for (const book of chosenBooks) {
       const bookDiv: HTMLDivElement = document.createElement('div');
       bookDiv.className = 'main__book-card'
+      bookDiv.id = `id-book-${book.id}`;
       const bookImg: HTMLImageElement = document.createElement('img');
       bookImg.className = 'main__book-img';
       bookImg.src = book.book_image[0];
@@ -44,7 +46,7 @@ class Content {
       bookButtons.className = 'main__book-buttons';
       const bookButtonAdd: HTMLButtonElement = document.createElement('button');
       bookButtonAdd.className = 'button main__button-add';
-      if(!countBasket.includes(book.id)) {
+      if (!countBasket.includes(book.id)) {
         bookButtonAdd.innerText = 'Add';
       } else {
         bookButtonAdd.innerText = 'Remove';
@@ -55,8 +57,8 @@ class Content {
       bookButtonDetail.innerText = 'Detail';
 
       bookButtons.addEventListener('click', (event) => {
-        if(event.target === bookButtonAdd) {
-          if(!countBasket.includes(book.id)) {
+        if (event.target === bookButtonAdd) {
+          if (!countBasket.includes(book.id)) {
             countBasket.push(book.id);
             bookButtonAdd.innerText = 'Remove';
           } else {
@@ -72,6 +74,11 @@ class Content {
           }
           localStorage.setItem('totalPrice', JSON.stringify(totalPrice));
           totalPriceHTML.innerText = `$${totalPrice}.00`
+        }
+
+        if (event.target === bookButtonDetail) {
+          console.log(`Selected book id: ${book.id}`);
+          window.location.hash = `#${PageIds.BookPage}?id=${book.id}`;
         }
       })
 
