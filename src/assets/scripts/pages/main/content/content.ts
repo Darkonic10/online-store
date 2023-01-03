@@ -1,5 +1,5 @@
 import { book } from "../../../types/Interfaces";
-import { getElementBySelector, getLocalStorage } from "../../../types/checks";
+import {formatterUSD, getElementBySelector, getLocalStorage} from "../../../types/checks";
 import { PageIds } from "../../../types/enums";
 
 class Content {
@@ -12,11 +12,6 @@ class Content {
     const booksItemsMap: Map<string, number> = new Map(Object.entries(JSON.parse(getLocalStorage(localStorage, 'basketIds')) as { [s: string]: number; }));
     let totalPrice = 0;
     let countItems = 0;
-    const formatterUSD: Intl.NumberFormat = new Intl.NumberFormat('en-US', {
-      minimumFractionDigits: 2,
-      style: 'currency',
-      currency: 'USD'
-    });
 
     for (const entry of booksItemsMap) {
       countItems += entry[1];

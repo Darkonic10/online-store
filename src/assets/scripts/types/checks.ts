@@ -78,7 +78,7 @@ export function getBookID(options: Options): number {
   return -1;
 }
 
-export const formatterForMoney = new Intl.NumberFormat('en-US', {
+export const formatterUSD = new Intl.NumberFormat('en-US', {
   minimumFractionDigits: 2,
   style: 'currency',
   currency: 'USD',
