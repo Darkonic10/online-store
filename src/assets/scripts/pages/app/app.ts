@@ -44,7 +44,7 @@ class App {
     }
   }
 
-  private changedHash() {
+  private changedHash(): void {
     function getPageHash() {
       const hash = window.location.hash;
       const address = getHash(hash);
@@ -59,7 +59,7 @@ class App {
     window.addEventListener('load', getPageHash);
   }
 
-  run() {
+  run(): void {
     App.renderNewPage(PageIds.MainPage);
     this.changedHash();
   }
