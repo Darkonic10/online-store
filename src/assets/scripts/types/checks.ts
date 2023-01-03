@@ -48,13 +48,6 @@ export function createElementByTag <T extends typeof HTMLElement>(tagName: strin
   return result as InstanceType<T>;
 }
 
-export function createInputElement(classNames: string, type: string): HTMLInputElement {
-  const input = document.createElement('input');
-  input.className = classNames;
-  input.type = type;
-  return input;
-}
-
 export function getOptions(opt: string): Options {
   const result = new Map();
   const arr = opt.split('&');

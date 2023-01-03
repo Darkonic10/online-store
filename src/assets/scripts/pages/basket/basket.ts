@@ -107,7 +107,7 @@ class BasketPage extends Page{
       itemPrice.className = 'basket__price-value';
       itemPrice.innerText = `${String(formatterUSD.format(books[+entry[0] - 1].price))}`
       stockDiv.append(stockValue);
-      itemNumberDiv.append(buttonPlus, currQuantity, buttonMinus);
+      itemNumberDiv.append(buttonMinus, currQuantity, buttonPlus);
       itemPriceDiv.append(itemPrice);
       itemControl.append(stockDiv, itemNumberDiv, itemPriceDiv);
 
