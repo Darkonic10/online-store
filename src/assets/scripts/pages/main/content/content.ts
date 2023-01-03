@@ -1,5 +1,5 @@
 import { book } from "../../../types/Interfaces";
-import {formatterUSD, getElementBySelector, getLocalStorage} from "../../../types/checks";
+import { formatterUSD, getElementBySelector, getLocalStorage } from "../../../types/checks";
 import { PageIds } from "../../../types/enums";
 
 class Content {
