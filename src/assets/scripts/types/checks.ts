@@ -88,4 +88,4 @@ export const formatterUSD = new Intl.NumberFormat('en-US', {
   minimumFractionDigits: 2,
   style: 'currency',
   currency: 'USD',
-})
+});

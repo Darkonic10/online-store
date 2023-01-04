@@ -1,11 +1,14 @@
 .book__mini-img{
-  height: 50px;
-  width: 33px;
+  width: 50px;
+  transition: 0.5s;
+  &:hover{
+    cursor: pointer;
+    transform: scale(2);
+  }
 }
 
 .book__big-img{
-  height: 400px;
-  width: 264px;
+  width: 256px;
 }
 
 .book__desc{
