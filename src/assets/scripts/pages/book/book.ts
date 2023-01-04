@@ -1,6 +1,5 @@
 import Page from "../../core/page";
-import { books } from "../../data/books";
-import { createElementByTag, formatterUSD } from "../../types/checks";
+import { checkBookId, createElementByTag, formatterUSD, getBookID } from "../../types/checks";
 import { PageIds } from "../../types/enums";
 import { book } from "../../types/Interfaces";
 
@@ -22,7 +21,7 @@ class BookPage extends Page {
     content.className = 'main-div';
     const title = this.createHeaderTitle(BookPage.TextObject.MainTitle);
     
-    const currentBook:book = books[this.chosenBookID - 1];
+    const currentBook: book = checkBookId(this.chosenBookID);
 
     // const test = document.createElement('a');
 
