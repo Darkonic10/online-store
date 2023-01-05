@@ -1,5 +1,6 @@
 import Page from "../../core/page";
-import { checkBookId, createElementByTag, formatterUSD, getBookID } from "../../types/checks";
+import { checkBookId, createElementByTag, formatterUSD } from "../../types/checks"; //getBookID - удалил, warning 'getBookID' is defined but never used
+
 import { PageIds } from "../../types/enums";
 import { book } from "../../types/Interfaces";
 

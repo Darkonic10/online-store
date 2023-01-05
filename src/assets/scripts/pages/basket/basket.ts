@@ -1,5 +1,7 @@
 import Page from "../../core/page";
 import { checkBookId, formatterUSD, getElementBySelector, getMapBasketStorage } from "../../types/checks";
+import { book } from "../../types/Interfaces";
+import {PageIds} from "../../types/enums";
 
 class BasketPage extends Page{
   static TextObject = {
@@ -28,7 +30,7 @@ class BasketPage extends Page{
             <div class="basket__page-numbers">
               <p>Page: </p>
               <button class="basket__page-prev"><</button>
-              <span class="basket__page-curr">0</span>
+              <span class="basket__page-curr">1</span>
               <button class="basket__page-next">></button>
             </div>
           </div>
@@ -39,9 +41,10 @@ class BasketPage extends Page{
         <h2>Summary</h2>
       </div>
     </div>
-    `
+    `;
     const basketItems: HTMLDivElement = getElementBySelector(basket, HTMLDivElement, '.basket__items');
     const booksItemsMap: Map<string, number> = getMapBasketStorage();
+    const mapSize: number = +booksItemsMap.size;
     let totalPrice = 0;
     let countItems = 0;
 
@@ -53,67 +56,83 @@ class BasketPage extends Page{
     this.container.append(title, basket);
 
     const itemsPerPage: HTMLInputElement = getElementBySelector(basket, HTMLInputElement, '.basket__pages-input');
-    console.log(itemsPerPage.value)
+    const pagePrev: HTMLButtonElement = getElementBySelector(basket, HTMLButtonElement, '.basket__page-prev');
     const pageNumber: HTMLSpanElement = getElementBySelector(basket, HTMLSpanElement, '.basket__page-curr');
-    console.log(pageNumber.innerText)
-    const activeItems = +itemsPerPage.value * (+pageNumber.innerText + 1);
-    console.log(activeItems)
+    const pageNext: HTMLButtonElement = getElementBySelector(basket, HTMLButtonElement, '.basket__page-next');
 
-    let i = 0;
-    for (const entry of booksItemsMap) {
-      console.log(entry)
-      const bookItem: HTMLDivElement = document.createElement('div');
-      bookItem.className = `basket__item item-${i + 1}`;
-      const listNumb: HTMLDivElement = document.createElement('div');
-      listNumb.className = 'basket__item-number';
-      listNumb.innerText = String(i + 1);
+    let pagesCount = 1;
 
-      const itemInfo: HTMLDivElement = document.createElement('div');
-      itemInfo.className = 'basket__item-info';
-      const bookImg: HTMLImageElement = document.createElement('img');
-      bookImg.className = 'basket__item-img';
-      bookImg.src = checkBookId(+entry[0]).book_image[0];
-      const itemDetail: HTMLDivElement = document.createElement('div');
-      itemDetail.className = 'basket__item-detail';
-      const itemTitle: HTMLHeadingElement = document.createElement('h3');
-      itemTitle.innerText = checkBookId(+entry[0]).title;
-      const itemDescription: HTMLParagraphElement = document.createElement('p');
-      itemDescription.innerText = checkBookId(+entry[0]).description;
-      itemDetail.append(itemTitle, itemDescription);
-      itemInfo.append(bookImg, itemDetail);
+    function pagination(itemsPage: number, page: number) {
+      pagesCount = Math.ceil(mapSize / itemsPage);
 
-      const itemControl: HTMLDivElement = document.createElement('div');
-      itemControl.className = 'basket__item-control';
-      const stockDiv: HTMLDivElement = document.createElement('div');
-      stockDiv.className = 'basket__item-stock';
-      const stockValue: HTMLSpanElement = document.createElement('span');
-      stockValue.className = 'basket__stock-value'
-      stockValue.innerText = `Stock: ${String(checkBookId(+entry[0]).stock_balance)}`;
-      const itemNumberDiv: HTMLDivElement = document.createElement('div');
-      itemNumberDiv.className = 'basket__item-number-div';
-      const buttonPlus: HTMLButtonElement = document.createElement('button');
-      buttonPlus.className = 'basket__item-add';
-      buttonPlus.innerText = '+';
-      const currQuantity: HTMLSpanElement = document.createElement('span');
-      currQuantity.className = 'basket__item-quantity';
-      currQuantity.innerText = '1';
-      const buttonMinus: HTMLButtonElement = document.createElement('button');
-      buttonMinus.className = 'basket__item-delete';
-      buttonMinus.innerText = '-';
-      const itemPriceDiv: HTMLDivElement = document.createElement('div');
-      itemPriceDiv.className = 'basket__item-price';
-      const itemPrice: HTMLSpanElement = document.createElement('span');
-      itemPrice.className = 'basket__price-value';
-      itemPrice.innerText = `${String(formatterUSD.format(checkBookId(+entry[0]).price))}`
-      stockDiv.append(stockValue);
-      itemNumberDiv.append(buttonMinus, currQuantity, buttonPlus);
-      itemPriceDiv.append(itemPrice);
-      itemControl.append(stockDiv, itemNumberDiv, itemPriceDiv);
+      const start = itemsPage * (page - 1);
 
-      bookItem.append(listNumb, itemInfo, itemControl);
-      basketItems.append(bookItem);
-      i++;
+      if(!(page * itemsPage <= mapSize)) {
+        itemsPage = mapSize % itemsPage;
+      }
+
+      let i = 0;
+      const end = start + itemsPage;
+      for (const entry of booksItemsMap) {
+        if(i >= start && i < end) {
+          const currBook: book = checkBookId(+entry[0]);
+          const bookItem: HTMLDivElement = document.createElement('div');
+          bookItem.className = `basket__item item-${i + 1}`;
+          const listNumb: HTMLDivElement = document.createElement('div');
+          listNumb.className = 'basket__item-number';
+          listNumb.innerText = String(i + 1);
+
+          const itemInfo: HTMLDivElement = document.createElement('div');
+          itemInfo.className = 'basket__item-info';
+          const bookImg: HTMLImageElement = document.createElement('img');
+          bookImg.className = 'basket__item-img';
+          bookImg.src = currBook.book_image[0];
+          const itemDetail: HTMLDivElement = document.createElement('div');
+          itemDetail.className = 'basket__item-detail';
+          const itemTitle: HTMLHeadingElement = document.createElement('h3');
+          itemTitle.innerText = currBook.title;
+          const itemDescription: HTMLParagraphElement = document.createElement('p');
+          itemDescription.innerText = currBook.description;
+          itemDetail.append(itemTitle, itemDescription);
+          itemInfo.append(bookImg, itemDetail);
+
+          const itemControl: HTMLDivElement = document.createElement('div');
+          itemControl.className = 'basket__item-control';
+          const stockDiv: HTMLDivElement = document.createElement('div');
+          stockDiv.className = 'basket__item-stock';
+          const stockValue: HTMLSpanElement = document.createElement('span');
+          stockValue.className = 'basket__stock-value'
+          stockValue.innerText = `Stock: ${String(currBook.stock_balance)}`;
+          const itemNumberDiv: HTMLDivElement = document.createElement('div');
+          itemNumberDiv.className = 'basket__item-number-div';
+          const buttonPlus: HTMLButtonElement = document.createElement('button');
+          buttonPlus.className = 'basket__item-add';
+          buttonPlus.innerText = '+';
+          const currQuantity: HTMLSpanElement = document.createElement('span');
+          currQuantity.className = 'basket__item-quantity';
+          currQuantity.innerText = '1';
+          const buttonMinus: HTMLButtonElement = document.createElement('button');
+          buttonMinus.className = 'basket__item-delete';
+          buttonMinus.innerText = '-';
+          const itemPriceDiv: HTMLDivElement = document.createElement('div');
+          itemPriceDiv.className = 'basket__item-price';
+          const itemPrice: HTMLSpanElement = document.createElement('span');
+          itemPrice.className = 'basket__price-value';
+          itemPrice.innerText = `${String(formatterUSD.format(currBook.price))}`
+          stockDiv.append(stockValue);
+          itemNumberDiv.append(buttonMinus, currQuantity, buttonPlus);
+          itemPriceDiv.append(itemPrice);
+          itemControl.append(stockDiv, itemNumberDiv, itemPriceDiv);
+
+          bookItem.append(listNumb, itemInfo, itemControl);
+          basketItems.append(bookItem);
+        }
+        i++;
+      }
     }
+
+    pagination(+itemsPerPage.value, +pageNumber.innerText);
+
     const basketSummary: HTMLDivElement = getElementBySelector(basket, HTMLDivElement, '.basket__summary');
     const basketProducts: HTMLParagraphElement = document.createElement('p');
     basketProducts.className = 'basket__items-count';
@@ -129,6 +148,33 @@ class BasketPage extends Page{
     buyButton.className = 'basket__buy-button';
     buyButton.innerText = 'BUY NOW';
     basketSummary.append(basketProducts, totalPriceHTML, inputPromo, buyButton);
+
+    itemsPerPage.addEventListener('input', () => {
+      if(+itemsPerPage.value > 0) {
+        pageNumber.innerText = '1';
+        history.pushState(null, '', `#${PageIds.BasketPage}?limit=${itemsPerPage.value}&page=${pageNumber.innerText}`)
+        basketItems.replaceChildren();
+        pagination(+itemsPerPage.value, +pageNumber.innerText);
+      }
+    })
+
+    pagePrev.addEventListener('click', () => {
+      if(+pageNumber.innerText - 1 >= 1) {
+        pageNumber.innerText = String(+pageNumber.innerText - 1);
+        history.pushState(null, '', `#${PageIds.BasketPage}?limit=${itemsPerPage.value}&page=${pageNumber.innerText}`)
+        basketItems.replaceChildren();
+        pagination(+itemsPerPage.value, +pageNumber.innerText);
+      }
+    })
+
+    pageNext.addEventListener('click', () => {
+      if(+pageNumber.innerText + 1 <= pagesCount) {
+        pageNumber.innerText = String(+pageNumber.innerText + 1);
+        history.pushState(null, '', `#${PageIds.BasketPage}?limit=${itemsPerPage.value}&page=${pageNumber.innerText}`)
+        basketItems.replaceChildren();
+        pagination(+itemsPerPage.value, +pageNumber.innerText);
+      }
+    })
 
     return this.container
   }
