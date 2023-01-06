@@ -21,7 +21,7 @@ class App {
     if (idPage === PageIds.MainPage) {
       page = new MainPage(idPage);
     } else if (idPage === PageIds.BasketPage) {
-      if(options) {
+      if(options && options.size !== 0) {
         const itemsPage = options.get('limit');
         const pageOptions = options.get('page');
         if(typeof itemsPage !== 'undefined' && typeof pageOptions !== 'undefined') {
@@ -30,6 +30,8 @@ class App {
           page = new BasketPage(idPage, +itemsPage, 1);
         } else if(typeof itemsPage === 'undefined' && typeof pageOptions !== 'undefined') {
           page = new BasketPage(idPage, 3, +pageOptions);
+        } else if(typeof itemsPage === 'undefined' && typeof pageOptions === 'undefined') {
+          page = new BasketPage(idPage, 3, 1);
         } else {
           page = new ErrorPage(idPage, ErrorTypes.Error_404);
         }
