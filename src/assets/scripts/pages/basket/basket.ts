@@ -1,15 +1,20 @@
 import Page from "../../core/page";
 import { checkBookId, formatterUSD, getElementBySelector, getMapBasketStorage } from "../../types/checks";
 import { book } from "../../types/Interfaces";
-import {PageIds} from "../../types/enums";
+import { PageIds } from "../../types/enums";
 
 class BasketPage extends Page{
   static TextObject = {
     MainTitle: 'BasketPage',
   };
+  itemsPage: number;
+  page: number;
 
-  constructor(id: string) {
+  constructor(id: string, itemsPage: number, page: number) {
     super(id);
+    this.itemsPage = itemsPage;
+    this.page = page;
+    console.log('itemsPage, page>', this.itemsPage, this.page)
   }
 
   private createMain(): HTMLElement {
@@ -59,6 +64,8 @@ class BasketPage extends Page{
     const pagePrev: HTMLButtonElement = getElementBySelector(basket, HTMLButtonElement, '.basket__page-prev');
     const pageNumber: HTMLSpanElement = getElementBySelector(basket, HTMLSpanElement, '.basket__page-curr');
     const pageNext: HTMLButtonElement = getElementBySelector(basket, HTMLButtonElement, '.basket__page-next');
+    itemsPerPage.value = String(this.itemsPage)
+    pageNumber.innerText = String(this.page);
 
     let pagesCount = 1;
 
@@ -131,7 +138,7 @@ class BasketPage extends Page{
       }
     }
 
-    pagination(+itemsPerPage.value, +pageNumber.innerText);
+    pagination(this.itemsPage, this.page);
 
     const basketSummary: HTMLDivElement = getElementBySelector(basket, HTMLDivElement, '.basket__summary');
     const basketProducts: HTMLParagraphElement = document.createElement('p');

@@ -21,7 +21,21 @@ class App {
     if (idPage === PageIds.MainPage) {
       page = new MainPage(idPage);
     } else if (idPage === PageIds.BasketPage) {
-      page = new BasketPage(idPage);
+      if(options) {
+        const itemsPage = options.get('limit');
+        const pageOptions = options.get('page');
+        if(typeof itemsPage !== 'undefined' && typeof pageOptions !== 'undefined') {
+          page = new BasketPage(idPage, +itemsPage, +pageOptions);
+        } else if(typeof itemsPage !== 'undefined' && typeof pageOptions === 'undefined') {
+          page = new BasketPage(idPage, +itemsPage, 1);
+        } else if(typeof itemsPage === 'undefined' && typeof pageOptions !== 'undefined') {
+          page = new BasketPage(idPage, 3, +pageOptions);
+        } else {
+          page = new ErrorPage(idPage, ErrorTypes.Error_404);
+        }
+      } else {
+        page = new BasketPage(idPage, 3, 1);
+      }
     } else if (idPage === PageIds.BookPage) {
       if (options) {
         const idBook = getBookID(options);
