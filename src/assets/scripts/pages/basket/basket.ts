@@ -14,7 +14,6 @@ class BasketPage extends Page{
     super(id);
     this.itemsPage = itemsPage;
     this.page = page;
-    console.log('itemsPage, page>', this.itemsPage, this.page)
   }
 
   private createMain(): HTMLElement {
