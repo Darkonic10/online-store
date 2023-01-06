@@ -2,13 +2,18 @@ import Page from "../../core/page";
 import Filters from "./filters/filters";
 import Content from "./content/content";
 import { books } from "../../data/books";
+import { Options } from "../../types/Interfaces";
 
 class MainPage extends Page {
   protected filters: Filters;
   protected content: Content;
+  protected options: Options = new Map();
 
-  constructor(id: string) {
+  constructor(id: string, options?: Options) {
     super(id)
+    if (options) {
+      this.options = options;
+    }
     this.filters = new Filters();
     this.content = new Content();
   }

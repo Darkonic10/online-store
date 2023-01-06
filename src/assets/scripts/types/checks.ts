@@ -37,7 +37,7 @@ export function checkBookId(id: number): book {
       return book;
     }
   }
-  throw new Error('No such ID')
+  throw new Error('No such ID');
 }
 
 export function getHash(hash: string): string {
@@ -94,3 +94,11 @@ export const formatterUSD = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',
 });
+
+export function getMainAddress (options: Options): string {
+  const arr: string[] = [];
+  options.forEach((val, key) => {
+    arr.push(`${key}=${val}`);
+  })
+  return `#${PageIds.MainPage}?${arr.join('&')}`;
+}
