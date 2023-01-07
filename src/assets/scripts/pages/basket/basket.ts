@@ -52,11 +52,6 @@ class BasketPage extends Page{
     let totalPrice = 0;
     let countItems = 0;
 
-    for (const entry of booksItemsMap) {
-      countItems += entry[1];
-      totalPrice += checkBookId(+entry[0]).price * entry[1];
-    }
-
     this.container.append(title, basket);
 
     const itemsPerPage: HTMLInputElement = getElementBySelector(basket, HTMLInputElement, '.basket__pages-input');
@@ -116,7 +111,7 @@ class BasketPage extends Page{
           buttonPlus.innerText = '+';
           const currQuantity: HTMLSpanElement = document.createElement('span');
           currQuantity.className = 'basket__item-quantity';
-          currQuantity.innerText = '1';
+          currQuantity.innerText = String(entry[1]);
           const buttonMinus: HTMLButtonElement = document.createElement('button');
           buttonMinus.className = 'basket__item-delete';
           buttonMinus.innerText = '-';
@@ -124,7 +119,7 @@ class BasketPage extends Page{
           itemPriceDiv.className = 'basket__item-price';
           const itemPrice: HTMLSpanElement = document.createElement('span');
           itemPrice.className = 'basket__price-value';
-          itemPrice.innerText = `${String(formatterUSD.format(currBook.price))}`
+          itemPrice.innerText = `${String(formatterUSD.format(currBook.price * entry[1]))}`
           stockDiv.append(stockValue);
           itemNumberDiv.append(buttonMinus, currQuantity, buttonPlus);
           itemPriceDiv.append(itemPrice);
@@ -132,6 +127,34 @@ class BasketPage extends Page{
 
           bookItem.append(listNumb, itemInfo, itemControl);
           basketItems.append(bookItem);
+
+          bookItem.addEventListener('click', (event) => {
+            if(event.target === buttonPlus) {
+              if(+currQuantity.innerText + 1 <= currBook.stock_balance) {
+                currQuantity.innerText = String(+currQuantity.innerText + 1);
+                itemPrice.innerText = `${String(formatterUSD.format(currBook.price * +currQuantity.innerText))}`
+                booksItemsMap.set(entry[0], +currQuantity.innerText);
+                localStorage.setItem('basketIds', JSON.stringify(Object.fromEntries(booksItemsMap)))
+              }
+            }
+            if(event.target === buttonMinus) {
+              if(+currQuantity.innerText > 1) {
+                currQuantity.innerText = String(+currQuantity.innerText - 1);
+                itemPrice.innerText = `${String(formatterUSD.format(currBook.price * +currQuantity.innerText))}`
+                booksItemsMap.set(entry[0], +currQuantity.innerText);
+                localStorage.setItem('basketIds', JSON.stringify(Object.fromEntries(booksItemsMap)))
+              } else {
+                bookItem.remove();
+                booksItemsMap.delete(entry[0]);
+                localStorage.setItem('basketIds', JSON.stringify(Object.fromEntries(booksItemsMap)))
+                basketItems.replaceChildren();
+                pagination(+itemsPerPage.value, +pageNumber.innerText);
+              }
+            }
+            if(event.target === buttonPlus || event.target === buttonMinus) {
+              getCounting();
+            }
+          })
         }
         i++;
       }
@@ -154,6 +177,18 @@ class BasketPage extends Page{
     buyButton.className = 'basket__buy-button';
     buyButton.innerText = 'BUY NOW';
     basketSummary.append(basketProducts, totalPriceHTML, inputPromo, buyButton);
+
+    function getCounting(): void {
+      totalPrice = 0;
+      countItems = 0;
+      for (const entry of booksItemsMap) {
+        countItems += entry[1];
+        totalPrice += checkBookId(+entry[0]).price * entry[1];
+      }
+      basketProducts.innerText = `Products: ${countItems}`;
+      totalPriceHTML.innerText = `Total: ${formatterUSD.format(totalPrice)}`;
+    }
+    getCounting();
 
     itemsPerPage.addEventListener('input', () => {
       if(+itemsPerPage.value > 0) {
