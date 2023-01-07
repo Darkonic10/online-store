@@ -27,8 +27,8 @@ export function getLocalStorage (element: Storage, selector: string): string {
   return result;
 }
 
-export function getMapBasketStorage(): Map<string, number> {
-  return new Map(Object.entries(JSON.parse(getLocalStorage(localStorage, 'basketIds')) as { [s: string]: number; }));
+export function getMapBasketStorage(selector: string): Map<string, number> {
+  return new Map(Object.entries(JSON.parse(getLocalStorage(localStorage, selector)) as { [s: string]: number; }));
 }
 
 export function checkBookId(id: number): book {

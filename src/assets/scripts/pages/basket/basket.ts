@@ -47,7 +47,7 @@ class BasketPage extends Page{
     </div>
     `;
     const basketItems: HTMLDivElement = getElementBySelector(basket, HTMLDivElement, '.basket__items');
-    const booksItemsMap: Map<string, number> = getMapBasketStorage();
+    const booksItemsMap: Map<string, number> = getMapBasketStorage('basketIds');
     const mapSize: number = +booksItemsMap.size;
     let totalPrice = 0;
     let countItems = 0;
@@ -173,10 +173,57 @@ class BasketPage extends Page{
     inputPromo.className = 'basket__promo';
     inputPromo.type = 'text';
     inputPromo.placeholder = 'Enter promo code';
+    const testPromo: HTMLSpanElement = document.createElement('span');
+    testPromo.innerText = 'Promo for test: \'RS\', \'EPM\'';
     const buyButton: HTMLButtonElement = document.createElement('button');
     buyButton.className = 'basket__buy-button';
     buyButton.innerText = 'BUY NOW';
-    basketSummary.append(basketProducts, totalPriceHTML, inputPromo, buyButton);
+    basketSummary.append(basketProducts, totalPriceHTML);
+
+    const promoDiv = document.createElement('div');
+    promoDiv.className = 'basket__promo-result';
+    const promoDetail = document.createElement('span');
+    promoDetail.className = 'basket__promo-info';
+    const promoAdd = document.createElement('button');
+    promoAdd.className = 'basket__promo-add';
+    promoAdd.innerText = 'ADD';
+    const countPromo: Map<string, number> = getMapBasketStorage('promo');
+
+    function checkPromo(): void {
+      if(inputPromo.value.toUpperCase() === 'RS' && !countPromo.has('RS')) {
+        promoDetail.innerText = 'Rolling Scopes School - 10%';
+        promoDiv.append(promoDetail, promoAdd);
+        inputPromo.after(promoDiv);
+      }
+      if(inputPromo.value.toUpperCase() === 'EPM' && !countPromo.has('EPM')) {
+        promoDetail.innerText = 'EPAM Systems - 10%';
+        promoDiv.append(promoDetail, promoAdd);
+        inputPromo.after(promoDiv);
+      }
+    }
+
+    inputPromo.addEventListener('input', () => {
+      promoDiv.remove();
+      checkPromo();
+    })
+
+    let discount = 1;
+    function getDiscount(): void {
+      discount = 1;
+      for (const value of countPromo.values()) {
+        discount -= value;
+      }
+    }
+    getDiscount()
+
+    const totalPriceNew: HTMLParagraphElement = document.createElement('p');
+    totalPriceNew.className = 'basket__price-promo';
+    totalPriceNew.innerText = `Total: ${formatterUSD.format(totalPrice * discount)}`
+    const applyPromo = document.createElement('div');
+    applyPromo.className = 'basket__apply-promo';
+    const applyHead = document.createElement('h3');
+    applyHead.innerText = 'Applied codes';
+    applyPromo.append(applyHead);
 
     function getCounting(): void {
       totalPrice = 0;
@@ -187,8 +234,84 @@ class BasketPage extends Page{
       }
       basketProducts.innerText = `Products: ${countItems}`;
       totalPriceHTML.innerText = `Total: ${formatterUSD.format(totalPrice)}`;
+      getDiscount();
+      totalPriceNew.innerText = `Total: ${formatterUSD.format(totalPrice * discount)}`;
     }
     getCounting();
+
+    if(countPromo.size) {
+      totalPriceHTML.after(totalPriceNew, applyPromo);
+    } else {
+      totalPriceNew.remove();
+      applyPromo.remove();
+    }
+
+    for (const entry of countPromo) {
+      const currentsPromo = document.createElement('div');
+      currentsPromo.className = 'basket__applied-promo';
+      const namePromo = document.createElement('span');
+      const deletePromoBtn = document.createElement('button');
+      deletePromoBtn.innerText = 'DROP';
+      if(entry[0] === 'RS') {
+        namePromo.innerText = 'Rolling Scopes School - 10% - '
+        applyPromo.append(currentsPromo);
+        currentsPromo.append(namePromo, deletePromoBtn);
+      }
+      if(entry[0] === 'EPM') {
+        namePromo.innerText = 'EPAM Systems - 10% - ';
+        applyPromo.append(currentsPromo);
+        currentsPromo.append(namePromo, deletePromoBtn);
+      }
+
+      deletePromoBtn.addEventListener('click', () => {
+        countPromo.delete(entry[0]);
+        localStorage.setItem('promo', JSON.stringify(Object.fromEntries(countPromo)))
+        currentsPromo.remove();
+        checkPromo();
+        getDiscount();
+        totalPriceNew.innerText = `Total: ${formatterUSD.format(totalPrice * discount)}`
+      })
+    }
+
+    promoAdd.addEventListener('click', () => {
+      promoDiv.remove();
+      totalPriceNew.remove();
+      applyPromo.remove();
+
+      totalPriceHTML.after(totalPriceNew, applyPromo);
+      const currentsPromo = document.createElement('div');
+      currentsPromo.className = 'basket__applied-promo';
+      const namePromo = document.createElement('span');
+      const deletePromoBtn = document.createElement('button');
+      deletePromoBtn.innerText = 'DROP';
+      if(inputPromo.value.toUpperCase() === 'RS') {
+        countPromo.set('RS', 0.1);
+        namePromo.innerText = 'Rolling Scopes School - 10% - '
+        applyPromo.append(currentsPromo);
+        currentsPromo.append(namePromo, deletePromoBtn);
+        localStorage.setItem('promo', JSON.stringify(Object.fromEntries(countPromo)))
+      }
+      if(inputPromo.value.toUpperCase() === 'EPM') {
+        countPromo.set('EPM', 0.1);
+        namePromo.innerText = 'EPAM Systems - 10% - ';
+        applyPromo.append(currentsPromo);
+        currentsPromo.append(namePromo, deletePromoBtn);
+        localStorage.setItem('promo', JSON.stringify(Object.fromEntries(countPromo)))
+      }
+      getDiscount();
+      totalPriceNew.innerText = `Total: ${formatterUSD.format(totalPrice * discount)}`
+      deletePromoBtn.addEventListener('click', () => {
+        countPromo.delete(inputPromo.value.toUpperCase());
+        localStorage.setItem('promo', JSON.stringify(Object.fromEntries(countPromo)))
+        currentsPromo.remove();
+        checkPromo();
+
+        getDiscount();
+        totalPriceNew.innerText = `Total: ${formatterUSD.format(totalPrice * discount)}`
+      })
+    })
+
+    basketSummary.append(inputPromo, testPromo, buyButton)
 
     itemsPerPage.addEventListener('input', () => {
       if(+itemsPerPage.value > 0) {
