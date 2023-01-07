@@ -241,6 +241,7 @@ class BasketPage extends Page{
 
     if(countPromo.size) {
       totalPriceHTML.after(totalPriceNew, applyPromo);
+      totalPriceHTML.classList.add('old-price');
     } else {
       totalPriceNew.remove();
       applyPromo.remove();
@@ -252,6 +253,7 @@ class BasketPage extends Page{
       const namePromo = document.createElement('span');
       const deletePromoBtn = document.createElement('button');
       deletePromoBtn.innerText = 'DROP';
+
       if(entry[0] === 'RS') {
         namePromo.innerText = 'Rolling Scopes School - 10% - '
         applyPromo.append(currentsPromo);
@@ -265,11 +267,16 @@ class BasketPage extends Page{
 
       deletePromoBtn.addEventListener('click', () => {
         countPromo.delete(entry[0]);
-        localStorage.setItem('promo', JSON.stringify(Object.fromEntries(countPromo)))
+        localStorage.setItem('promo', JSON.stringify(Object.fromEntries(countPromo)));
         currentsPromo.remove();
         checkPromo();
         getDiscount();
-        totalPriceNew.innerText = `Total: ${formatterUSD.format(totalPrice * discount)}`
+        totalPriceNew.innerText = `Total: ${formatterUSD.format(totalPrice * discount)}`;
+        if(countPromo.size === 0) {
+          applyPromo.remove();
+          totalPriceNew.remove();
+          totalPriceHTML.classList.remove('old-price');
+        }
       })
     }
 
@@ -277,37 +284,47 @@ class BasketPage extends Page{
       promoDiv.remove();
       totalPriceNew.remove();
       applyPromo.remove();
+      totalPriceHTML.classList.add('old-price');
 
       totalPriceHTML.after(totalPriceNew, applyPromo);
+      const namePromo = document.createElement('span');
       const currentsPromo = document.createElement('div');
       currentsPromo.className = 'basket__applied-promo';
-      const namePromo = document.createElement('span');
       const deletePromoBtn = document.createElement('button');
       deletePromoBtn.innerText = 'DROP';
       if(inputPromo.value.toUpperCase() === 'RS') {
         countPromo.set('RS', 0.1);
-        namePromo.innerText = 'Rolling Scopes School - 10% - '
+        namePromo.innerText = 'Rolling Scopes School - 10% - ';
         applyPromo.append(currentsPromo);
         currentsPromo.append(namePromo, deletePromoBtn);
-        localStorage.setItem('promo', JSON.stringify(Object.fromEntries(countPromo)))
+        localStorage.setItem('promo', JSON.stringify(Object.fromEntries(countPromo)));
       }
       if(inputPromo.value.toUpperCase() === 'EPM') {
         countPromo.set('EPM', 0.1);
         namePromo.innerText = 'EPAM Systems - 10% - ';
         applyPromo.append(currentsPromo);
         currentsPromo.append(namePromo, deletePromoBtn);
-        localStorage.setItem('promo', JSON.stringify(Object.fromEntries(countPromo)))
+        localStorage.setItem('promo', JSON.stringify(Object.fromEntries(countPromo)));
       }
       getDiscount();
-      totalPriceNew.innerText = `Total: ${formatterUSD.format(totalPrice * discount)}`
-      deletePromoBtn.addEventListener('click', () => {
-        countPromo.delete(inputPromo.value.toUpperCase());
-        localStorage.setItem('promo', JSON.stringify(Object.fromEntries(countPromo)))
+      totalPriceNew.innerText = `Total: ${formatterUSD.format(totalPrice * discount)}`;
+
+      deletePromoBtn.addEventListener('click', (event) => {
+        if(namePromo.innerText === 'Rolling Scopes School - 10% - ') {
+          countPromo.delete('RS');
+        } else if (namePromo.innerText === 'EPAM Systems - 10% - ') {
+          countPromo.delete('EPM');
+        }
+        localStorage.setItem('promo', JSON.stringify(Object.fromEntries(countPromo)));
         currentsPromo.remove();
         checkPromo();
-
         getDiscount();
-        totalPriceNew.innerText = `Total: ${formatterUSD.format(totalPrice * discount)}`
+        totalPriceNew.innerText = `Total: ${formatterUSD.format(totalPrice * discount)}`;
+        if(countPromo.size === 0) {
+          totalPriceNew.remove();
+          applyPromo.remove();
+          totalPriceHTML.classList.remove('old-price');
+        }
       })
     })
 
