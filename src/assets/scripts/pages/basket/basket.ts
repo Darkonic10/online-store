@@ -309,7 +309,7 @@ class BasketPage extends Page{
       getDiscount();
       totalPriceNew.innerText = `Total: ${formatterUSD.format(totalPrice * discount)}`;
 
-      deletePromoBtn.addEventListener('click', (event) => {
+      deletePromoBtn.addEventListener('click', () => {
         if(namePromo.innerText === 'Rolling Scopes School - 10% - ') {
           countPromo.delete('RS');
         } else if (namePromo.innerText === 'EPAM Systems - 10% - ') {
