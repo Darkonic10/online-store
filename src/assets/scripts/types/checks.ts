@@ -46,19 +46,6 @@ export function setMainOptions(): void {
   }
 }
 
-export let mainOptions: Options = new Map();
-
-export function getMainOptions(): void {
-  mainOptions = new Map(Object.entries(JSON.parse(getLocalStorage(localStorage, locStMainOptions)) as { [s: string]: string; }));
-}
-
-export function setMainOptions(): void {
-  if (mainOptions.size !== 0) {
-    const opt = JSON.stringify(Object.fromEntries(mainOptions));
-    localStorage.setItem(locStMainOptions, opt);
-  }
-}
-
 export function checkBookId(id: number): book {
   for (const book of books) {
     if(book.id === id) {
