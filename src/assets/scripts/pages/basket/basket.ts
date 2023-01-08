@@ -48,11 +48,17 @@ class BasketPage extends Page{
     `;
     const basketItems: HTMLDivElement = getElementBySelector(basket, HTMLDivElement, '.basket__items');
     const booksItemsMap: Map<string, number> = getMapBasketStorage('basketIds');
-    const mapSize: number = +booksItemsMap.size;
     let totalPrice = 0;
     let countItems = 0;
 
-    this.container.append(title, basket);
+    const emptyBasket = document.createElement('h1');
+    emptyBasket.innerText = 'The basket is empty';
+    emptyBasket.className = 'basket__empty';
+    if(booksItemsMap.size === 0) {
+      this.container.append(emptyBasket);
+    } else {
+      this.container.append(title, basket);
+    }
 
     const itemsPerPage: HTMLInputElement = getElementBySelector(basket, HTMLInputElement, '.basket__pages-input');
     const pagePrev: HTMLButtonElement = getElementBySelector(basket, HTMLButtonElement, '.basket__page-prev');
@@ -63,13 +69,12 @@ class BasketPage extends Page{
 
     let pagesCount = 1;
 
-    function pagination(itemsPage: number, page: number) {
-      pagesCount = Math.ceil(mapSize / itemsPage);
-
+    const pagination = (itemsPage: number, page: number) => {
+      pagesCount = Math.ceil(+booksItemsMap.size / itemsPage);
       const start = itemsPage * (page - 1);
 
-      if(!(page * itemsPage <= mapSize)) {
-        itemsPage = mapSize % itemsPage;
+      if(!(page * itemsPage <= +booksItemsMap.size)) {
+        itemsPage = +booksItemsMap.size % itemsPage;
       }
 
       let i = 0;
@@ -148,7 +153,20 @@ class BasketPage extends Page{
                 booksItemsMap.delete(entry[0]);
                 localStorage.setItem('basketIds', JSON.stringify(Object.fromEntries(booksItemsMap)))
                 basketItems.replaceChildren();
-                pagination(+itemsPerPage.value, +pageNumber.innerText);
+                if((i - 1) === start) {
+                  pageNumber.innerText = String(+pageNumber.innerText - 1);
+                  history.pushState(null, '', `#${PageIds.BasketPage}?limit=${itemsPerPage.value}&page=${pageNumber.innerText}`);
+                  pagesCount -= 1;
+                  pagination(+itemsPerPage.value, pagesCount);
+
+                } else {
+                  pagination(+itemsPerPage.value, +pageNumber.innerText);
+                }
+
+                if(booksItemsMap.size === 0) {
+                  this.container.replaceChildren();
+                  this.container.append(emptyBasket);
+                }
               }
             }
             if(event.target === buttonPlus || event.target === buttonMinus) {
@@ -332,8 +350,11 @@ class BasketPage extends Page{
 
     itemsPerPage.addEventListener('input', () => {
       if(+itemsPerPage.value > 0) {
-        pageNumber.innerText = '1';
-        history.pushState(null, '', `#${PageIds.BasketPage}?limit=${itemsPerPage.value}&page=${pageNumber.innerText}`)
+        pagesCount = Math.ceil(+booksItemsMap.size / +itemsPerPage.value);
+        if(+pageNumber.innerText > pagesCount) {
+          pageNumber.innerText = String(pagesCount);
+        }
+        history.pushState(null, '', `#${PageIds.BasketPage}?limit=${itemsPerPage.value}&page=${pageNumber.innerText}`);
         basketItems.replaceChildren();
         pagination(+itemsPerPage.value, +pageNumber.innerText);
       }
