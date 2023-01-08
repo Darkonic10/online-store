@@ -110,12 +110,12 @@ export const formatterUSD = new Intl.NumberFormat('en-US', {
   currency: 'USD',
 });
 
-export function getMainAddress (options: Options): string {
-  if (options.size === 0) {
+export function getMainAddress (): string {
+  if (mainOptions.size === 0) {
     return `#${PageIds.MainPage}`;
   }
   const arr: string[] = [];
-  options.forEach((val, key) => {
+  mainOptions.forEach((val, key) => {
     arr.push(`${key}=${val}`);
   })
   return `#${PageIds.MainPage}?${arr.join('&')}`;

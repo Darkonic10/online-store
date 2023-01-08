@@ -1,9 +1,12 @@
 import { stringObject } from "./Interfaces";
 
+export const delimeter = '↕';
+
 export const enum PageIds {
   MainPage = 'main-page',
   BasketPage = 'basket-page',
   BookPage = 'book-page',
+  ErrorPage = 'error-page',
 }
 
 export const enum keyToMainOptions {

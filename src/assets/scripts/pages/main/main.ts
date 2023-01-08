@@ -3,19 +3,23 @@ import Filters from "./filters/filters";
 import Content from "./content/content";
 import { books } from "../../data/books";
 import { book } from "../../types/Interfaces";
-import { keyToMainOptions, SortOptions } from "../../types/enums";
+import { delimeter, keyToMainOptions, SortOptions } from "../../types/enums";
 import { mainOptions } from "../../types/checks";
 
 class MainPage extends Page {
   protected filters: Filters;
   protected content: Content;
   private sort: string;
+  private genre: string[];
+  private publisher: string[];
   protected chosenBooks: book[];
 
   constructor(id: string) {
     super(id);
     this.chosenBooks = [...books];
     this.sort = SortOptions[0].id;
+    this.genre = [];
+    this.publisher = [];
     if (mainOptions) {
       const sortFromLocal = mainOptions.get(keyToMainOptions.Sort);
       if (sortFromLocal) {
@@ -46,9 +50,20 @@ class MainPage extends Page {
             break;
         }
       }
-      // const stringSearch = mainOptions.get('')
+      const genreFromLocal = mainOptions.get(keyToMainOptions.Genre);
+      if (genreFromLocal) {
+        this.genre = genreFromLocal.split(delimeter);
+        this.chosenBooks = this.chosenBooks.filter((val) => this.genre.includes(val.genre.replace(/ /g, '')));
+      }
+      console.log(mainOptions, this.publisher);
+      const publisherFromLocal = mainOptions.get(keyToMainOptions.Publisher);
+      if (publisherFromLocal) {
+        this.publisher = publisherFromLocal.split(delimeter);
+        this.chosenBooks = this.chosenBooks.filter((val) => this.publisher.includes(val.publisher.replace(/ /g, '')));
+      }
+      console.log(mainOptions, this.publisher);
     }
-    this.filters = new Filters(this.sort);
+    this.filters = new Filters(this.sort, this.genre, this.publisher);
     this.content = new Content();
   }
 
