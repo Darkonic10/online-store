@@ -9,7 +9,7 @@ class Content {
     const bookList: HTMLDivElement = document.createElement('div');
     bookList.className = 'container main__container';
     content.appendChild(bookList);
-    const booksItemsMap: Map<string, number> = getMapBasketStorage();
+    const booksItemsMap: Map<string, number> = getMapBasketStorage('basketIds');
     let totalPrice = 0;
     let countItems = 0;
 
