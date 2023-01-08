@@ -1,4 +1,4 @@
-import { getBookID, getElementBySelector, getHash, getOptions } from "../../types/checks";
+import { getBookID, getElementBySelector, getHash, getMainOptions, getOptions, setMainOptions } from "../../types/checks";
 import MainPage from "../main/main";
 import Page from "../../core/page";
 import BasketPage from "../basket/basket";
@@ -76,6 +76,8 @@ class App {
   }
 
   run() {
+    window.addEventListener('beforeunload', setMainOptions);
+    window.addEventListener('load', getMainOptions);
     this.changedHash();
   }
 }
