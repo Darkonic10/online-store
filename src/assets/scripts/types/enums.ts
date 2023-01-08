@@ -1,9 +1,15 @@
-import { Options, stringObject } from "./Interfaces";
+import { stringObject } from "./Interfaces";
 
 export const enum PageIds {
   MainPage = 'main-page',
   BasketPage = 'basket-page',
   BookPage = 'book-page',
+}
+
+export const enum keyToMainOptions {
+  Sort = 'sort',
+  Genre = 'genre',
+  Publisher = 'publisher',
 }
 
 export const SortOptions: stringObject[] = [

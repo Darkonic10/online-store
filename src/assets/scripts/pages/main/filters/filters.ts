@@ -1,7 +1,7 @@
 import { books } from "../../../data/books";
 import { createElementByTag, getMainAddress, mainOptions, setMainOptions } from "../../../types/checks";
 import noUiSlider from "nouislider";
-import { SortOptions } from "../../../types/enums";
+import { keyToMainOptions, SortOptions } from "../../../types/enums";
 
 class Filters {
   private sort: string;
@@ -167,9 +167,9 @@ class Filters {
     fSort.addEventListener('change', () => {
       console.log('Chosen sort option: ', fSort.value);
       if (fSort.value !== SortOptions[0].id) {
-        mainOptions.set('sort', fSort.value);
+        mainOptions.set(keyToMainOptions.Sort, fSort.value);
       } else {
-        mainOptions.delete('sort');
+        mainOptions.delete(keyToMainOptions.Sort);
       }
       setMainOptions();
       window.location.hash = getMainAddress(mainOptions);

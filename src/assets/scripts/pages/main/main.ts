@@ -3,7 +3,7 @@ import Filters from "./filters/filters";
 import Content from "./content/content";
 import { books } from "../../data/books";
 import { book } from "../../types/Interfaces";
-import { SortOptions } from "../../types/enums";
+import { keyToMainOptions, SortOptions } from "../../types/enums";
 import { mainOptions } from "../../types/checks";
 
 class MainPage extends Page {
@@ -17,7 +17,7 @@ class MainPage extends Page {
     this.chosenBooks = [...books];
     this.sort = SortOptions[0].id;
     if (mainOptions) {
-      const sortFromLocal = mainOptions.get('sort');
+      const sortFromLocal = mainOptions.get(keyToMainOptions.Sort);
       if (sortFromLocal) {
         this.sort = sortFromLocal;
         switch (this.sort) {
@@ -46,6 +46,7 @@ class MainPage extends Page {
             break;
         }
       }
+      // const stringSearch = mainOptions.get('')
     }
     this.filters = new Filters(this.sort);
     this.content = new Content();
