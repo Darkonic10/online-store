@@ -20,6 +20,7 @@ $alt-color: #041e41;
 .links {
   cursor: pointer;
   text-decoration: none;
+  transition: 0.3s;
   &:hover {
     background-color: $base-color;
   }
@@ -104,23 +105,24 @@ $alt-color: #041e41;
 .filters__wrapper {
   display: flex;
   column-gap: 20px;
+  justify-content: space-between;
   width: 100%;
   color: white;
   .filters__genre,
-  .filters__author,
+  .filters__publisher,
   .filters__sliders {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    width: 33%;
+    width: 32%;
     min-width: min-content;
   }
   .filters__genre-list,
-  .filters__author-list {
+  .filters__publisher-list {
     list-style-type: none;
     height: 142px;
   }
-  .filters__author-list {
+  .filters__publisher-list {
     overflow-y: scroll;
   }
   .filters__price-minmax,
@@ -130,7 +132,8 @@ $alt-color: #041e41;
   }
 }
 
-.filters__filter-reset {
+.filters__filter-reset,
+.filters__filter-copy {
   background-color: $base-color;
   border-radius: 10px;
   width: 20%;

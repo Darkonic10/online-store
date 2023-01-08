@@ -2,6 +2,8 @@ import { books } from "../data/books";
 import { PageIds } from "./enums";
 import { book, Options } from "./Interfaces";
 
+export const locStMainOptions = 'mainOptions';
+
 export function getElementBySelector <T extends typeof Element>(
   element: DocumentFragment | HTMLElement | Document,
   type: T,
@@ -22,13 +24,26 @@ export function getLocalStorage (element: Storage, selector: string): string {
     return '0';
   }
   if (!result) {
-    return '[]';
+    return '{}';
   }
   return result;
 }
 
 export function getMapBasketStorage(selector: string): Map<string, number> {
   return new Map(Object.entries(JSON.parse(getLocalStorage(localStorage, selector)) as { [s: string]: number; }));
+}
+
+export let mainOptions: Options = new Map();
+
+export function getMainOptions(): void {
+  mainOptions = new Map(Object.entries(JSON.parse(getLocalStorage(localStorage, locStMainOptions)) as { [s: string]: string; }));
+}
+
+export function setMainOptions(): void {
+  if (mainOptions.size !== 0) {
+    const opt = JSON.stringify(Object.fromEntries(mainOptions));
+    localStorage.setItem(locStMainOptions, opt);
+  }
 }
 
 export function checkBookId(id: number): book {
@@ -96,6 +111,9 @@ export const formatterUSD = new Intl.NumberFormat('en-US', {
 });
 
 export function getMainAddress (options: Options): string {
+  if (options.size === 0) {
+    return `#${PageIds.MainPage}`;
+  }
   const arr: string[] = [];
   options.forEach((val, key) => {
     arr.push(`${key}=${val}`);
