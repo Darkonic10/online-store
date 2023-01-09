@@ -117,9 +117,13 @@ $alt-color: #041e41;
 
 .modal__card-img {
   background-color: #fff;
-  width: 10%;
-  border-radius: .3rem;
-  padding: .3rem;
+  background-image: url("../images/basket-card/no-logo.webp");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+  width: 25%;
+  height: 50px;
+  border-radius: 5px;
 }
 
 .modal__detail {
@@ -144,7 +148,7 @@ $alt-color: #041e41;
 }
 
 .modal__card-data {
-  width: 55%;
+  width: 80%;
   margin: 0 auto;
   .modal__card-number {
     display: flex;
@@ -158,6 +162,10 @@ $alt-color: #041e41;
     justify-content: center;
     align-items: center;
   }
+}
+
+.modal__card-input-number {
+  width: 80%;
 }
 
 .modal__other-valid, .modal__other-cvv {

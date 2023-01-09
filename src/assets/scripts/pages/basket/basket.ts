@@ -2,6 +2,11 @@ import Page from "../../core/page";
 import { checkBookId, formatterUSD, getElementBySelector, getMapBasketStorage } from "../../types/checks";
 import { book } from "../../types/Interfaces";
 import { PageIds } from "../../types/enums";
+import noLogo from '../../../images/basket-card/no-logo.webp';
+import mir from '../../../images/basket-card/mir-en.svg';
+import visa from '../../../images/basket-card/visa.svg';
+import mastercard from '../../../images/basket-card/mastercard.svg';
+
 
 class BasketPage extends Page{
   static TextObject = {
@@ -430,13 +435,12 @@ class BasketPage extends Page{
 
     const cardNumber = document.createElement('div');
     cardNumber.className = 'modal__card-number';
-    const cardImg = document.createElement('img');
+    const cardImg = document.createElement('div');
     cardImg.className = 'modal__card-img'
-    cardImg.alt = 'Card icon';
-    cardImg.src = '../../../images/basket-card/no-logo.webp';
     const inputCardNumber = document.createElement('input');
     inputCardNumber.type = 'number';
     inputCardNumber.placeholder = 'Card number';
+    inputCardNumber.className = 'modal__card-input-number'
 
     const cardOtherData = document.createElement('div');
     cardOtherData.className = 'modal__card-other';
@@ -446,7 +450,7 @@ class BasketPage extends Page{
     validText.innerText = 'VALID:';
     validText.className = 'modal__valid-text';
     const inputValid = document.createElement('input');
-    inputValid.type = 'number';
+    inputValid.type = 'text';
     inputValid.placeholder = 'Valid date';
     inputValid.className = 'modal__valid-input';
 
@@ -490,59 +494,179 @@ class BasketPage extends Page{
     })
 
 
+    const spanError = document.createElement('span');
+    spanError.innerText = 'error';
+    const spanError2 = document.createElement('span');
+    spanError2.innerText = 'error';
+    const spanError3 = document.createElement('span');
+    spanError3.innerText = 'error';
+    const spanError4 = document.createElement('span');
+    spanError4.innerText = 'error';
+
+    const cardNumberErr = document.createElement('span');
+    cardNumberErr.innerText = 'Card number - error';
+    const cardDataErr = document.createElement('span');
+    cardDataErr.innerText = 'Card date - error';
+    const cardCvvErr = document.createElement('span');
+    cardCvvErr.innerText = 'Card cvv - error';
+
     function checkInputName(): boolean {
       const inputValue = inputName.value;
       const checkLetters = /^[a-z\s]+$/i.test(inputValue);
       const splitValues = inputValue.split(' ');
       const checkLength = splitValues.every((e) => e.length >= 3);
-      return checkLetters && splitValues.length >= 2 && checkLength
-    }
-
-    function checkInputNumber(): boolean {
-      return /^[+]\d{9,}/.test(inputPhone.value);
-    }
-
-    inputName.addEventListener('blur', () => {
-      const spanError = document.createElement('span');
-      spanError.innerText = 'error';
-      if(!checkInputName() && !nameDiv.contains(spanError)) {
+      const result = checkLetters && splitValues.length >= 2 && checkLength
+      if(!result) {
         nameDiv.append(spanError);
       } else {
         spanError.remove();
       }
-    });
 
-    inputPhone.addEventListener('blur', () => {
-      const spanError = document.createElement('span');
-      spanError.innerText = 'error';
-      if(!checkInputNumber()) {
-        phoneDiv.append(spanError);
+      return result
+    }
+
+    function checkInputNumber(): boolean {
+      const checkRegExp = /^[+]\d{9,}/.test(inputPhone.value)
+      if(!checkRegExp) {
+        phoneDiv.append(spanError2);
       } else {
-        spanError.remove();
+        spanError2.remove();
       }
-    });
+      return checkRegExp;
+    }
 
-    inputAddress.addEventListener('blur', () => {
+    function checkInputAddress(): boolean {
       const inputValue = inputAddress.value;
       const checkLetters = /^[a-z\s]+$/i.test(inputValue);
       const splitValues = inputValue.split(' ');
       const checkLength = splitValues.every((e) => e.length >= 5)
-
-      if(checkLetters && splitValues.length >= 3 && checkLength) {
-        console.log('Good address field');
+      const result = checkLetters && splitValues.length >= 3 && checkLength
+      if(!result) {
+        addressDiv.append(spanError3);
       } else {
-        console.log('Error');
+        spanError3.remove();
       }
-    });
+      return result
+    }
 
+    function checkInputEmail(): boolean {
+      const result = /^\w[\w-.]*@[\w-]+\.[a-z]{2,4}$/i.test(inputEmail.value);
+      if(!result) {
+        emailDiv.append(spanError4);
+      } else {
+        spanError4.remove();
+      }
+      return result
+    }
+
+    inputName.addEventListener('blur', () => {
+      checkInputName();
+    });
+    inputPhone.addEventListener('blur', () => {
+      checkInputNumber();
+    });
+    inputAddress.addEventListener('blur', () => {
+      checkInputAddress();
+    });
     inputEmail.addEventListener('blur', () => {
-      const checkEmail = /^\w[\w-.]*@[\w-]+\.[a-z]{2,4}$/i.test(inputEmail.value);
-      if(checkEmail) {
-        console.log('Good email field');
-      } else {
-        console.log('Error');
-      }
+      checkInputEmail();
     });
+
+    enum cards {
+      Mir = 2,
+      Visa = 4,
+      Mastercard = 5,
+    }
+
+    function checkCardNumber() {
+      const result = /^[245]\d{15,}/.test(inputCardNumber.value);
+      if(!result) {
+        cardDetails.append(cardNumberErr);
+      } else {
+        cardNumberErr.remove();
+      }
+      return result;
+    }
+
+    function checkCardDate() {
+      const result = /(0[1-9]|1[012])\/(0[1-9]|[12][0-9]|3[01])/.test(inputValid.value);
+      if(!result) {
+        cardDetails.append(cardDataErr);
+      } else {
+        cardDataErr.remove();
+      }
+      return result;
+    }
+
+    function checkCardCvv() {
+      const result = /\b\d{3}\b/i.test(cvvValid.value);
+      if(!result) {
+        cardDetails.append(cardCvvErr);
+      } else {
+        cardCvvErr.remove();
+      }
+      return result;
+    }
+
+    inputCardNumber.addEventListener('input', () => {
+      const paySystem = cards[+inputCardNumber.value[0]];
+      if(paySystem === 'Mir') {
+        cardImg.style.backgroundImage = `url("${mir as string}")`;
+      } else if(paySystem === 'Visa') {
+        cardImg.style.backgroundImage = `url("${visa as string}")`;
+      } else if(paySystem === 'Mastercard') {
+        cardImg.style.backgroundImage = `url("${mastercard as string}")`;
+      } else {
+        cardImg.style.backgroundImage = `url("${noLogo}")`;
+      }
+    })
+
+    inputCardNumber.addEventListener('blur', () => {
+      checkCardNumber();
+    })
+
+    inputValid.addEventListener('input', () => {
+      inputValid.value = inputValid.value.replace(/[^\d|/]/g,'');
+      if(+(inputValid.value[0] + inputValid.value[1]) > 12) {
+        inputValid.value = inputValid.value.replace((inputValid.value[0] + inputValid.value[1]), '12');
+      }
+      if(inputValid.value.length === 2 && !inputValid.value.includes('/')) {
+        inputValid.value = inputValid.value + '/';
+      }
+      if(inputValid.value.length > 5) {
+        inputValid.value = inputValid.value.slice(0, 5);
+      }
+    })
+
+    inputValid.addEventListener('blur', () => {
+      checkCardDate();
+    })
+
+    cvvValid.addEventListener('blur', () => {
+      checkCardCvv();
+    })
+
+    const successBuy = document.createElement('h1');
+    successBuy.innerText = 'Your order has been completed. You will be redirected to the main page in 3 seconds.';
+
+    confirmButton.addEventListener('click', () => {
+      checkInputName();
+      checkInputNumber();
+      checkInputAddress();
+      checkInputEmail();
+      checkCardNumber();
+      checkCardDate();
+      checkCardCvv();
+      if(checkInputName() && checkInputNumber() && checkInputAddress() && checkInputEmail() && checkCardNumber() && checkCardDate() && checkCardCvv()) {
+        this.container.replaceChildren();
+        this.container.append(successBuy);
+        setTimeout(() => {
+          booksItemsMap.clear();
+          localStorage.setItem('basketIds', JSON.stringify(Object.fromEntries(booksItemsMap)))
+          window.location.href = '#main-page'
+        }, 3000)
+      }
+    })
 
     return this.container
   }
