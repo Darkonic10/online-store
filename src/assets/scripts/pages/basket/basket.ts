@@ -363,7 +363,7 @@ class BasketPage extends Page{
     pagePrev.addEventListener('click', () => {
       if(+pageNumber.innerText - 1 >= 1) {
         pageNumber.innerText = String(+pageNumber.innerText - 1);
-        history.pushState(null, '', `#${PageIds.BasketPage}?limit=${itemsPerPage.value}&page=${pageNumber.innerText}`)
+        history.pushState(null, '', `#${PageIds.BasketPage}?limit=${itemsPerPage.value}&page=${pageNumber.innerText}`);
         basketItems.replaceChildren();
         pagination(+itemsPerPage.value, +pageNumber.innerText);
       }
@@ -372,11 +372,147 @@ class BasketPage extends Page{
     pageNext.addEventListener('click', () => {
       if(+pageNumber.innerText + 1 <= pagesCount) {
         pageNumber.innerText = String(+pageNumber.innerText + 1);
-        history.pushState(null, '', `#${PageIds.BasketPage}?limit=${itemsPerPage.value}&page=${pageNumber.innerText}`)
+        history.pushState(null, '', `#${PageIds.BasketPage}?limit=${itemsPerPage.value}&page=${pageNumber.innerText}`);
         basketItems.replaceChildren();
         pagination(+itemsPerPage.value, +pageNumber.innerText);
       }
     })
+
+    const modalContainer = document.createElement('div');
+    modalContainer.className = 'modal__container';
+    const modalContent = document.createElement('div');
+    modalContent.className = 'modal__content';
+    modalContainer.append(modalContent);
+
+    const contentForm = document.createElement('form');
+    contentForm.className = 'modal__content-form';
+
+    const personDetails = document.createElement('div');
+    personDetails.className = 'modal__detail';
+    const detailsHead = document.createElement('h2');
+    detailsHead.innerText = 'Personal details';
+    detailsHead.className = 'modal__detail-head';
+
+    const nameDiv = document.createElement('div');
+    nameDiv.className = 'modal__div-name';
+    const phoneDiv = document.createElement('div');
+    phoneDiv.className = 'modal__div-phone';
+    const addressDiv = document.createElement('div');
+    addressDiv.className = 'modal__div-address';
+    const emailDiv = document.createElement('div');
+    emailDiv.className = 'modal__div-emailDiv';
+
+    const inputName = document.createElement('input');
+    inputName.type = 'text';
+    inputName.placeholder = 'Name';
+    inputName.className = 'input modal__input-name';
+    const inputPhone = document.createElement('input');
+    inputPhone.type = 'tel';
+    inputPhone.placeholder = 'Phone number';
+    inputPhone.min = '9';
+    inputPhone.className = 'input modal__input-phone';
+    const inputAddress = document.createElement('input');
+    inputAddress.type = 'text';
+    inputAddress.placeholder = 'Delivery address';
+    inputAddress.className = 'input modal__input-address';
+    const inputEmail = document.createElement('input');
+    inputEmail.type = 'email';
+    inputEmail.placeholder = 'E-mail';
+    inputEmail.className = 'input modal__input-email';
+
+    const cardDetails = document.createElement('div');
+    cardDetails.className = 'modal__card-details';
+    const cardHead = document.createElement('h2');
+    cardHead.innerText = 'Credit card details';
+    cardHead.className = 'modal__card-head';
+    const cardData = document.createElement('div');
+    cardData.className = 'modal__card-data';
+
+    const cardNumber = document.createElement('div');
+    cardNumber.className = 'modal__card-number';
+    const cardImg = document.createElement('img');
+    cardImg.className = 'modal__card-img'
+    cardImg.alt = 'Card icon';
+    cardImg.src = '../../../images/basket-card/no-logo.webp';
+    const inputCardNumber = document.createElement('input');
+    inputCardNumber.type = 'number';
+    inputCardNumber.placeholder = 'Card number';
+
+    const cardOtherData = document.createElement('div');
+    cardOtherData.className = 'modal__card-other';
+    const validData = document.createElement('div');
+    validData.className = 'modal__other-valid';
+    const validText = document.createElement('span');
+    validText.innerText = 'VALID:';
+    validText.className = 'modal__valid-text';
+    const inputValid = document.createElement('input');
+    inputValid.type = 'number';
+    inputValid.placeholder = 'Valid date';
+    inputValid.className = 'modal__valid-input';
+
+    const cvvData = document.createElement('div');
+    cvvData.className = 'modal__other-cvv';
+    const cvvText = document.createElement('span');
+    cvvText.innerText = 'CVV:';
+    cvvText.className = 'modal__cvv-text';
+    const cvvValid = document.createElement('input');
+    cvvValid.type = 'number';
+    cvvValid.placeholder = 'Code';
+    cvvValid.className = 'modal__cvv-input';
+
+    nameDiv.append(inputName);
+    phoneDiv.append(inputPhone);
+    addressDiv.append(inputAddress);
+    emailDiv.append(inputEmail);
+    personDetails.append(detailsHead, nameDiv, phoneDiv, addressDiv, emailDiv);
+    cardNumber.append(cardImg, inputCardNumber);
+    validData.append(validText, inputValid);
+    cvvData.append(cvvText, cvvValid);
+    cardOtherData.append(validData, cvvData);
+    cardData.append(cardNumber, cardOtherData);
+    cardDetails.append(cardHead, cardData)
+
+    const confirmButton = document.createElement('button');
+    confirmButton.innerText = 'CONFIRM';
+    confirmButton.className = 'modal__confirm';
+
+    contentForm.append(personDetails, cardDetails, confirmButton);
+    modalContent.append(contentForm);
+
+    buyButton.addEventListener('click', () => {
+      this.container.append(modalContainer);
+    })
+
+    modalContainer.addEventListener('click', (event) => {
+      if(event.target === modalContainer) {
+        modalContainer.remove();
+      }
+    })
+
+    inputName.addEventListener('blur', () => {
+      const inputValue = inputName.value;
+      const checkLetters = /^[a-z\s]+$/i.test(inputValue);
+      const splitValues = inputValue.split(' ');
+      const checkLength = splitValues.every((e) => e.length >= 3)
+
+      if(checkLetters && splitValues.length >= 2 && checkLength) {
+        console.log('Good name field');
+      } else {
+        console.log('Error - no only letters');
+      }
+    });
+
+    inputPhone.addEventListener('blur', () => {
+      console.log('test');
+    });
+
+    inputAddress.addEventListener('blur', () => {
+      console.log('test');
+    });
+
+    inputEmail.addEventListener('blur', () => {
+      console.log('test');
+    });
 
     return this.container
   }
