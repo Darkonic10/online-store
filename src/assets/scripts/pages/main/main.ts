@@ -16,6 +16,8 @@ class MainPage extends Page {
   private maxPrice = 0;
   private minStock = 0;
   private maxStock = 0;
+  private searchWords: string[] = [];
+  private searchString = '';
   protected chosenBooks: book[] = [...books];
 
   constructor(id: string) {
@@ -80,8 +82,30 @@ class MainPage extends Page {
         this.maxStock = parseInt(maxStockfromLocal);
         this.chosenBooks = this.chosenBooks.filter((val) => val.stock_balance <= this.maxStock);
       }
+      const searchfromLocal = mainOptions.get(keysMain.Search);
+      if (searchfromLocal) {
+        this.searchString = searchfromLocal;
+        this.searchWords = searchfromLocal.toLowerCase().split(' ').filter((val) => val);
+        const chosenId: number[] = [];
+        for (let i = 0; i < this.chosenBooks.length; i++) {
+          const element: book = this.chosenBooks[i];
+          let isOkay = true;
+          let iter = 0;
+          const unitedString = `${element.author} ${element.description} ${element.genre} ${element.price} ${element.publisher} ${element.stock_balance} ${element.title}`.toLowerCase();
+          while (isOkay && iter < this.searchWords.length) {
+            if (!unitedString.includes(this.searchWords[iter])) {
+              isOkay = false;
+            }
+            iter++;
+          }
+          if (isOkay) {
+            chosenId.push(element.id);
+          }
+        }
+        this.chosenBooks = this.chosenBooks.filter((val) => chosenId.includes(val.id));
+      }
     }
-    this.filters = new Filters(this.sort, this.genre, this.publisher, this.minPrice, this.maxPrice, this.minStock, this.maxStock);
+    this.filters = new Filters(this.sort, this.genre, this.publisher, this.minPrice, this.maxPrice, this.minStock, this.maxStock, this.searchString);
     this.content = new Content();
   }
 
