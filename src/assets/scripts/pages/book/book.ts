@@ -1,7 +1,7 @@
 import Page from "../../core/page";
 import { checkBookId, createElementByTag, formatterUSD } from "../../types/checks"; //getBookID - удалил, warning 'getBookID' is defined but never used
 
-import { keyToMainOptions, PageIds, reg } from "../../types/enums";
+import { keysMain, PageIds, reg } from "../../types/enums";
 import { book } from "../../types/Interfaces";
 
 
@@ -28,13 +28,13 @@ class BookPage extends Page {
 
     const breadCrumps = createElementByTag('div', 'path', HTMLDivElement);
     const breadPublisher = createElementByTag('a', 'links', HTMLAnchorElement, currentBook.publisher);
-    breadPublisher.href = `#${PageIds.MainPage}?${keyToMainOptions.Publisher}=${currentBook.publisher.replace(reg, '')}`;
+    breadPublisher.href = `#${PageIds.MainPage}?${keysMain.Publisher}=${currentBook.publisher.replace(reg, '')}`;
     const breadGenre = createElementByTag('a', 'links', HTMLAnchorElement, currentBook.genre);
-    breadGenre.href = `#${PageIds.MainPage}?${keyToMainOptions.Genre}=${currentBook.genre.replace(/ /g, '')}`;
+    breadGenre.href = `#${PageIds.MainPage}?${keysMain.Genre}=${currentBook.genre.replace(/ /g, '')}`;
     const breadAuthor = createElementByTag('a', 'links', HTMLAnchorElement, currentBook.author);
-    breadAuthor.href = `#${PageIds.MainPage}?${keyToMainOptions.Search}=${currentBook.author.toUpperCase()}`;
+    breadAuthor.href = `#${PageIds.MainPage}?${keysMain.Search}=${currentBook.author.toUpperCase()}`;
     const breadTitle = createElementByTag('a', 'links', HTMLAnchorElement, currentBook.title);
-    breadTitle.href = `#${PageIds.MainPage}?${keyToMainOptions.Search}=${currentBook.title.toUpperCase()}`;
+    breadTitle.href = `#${PageIds.MainPage}?${keysMain.Search}=${currentBook.title.toUpperCase()}`;
 
     const mainDiv: HTMLDivElement = document.createElement('div');
     mainDiv.className = 'container main__container main__container_start';
