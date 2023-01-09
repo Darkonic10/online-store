@@ -579,7 +579,7 @@ class BasketPage extends Page{
     }
 
     function checkCardNumber() {
-      const result = /^[245]\d{15,}/.test(inputCardNumber.value);
+      const result = /^[245]\d{15}\b/.test(inputCardNumber.value);
       if(!result) {
         cardDetails.append(cardNumberErr);
       } else {
