@@ -21,6 +21,13 @@ class App {
     if (idPage === PageIds.MainPage) {
       if ((!options || options.size === 0) && mainOptions.size !== 0) {
         window.location.hash = getMainAddress();
+      } else if (options) {
+        console.log(mainOptions);
+        mainOptions.clear();
+        options.forEach((value, key) => {
+          mainOptions.set(key, value);
+        });
+        console.log(mainOptions);
       }
       page = new MainPage(idPage);
     } else if (idPage === PageIds.BasketPage) {

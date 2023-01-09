@@ -189,7 +189,8 @@ class Filters {
       range: {
         'min': minPrice,
         'max': maxPrice
-      }
+      },
+      margin: 1,
     })
     const minStock = Math.min(...stocks);
     const maxStock = Math.max(...stocks);
@@ -199,9 +200,10 @@ class Filters {
       start: [0, 100],
       connect: true,
       range: {
-        'min': minPrice,
-        'max': maxPrice
-      }
+        'min': minStock,
+        'max': maxStock
+      },
+      margin: 1,
     })
 
     fSort.addEventListener('change', () => {

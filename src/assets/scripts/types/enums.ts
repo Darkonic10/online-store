@@ -13,6 +13,7 @@ export const enum keyToMainOptions {
   Sort = 'sort',
   Genre = 'genre',
   Publisher = 'publisher',
+  Search = 'search',
 }
 
 export const SortOptions: stringObject[] = [
