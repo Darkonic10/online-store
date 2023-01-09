@@ -11,8 +11,9 @@ class Filters {
   private maxPriceOpt: number;
   private minStockOpt: number;
   private maxStockOpt: number;
+  private searchString: string;
 
-  constructor(sort: string, genre: string[], publisher: string[], minPrice: number, maxPrice: number, minStock: number, maxStock: number){
+  constructor(sort: string, genre: string[], publisher: string[], minPrice: number, maxPrice: number, minStock: number, maxStock: number, searchString: string){
     this.sort = sort;
     this.genre = genre;
     this.publisher = publisher;
@@ -20,6 +21,7 @@ class Filters {
     this.maxPriceOpt = maxPrice;
     this.minStockOpt = minStock;
     this.maxStockOpt = maxStock;
+    this.searchString = searchString;
   }
 
   renderFilters(): HTMLElement {
@@ -49,11 +51,13 @@ class Filters {
     const fReset: HTMLButtonElement = createElementByTag('button', 'filters__filter-reset', HTMLButtonElement, 'Reset Filters');
     const fCopy: HTMLButtonElement = createElementByTag('button', 'filters__filter-copy', HTMLButtonElement, 'Copy link');
     const fSearch: HTMLDivElement = createElementByTag('div', 'filters__search', HTMLDivElement);
-    const fSearchFrom: HTMLFormElement = createElementByTag('form', 'filters__search-form', HTMLFormElement);
+    const fSearchForm: HTMLFormElement = createElementByTag('form', 'filters__search-form', HTMLFormElement);
     const fsearchInput: HTMLInputElement = createElementByTag('input', 'filters__search-input', HTMLInputElement);
-    fsearchInput.type = 'search'
-    fsearchInput.name = 'q';
+    fsearchInput.type = 'text';
     fsearchInput.placeholder = 'Search for books by keyword';
+    if (this.searchString) {
+      fsearchInput.value = this.searchString;
+    }
     const fsearchSubmit: HTMLInputElement = createElementByTag('input', 'filters__search-submit', HTMLInputElement);
     fsearchSubmit.type = 'submit';
     fsearchSubmit.value = '';
@@ -82,9 +86,9 @@ class Filters {
     SWrapper.appendChild(fReset);
     SWrapper.appendChild(fCopy);
     baseDiv.appendChild(fSearch);
-    fSearch.appendChild(fSearchFrom);
-    fSearchFrom.appendChild(fsearchInput);
-    fSearchFrom.appendChild(fsearchSubmit);
+    fSearch.appendChild(fSearchForm);
+    fSearchForm.appendChild(fsearchInput);
+    fSearchForm.appendChild(fsearchSubmit);
 
     for (let i = 0; i < SortOptions.length; i++) {
       const element = SortOptions[i];
@@ -165,7 +169,6 @@ class Filters {
         publisherCheckboxLabel.setAttribute('for', book.publisher.replace(reg, ''));
         publisherCheckboxList.append(publisherCheckboxItem);
 
-        console.log(this.publisher.includes(publisherCheckboxInput.id));
         if (this.publisher.includes(publisherCheckboxInput.id)) {
           publisherCheckboxInput.checked = true;
         }
@@ -228,7 +231,7 @@ class Filters {
       connect: true,
       range: {
         'min': minStock,
-        'max': maxStock
+        'max': maxStock,
       },
       margin: 1,
       step: 1,
@@ -256,6 +259,20 @@ class Filters {
       setMainOptions();
       window.location.hash = getMainAddress();
     })
+
+    function makeStringSearch() {
+      const searchString = fsearchInput.value;
+      if (searchString.length === 0) {
+        mainOptions.delete(keysMain.Search);
+      } else if (searchString.length < 3) {
+        alert('At least 3 symbols!');
+      } else {
+        mainOptions.set(keysMain.Search, searchString);
+        window.location.hash = getMainAddress();
+      }
+    }
+
+    fSearchForm.addEventListener('submit', makeStringSearch);
 
     return section;
   }
