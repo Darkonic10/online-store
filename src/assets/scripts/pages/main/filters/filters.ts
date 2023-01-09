@@ -1,17 +1,27 @@
 import { books } from "../../../data/books";
-import { createElementByTag, getMainAddress, mainOptions, resetMainOptions, setMainOptions } from "../../../types/checks";
+import { createElementByTag, getElementBySelector, getMainAddress, mainOptions, resetMainOptions, setMainOptions } from "../../../types/checks";
 import noUiSlider from "nouislider";
-import { delimeter, keyToMainOptions, reg, SortOptions } from "../../../types/enums";
+import { delimeter, keysMain, reg, SortOptions } from "../../../types/enums";
 
 class Filters {
   private sort: string;
   private genre: string[];
   private publisher: string[];
+  private minPriceOpt: number;
+  private maxPriceOpt: number;
+  private minStockOpt: number;
+  private maxStockOpt: number;
+  private searchString: string;
 
-  constructor(sort: string, genre: string[], publisher: string[]){
+  constructor(sort: string, genre: string[], publisher: string[], minPrice: number, maxPrice: number, minStock: number, maxStock: number, searchString: string){
     this.sort = sort;
     this.genre = genre;
     this.publisher = publisher;
+    this.minPriceOpt = minPrice;
+    this.maxPriceOpt = maxPrice;
+    this.minStockOpt = minStock;
+    this.maxStockOpt = maxStock;
+    this.searchString = searchString;
   }
 
   renderFilters(): HTMLElement {
@@ -41,11 +51,13 @@ class Filters {
     const fReset: HTMLButtonElement = createElementByTag('button', 'filters__filter-reset', HTMLButtonElement, 'Reset Filters');
     const fCopy: HTMLButtonElement = createElementByTag('button', 'filters__filter-copy', HTMLButtonElement, 'Copy link');
     const fSearch: HTMLDivElement = createElementByTag('div', 'filters__search', HTMLDivElement);
-    const fSearchFrom: HTMLFormElement = createElementByTag('form', 'filters__search-form', HTMLFormElement);
+    const fSearchForm: HTMLFormElement = createElementByTag('form', 'filters__search-form', HTMLFormElement);
     const fsearchInput: HTMLInputElement = createElementByTag('input', 'filters__search-input', HTMLInputElement);
-    fsearchInput.type = 'search'
-    fsearchInput.name = 'q';
+    fsearchInput.type = 'text';
     fsearchInput.placeholder = 'Search for books by keyword';
+    if (this.searchString) {
+      fsearchInput.value = this.searchString;
+    }
     const fsearchSubmit: HTMLInputElement = createElementByTag('input', 'filters__search-submit', HTMLInputElement);
     fsearchSubmit.type = 'submit';
     fsearchSubmit.value = '';
@@ -74,9 +86,9 @@ class Filters {
     SWrapper.appendChild(fReset);
     SWrapper.appendChild(fCopy);
     baseDiv.appendChild(fSearch);
-    fSearch.appendChild(fSearchFrom);
-    fSearchFrom.appendChild(fsearchInput);
-    fSearchFrom.appendChild(fsearchSubmit);
+    fSearch.appendChild(fSearchForm);
+    fSearchForm.appendChild(fsearchInput);
+    fSearchForm.appendChild(fsearchSubmit);
 
     for (let i = 0; i < SortOptions.length; i++) {
       const element = SortOptions[i];
@@ -137,9 +149,9 @@ class Filters {
             this.genre = this.genre.filter((val) => val !== genreCheckboxInput.id);
           }
           if (this.genre.length !== 0) {
-            mainOptions.set(keyToMainOptions.Genre, this.genre.join(delimeter));
+            mainOptions.set(keysMain.Genre, this.genre.join(delimeter));
           } else {
-            mainOptions.delete(keyToMainOptions.Genre);
+            mainOptions.delete(keysMain.Genre);
           }
           window.location.hash = getMainAddress();
         })
@@ -157,7 +169,6 @@ class Filters {
         publisherCheckboxLabel.setAttribute('for', book.publisher.replace(reg, ''));
         publisherCheckboxList.append(publisherCheckboxItem);
 
-        console.log(this.publisher.includes(publisherCheckboxInput.id));
         if (this.publisher.includes(publisherCheckboxInput.id)) {
           publisherCheckboxInput.checked = true;
         }
@@ -169,9 +180,9 @@ class Filters {
             this.publisher = this.publisher.filter((val) => val !== publisherCheckboxInput.id);
           }
           if (this.publisher.length !== 0) {
-            mainOptions.set(keyToMainOptions.Publisher, this.publisher.join(delimeter));
+            mainOptions.set(keysMain.Publisher, this.publisher.join(delimeter));
           } else {
-            mainOptions.delete(keyToMainOptions.Publisher);
+            mainOptions.delete(keysMain.Publisher);
           }
           window.location.hash = getMainAddress();
         })
@@ -182,41 +193,86 @@ class Filters {
 
     const minPrice = Math.min(...prices);
     const maxPrice = Math.max(...prices);
-    minPriceHTML.innerText = String(minPrice);
-    maxPriceHTML.innerText = String(maxPrice);
+    const curMinPrice = this.minPriceOpt ? this.minPriceOpt : minPrice;
+    const curMaxPrice = this.maxPriceOpt ? this.maxPriceOpt : maxPrice;
+    minPriceHTML.innerText = String(curMinPrice);
+    maxPriceHTML.innerText = String(curMaxPrice);
     noUiSlider.create(sliderPrice, {
-      start: [0, 100],
+      start: [curMinPrice, curMaxPrice],
       connect: true,
       range: {
         'min': minPrice,
         'max': maxPrice
       },
       margin: 1,
+      step: 1,
     })
+
+    const priceLeftHandle: HTMLDivElement = getElementBySelector(sliderPrice, HTMLDivElement, '.noUi-handle-lower');
+    const priceRightHandle: HTMLDivElement = getElementBySelector(sliderPrice, HTMLDivElement, '.noUi-handle-upper');
+
+    sliderPrice.addEventListener('click', () => {
+      const curMinPrice: number = priceLeftHandle.ariaValueNow ? +priceLeftHandle.ariaValueNow.slice(0, -2) : minPrice;
+      const curMaxPrice: number = priceRightHandle.ariaValueNow ? +priceRightHandle.ariaValueNow.slice(0, -2) : maxPrice;
+      curMinPrice === minPrice ? mainOptions.delete(keysMain.MinPrice) : mainOptions.set(keysMain.MinPrice, curMinPrice.toString());
+      curMaxPrice === maxPrice ? mainOptions.delete(keysMain.MaxPrice) : mainOptions.set(keysMain.MaxPrice, curMaxPrice.toString());
+      window.location.hash = getMainAddress();
+      }
+    )
+
     const minStock = Math.min(...stocks);
     const maxStock = Math.max(...stocks);
-    minStockHTML.innerText = String(minStock);
-    maxStockHTML.innerText = String(maxStock);
+    const curMinStock = this.minStockOpt ? this.minStockOpt : minStock;
+    const curMaxStock = this.maxStockOpt ? this.maxStockOpt : maxStock;
+    minStockHTML.innerText = String(curMinStock);
+    maxStockHTML.innerText = String(curMaxStock);
     noUiSlider.create(sliderStock, {
-      start: [0, 100],
+      start: [curMinStock, curMaxStock],
       connect: true,
       range: {
         'min': minStock,
-        'max': maxStock
+        'max': maxStock,
       },
       margin: 1,
+      step: 1,
     })
+
+    const stockLeftHandle: HTMLDivElement = getElementBySelector(sliderStock, HTMLDivElement, '.noUi-handle-lower');
+    const stockRightHandle: HTMLDivElement = getElementBySelector(sliderStock, HTMLDivElement, '.noUi-handle-upper');
+
+    sliderStock.addEventListener('click', () => {
+      const curMinStock: number = stockLeftHandle.ariaValueNow ? +stockLeftHandle.ariaValueNow.slice(0, -2) : minStock;
+      const curMaxStock: number = stockRightHandle.ariaValueNow ? +stockRightHandle.ariaValueNow.slice(0, -2) : maxStock;
+      curMinStock === minStock ? mainOptions.delete(keysMain.MinStock) : mainOptions.set(keysMain.MinStock, curMinStock.toString());
+      curMaxStock === maxStock ? mainOptions.delete(keysMain.MaxStock) : mainOptions.set(keysMain.MaxStock, curMaxStock.toString());
+      window.location.hash = getMainAddress();
+      }
+    )
 
     fSort.addEventListener('change', () => {
       console.log('Chosen sort option: ', fSort.value);
       if (fSort.value === SortOptions[0].id) {
-        mainOptions.delete(keyToMainOptions.Sort);
+        mainOptions.delete(keysMain.Sort);
       } else {
-        mainOptions.set(keyToMainOptions.Sort, fSort.value);
+        mainOptions.set(keysMain.Sort, fSort.value);
       }
       setMainOptions();
       window.location.hash = getMainAddress();
     })
+
+    function makeStringSearch() {
+      const searchString = fsearchInput.value;
+      if (searchString.length === 0) {
+        mainOptions.delete(keysMain.Search);
+      } else if (searchString.length < 3) {
+        alert('At least 3 symbols!');
+      } else {
+        mainOptions.set(keysMain.Search, searchString);
+        window.location.hash = getMainAddress();
+      }
+    }
+
+    fSearchForm.addEventListener('submit', makeStringSearch);
 
     return section;
   }
