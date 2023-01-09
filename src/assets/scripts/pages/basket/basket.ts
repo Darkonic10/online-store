@@ -498,20 +498,39 @@ class BasketPage extends Page{
       if(checkLetters && splitValues.length >= 2 && checkLength) {
         console.log('Good name field');
       } else {
-        console.log('Error - no only letters');
+        console.log('Error');
       }
     });
 
     inputPhone.addEventListener('blur', () => {
-      console.log('test');
+      const validNumber = /^[+]\d{9,}/.test(inputPhone.value);
+      if(validNumber) {
+        console.log('Good number field')
+      } else {
+        console.log('Error')
+      }
     });
 
     inputAddress.addEventListener('blur', () => {
-      console.log('test');
+      const inputValue = inputAddress.value;
+      const checkLetters = /^[a-z\s]+$/i.test(inputValue);
+      const splitValues = inputValue.split(' ');
+      const checkLength = splitValues.every((e) => e.length >= 5)
+
+      if(checkLetters && splitValues.length >= 3 && checkLength) {
+        console.log('Good address field');
+      } else {
+        console.log('Error');
+      }
     });
 
     inputEmail.addEventListener('blur', () => {
-      console.log('test');
+      const checkEmail = /^\w[\w-.]*@[\w-]+\.[a-z]{2,4}$/i.test(inputEmail.value);
+      if(checkEmail) {
+        console.log('Good email field');
+      } else {
+        console.log('Error');
+      }
     });
 
     return this.container
