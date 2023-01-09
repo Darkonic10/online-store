@@ -74,7 +74,7 @@ class App {
     function getPageHash() {
       const hash = window.location.hash;
       const address = getHash(hash);
-      const options = getOptions(hash.slice(hash.indexOf('?') + 1));
+      const options = getOptions(decodeURIComponent(hash.slice(hash.indexOf('?') + 1)));
       if (!hash) {
         App.renderNewPage(PageIds.MainPage);
       } else if (hash.indexOf('/') >= 0) {

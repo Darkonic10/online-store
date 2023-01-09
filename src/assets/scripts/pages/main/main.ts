@@ -3,7 +3,7 @@ import Filters from "./filters/filters";
 import Content from "./content/content";
 import { books } from "../../data/books";
 import { book } from "../../types/Interfaces";
-import { delimeter, keyToMainOptions, SortOptions } from "../../types/enums";
+import { delimeter, keyToMainOptions, reg, SortOptions } from "../../types/enums";
 import { mainOptions } from "../../types/checks";
 
 class MainPage extends Page {
@@ -59,7 +59,7 @@ class MainPage extends Page {
       const publisherFromLocal = mainOptions.get(keyToMainOptions.Publisher);
       if (publisherFromLocal) {
         this.publisher = publisherFromLocal.split(delimeter);
-        this.chosenBooks = this.chosenBooks.filter((val) => this.publisher.includes(val.publisher.replace(/ /g, '')));
+        this.chosenBooks = this.chosenBooks.filter((val) => this.publisher.includes(val.publisher.replace(reg, '')));
       }
       console.log(mainOptions, this.publisher);
     }

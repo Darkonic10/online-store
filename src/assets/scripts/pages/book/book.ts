@@ -1,7 +1,7 @@
 import Page from "../../core/page";
 import { checkBookId, createElementByTag, formatterUSD } from "../../types/checks"; //getBookID - удалил, warning 'getBookID' is defined but never used
 
-import { keyToMainOptions, PageIds } from "../../types/enums";
+import { keyToMainOptions, PageIds, reg } from "../../types/enums";
 import { book } from "../../types/Interfaces";
 
 
@@ -28,7 +28,7 @@ class BookPage extends Page {
 
     const breadCrumps = createElementByTag('div', 'path', HTMLDivElement);
     const breadPublisher = createElementByTag('a', 'links', HTMLAnchorElement, currentBook.publisher);
-    breadPublisher.href = `#${PageIds.MainPage}?${keyToMainOptions.Publisher}=${currentBook.publisher.replace(/ /g, '')}`;
+    breadPublisher.href = `#${PageIds.MainPage}?${keyToMainOptions.Publisher}=${currentBook.publisher.replace(reg, '')}`;
     const breadGenre = createElementByTag('a', 'links', HTMLAnchorElement, currentBook.genre);
     breadGenre.href = `#${PageIds.MainPage}?${keyToMainOptions.Genre}=${currentBook.genre.replace(/ /g, '')}`;
     const breadAuthor = createElementByTag('a', 'links', HTMLAnchorElement, currentBook.author);

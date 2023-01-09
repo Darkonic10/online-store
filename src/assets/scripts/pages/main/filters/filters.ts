@@ -1,7 +1,7 @@
 import { books } from "../../../data/books";
-import { createElementByTag, getMainAddress, mainOptions, setMainOptions } from "../../../types/checks";
+import { createElementByTag, getMainAddress, mainOptions, resetMainOptions, setMainOptions } from "../../../types/checks";
 import noUiSlider from "nouislider";
-import { delimeter, keyToMainOptions, SortOptions } from "../../../types/enums";
+import { delimeter, keyToMainOptions, reg, SortOptions } from "../../../types/enums";
 
 class Filters {
   private sort: string;
@@ -97,7 +97,7 @@ class Filters {
     }
 
     fReset.onclick = function(){
-      mainOptions.clear();
+      resetMainOptions();
       window.location.hash = getMainAddress();
     }
 
@@ -123,14 +123,14 @@ class Filters {
         genreCheckboxInput.type = 'checkbox';
         genreCheckboxInput.id = book.genre.replace(/ /g, '');
         genreCheckboxLabel.innerText = `${book.genre}`;
-        genreCheckboxLabel.setAttribute('for', book.genre);
+        genreCheckboxLabel.setAttribute('for', book.genre.replace(/ /g, ''));
         genreCheckboxList.append(genreCheckboxItem);
 
         if (this.genre.includes(genreCheckboxInput.id)) {
           genreCheckboxInput.checked = true;
         }
 
-        genreCheckboxInput.addEventListener('click', () => {
+        genreCheckboxItem.addEventListener('change', () => {
           if (genreCheckboxInput.checked) {
             this.genre.push(genreCheckboxInput.id);
           } else {
@@ -152,11 +152,12 @@ class Filters {
         publisherCheckboxItem.className = 'filters__publisher-item'
         publisherCheckboxItem.append(publisherCheckboxInput, publisherCheckboxLabel);
         publisherCheckboxInput.type = 'checkbox';
-        publisherCheckboxInput.id = book.publisher.replace(/ /g, '');
+        publisherCheckboxInput.id = book.publisher.replace(reg, '');
         publisherCheckboxLabel.innerText = `${book.publisher}`;
-        publisherCheckboxLabel.setAttribute('for', book.publisher);
+        publisherCheckboxLabel.setAttribute('for', book.publisher.replace(reg, ''));
         publisherCheckboxList.append(publisherCheckboxItem);
 
+        console.log(this.publisher.includes(publisherCheckboxInput.id));
         if (this.publisher.includes(publisherCheckboxInput.id)) {
           publisherCheckboxInput.checked = true;
         }
