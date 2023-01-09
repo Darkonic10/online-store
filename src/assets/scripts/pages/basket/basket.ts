@@ -489,25 +489,36 @@ class BasketPage extends Page{
       }
     })
 
-    inputName.addEventListener('blur', () => {
+
+    function checkInputName(): boolean {
       const inputValue = inputName.value;
       const checkLetters = /^[a-z\s]+$/i.test(inputValue);
       const splitValues = inputValue.split(' ');
-      const checkLength = splitValues.every((e) => e.length >= 3)
+      const checkLength = splitValues.every((e) => e.length >= 3);
+      return checkLetters && splitValues.length >= 2 && checkLength
+    }
 
-      if(checkLetters && splitValues.length >= 2 && checkLength) {
-        console.log('Good name field');
+    function checkInputNumber(): boolean {
+      return /^[+]\d{9,}/.test(inputPhone.value);
+    }
+
+    inputName.addEventListener('blur', () => {
+      const spanError = document.createElement('span');
+      spanError.innerText = 'error';
+      if(!checkInputName() && !nameDiv.contains(spanError)) {
+        nameDiv.append(spanError);
       } else {
-        console.log('Error');
+        spanError.remove();
       }
     });
 
     inputPhone.addEventListener('blur', () => {
-      const validNumber = /^[+]\d{9,}/.test(inputPhone.value);
-      if(validNumber) {
-        console.log('Good number field')
+      const spanError = document.createElement('span');
+      spanError.innerText = 'error';
+      if(!checkInputNumber()) {
+        phoneDiv.append(spanError);
       } else {
-        console.log('Error')
+        spanError.remove();
       }
     });
 
