@@ -1,4 +1,5 @@
 $base-color: #daf275;
+$hover-color: #677f07;
 $alt-color: #041e41;
 
 .container {
@@ -114,8 +115,9 @@ $alt-color: #041e41;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    width: 32%;
+    width: 30%;
     min-width: min-content;
+    margin: 5px;
   }
   .filters__genre-list,
   .filters__publisher-list {
@@ -130,6 +132,18 @@ $alt-color: #041e41;
     display: flex;
     justify-content: space-between;
   }
+}
+
+.filters__publisher-list::-webkit-scrollbar {
+  border-radius: 100px;
+  background: $base-color;
+  border: 6px solid $base-color;
+}
+
+.filters__publisher-list::-webkit-scrollbar-thumb {
+  border-radius: 100px;
+  background: $alt-color;
+  border: 6px solid $hover-color;
 }
 
 .filters__filter-reset,
@@ -170,6 +184,11 @@ $alt-color: #041e41;
   align-items: center;
   justify-content: center;
   height: 400px;
+}
+
+.slider-price,
+.slider-stock {
+  margin: 5px;
 }
 
 .main__book-card {

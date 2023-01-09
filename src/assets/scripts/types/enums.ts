@@ -10,11 +10,15 @@ export const enum PageIds {
   ErrorPage = 'error-page',
 }
 
-export const enum keyToMainOptions {
+export const enum keysMain {
   Sort = 'sort',
   Genre = 'genre',
   Publisher = 'publisher',
   Search = 'search',
+  MinPrice = 'minPrice',
+  MaxPrice = 'maxPrice',
+  MinStock = 'minStock',
+  MaxStock = 'maxStock',
 }
 
 export const SortOptions: stringObject[] = [
