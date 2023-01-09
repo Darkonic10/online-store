@@ -102,6 +102,10 @@ class BasketPage extends Page{
           itemDetail.append(itemTitle, itemDescription);
           itemInfo.append(bookImg, itemDetail);
 
+          itemInfo.addEventListener('click', () => {
+            window.location.hash = `#${PageIds.BookPage}?id=${currBook.id}`;
+          })
+
           const itemControl: HTMLDivElement = document.createElement('div');
           itemControl.className = 'basket__item-control';
           const stockDiv: HTMLDivElement = document.createElement('div');

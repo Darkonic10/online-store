@@ -40,10 +40,8 @@ export function getMainOptions(): void {
 }
 
 export function setMainOptions(): void {
-  if (mainOptions.size !== 0) {
-    const opt = JSON.stringify(Object.fromEntries(mainOptions));
-    localStorage.setItem(locStMainOptions, opt);
-  }
+  const opt = JSON.stringify(Object.fromEntries(mainOptions));
+  localStorage.setItem(locStMainOptions, opt);
 }
 
 export function checkBookId(id: number): book {
@@ -110,13 +108,19 @@ export const formatterUSD = new Intl.NumberFormat('en-US', {
   currency: 'USD',
 });
 
-export function getMainAddress (options: Options): string {
-  if (options.size === 0) {
+export function getMainAddress (): string {
+  setMainOptions();
+  if (mainOptions.size === 0) {
     return `#${PageIds.MainPage}`;
   }
   const arr: string[] = [];
-  options.forEach((val, key) => {
+  mainOptions.forEach((val, key) => {
     arr.push(`${key}=${val}`);
   })
   return `#${PageIds.MainPage}?${arr.join('&')}`;
+}
+
+export function resetMainOptions (): void {
+  mainOptions = new Map();
+  setMainOptions();
 }

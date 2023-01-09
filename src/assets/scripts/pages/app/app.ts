@@ -1,4 +1,4 @@
-import { getBookID, getElementBySelector, getHash, getMainOptions, getOptions, setMainOptions } from "../../types/checks";
+import { getBookID, getElementBySelector, getHash, getMainAddress, getMainOptions, getOptions, mainOptions, setMainOptions } from "../../types/checks";
 import MainPage from "../main/main";
 import Page from "../../core/page";
 import BasketPage from "../basket/basket";
@@ -19,6 +19,16 @@ class App {
 
     let page: Page | null = null;
     if (idPage === PageIds.MainPage) {
+      if ((!options || options.size === 0) && mainOptions.size !== 0) {
+        window.location.hash = getMainAddress();
+      } else if (options) {
+        console.log(mainOptions);
+        mainOptions.clear();
+        options.forEach((value, key) => {
+          mainOptions.set(key, value);
+        });
+        console.log(mainOptions);
+      }
       page = new MainPage(idPage);
     } else if (idPage === PageIds.BasketPage) {
       if(options && options.size !== 0) {
@@ -64,9 +74,11 @@ class App {
     function getPageHash() {
       const hash = window.location.hash;
       const address = getHash(hash);
-      const options = getOptions(hash.slice(hash.indexOf('?') + 1));
+      const options = getOptions(decodeURIComponent(hash.slice(hash.indexOf('?') + 1)));
       if (!hash) {
         App.renderNewPage(PageIds.MainPage);
+      } else if (hash.indexOf('/') >= 0) {
+        App.renderNewPage(PageIds.ErrorPage);
       } else {
         App.renderNewPage(address, options);
       }

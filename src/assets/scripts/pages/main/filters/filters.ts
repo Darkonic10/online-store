@@ -1,13 +1,17 @@
 import { books } from "../../../data/books";
-import { createElementByTag, getMainAddress, mainOptions, setMainOptions } from "../../../types/checks";
+import { createElementByTag, getMainAddress, mainOptions, resetMainOptions, setMainOptions } from "../../../types/checks";
 import noUiSlider from "nouislider";
-import { keyToMainOptions, SortOptions } from "../../../types/enums";
+import { delimeter, keyToMainOptions, reg, SortOptions } from "../../../types/enums";
 
 class Filters {
   private sort: string;
+  private genre: string[];
+  private publisher: string[];
 
-  constructor(sort: string){
+  constructor(sort: string, genre: string[], publisher: string[]){
     this.sort = sort;
+    this.genre = genre;
+    this.publisher = publisher;
   }
 
   renderFilters(): HTMLElement {
@@ -93,8 +97,8 @@ class Filters {
     }
 
     fReset.onclick = function(){
-      mainOptions.clear();
-      window.location.hash = getMainAddress(mainOptions);
+      resetMainOptions();
+      window.location.hash = getMainAddress();
     }
 
     const genreCheckboxList: HTMLUListElement = document.createElement('ul');
@@ -117,10 +121,28 @@ class Filters {
         genreCheckboxItem.className = 'filters__genre-item'
         genreCheckboxItem.append(genreCheckboxInput, genreCheckboxLabel);
         genreCheckboxInput.type = 'checkbox';
-        genreCheckboxInput.id = book.genre;
+        genreCheckboxInput.id = book.genre.replace(/ /g, '');
         genreCheckboxLabel.innerText = `${book.genre}`;
-        genreCheckboxLabel.setAttribute('for', book.genre);
+        genreCheckboxLabel.setAttribute('for', book.genre.replace(/ /g, ''));
         genreCheckboxList.append(genreCheckboxItem);
+
+        if (this.genre.includes(genreCheckboxInput.id)) {
+          genreCheckboxInput.checked = true;
+        }
+
+        genreCheckboxItem.addEventListener('change', () => {
+          if (genreCheckboxInput.checked) {
+            this.genre.push(genreCheckboxInput.id);
+          } else {
+            this.genre = this.genre.filter((val) => val !== genreCheckboxInput.id);
+          }
+          if (this.genre.length !== 0) {
+            mainOptions.set(keyToMainOptions.Genre, this.genre.join(delimeter));
+          } else {
+            mainOptions.delete(keyToMainOptions.Genre);
+          }
+          window.location.hash = getMainAddress();
+        })
       }
       if (!arrAuthors.includes(book.publisher)) {
         arrAuthors.push(book.publisher);
@@ -130,10 +152,29 @@ class Filters {
         publisherCheckboxItem.className = 'filters__publisher-item'
         publisherCheckboxItem.append(publisherCheckboxInput, publisherCheckboxLabel);
         publisherCheckboxInput.type = 'checkbox';
-        publisherCheckboxInput.id = book.publisher;
+        publisherCheckboxInput.id = book.publisher.replace(reg, '');
         publisherCheckboxLabel.innerText = `${book.publisher}`;
-        publisherCheckboxLabel.setAttribute('for', book.publisher);
+        publisherCheckboxLabel.setAttribute('for', book.publisher.replace(reg, ''));
         publisherCheckboxList.append(publisherCheckboxItem);
+
+        console.log(this.publisher.includes(publisherCheckboxInput.id));
+        if (this.publisher.includes(publisherCheckboxInput.id)) {
+          publisherCheckboxInput.checked = true;
+        }
+
+        publisherCheckboxInput.addEventListener('click', () => {
+          if (publisherCheckboxInput.checked) {
+            this.publisher.push(publisherCheckboxInput.id);
+          } else {
+            this.publisher = this.publisher.filter((val) => val !== publisherCheckboxInput.id);
+          }
+          if (this.publisher.length !== 0) {
+            mainOptions.set(keyToMainOptions.Publisher, this.publisher.join(delimeter));
+          } else {
+            mainOptions.delete(keyToMainOptions.Publisher);
+          }
+          window.location.hash = getMainAddress();
+        })
       }
     }
     filterGenre.append(genreCheckboxList);
@@ -149,7 +190,8 @@ class Filters {
       range: {
         'min': minPrice,
         'max': maxPrice
-      }
+      },
+      margin: 1,
     })
     const minStock = Math.min(...stocks);
     const maxStock = Math.max(...stocks);
@@ -159,20 +201,21 @@ class Filters {
       start: [0, 100],
       connect: true,
       range: {
-        'min': minPrice,
-        'max': maxPrice
-      }
+        'min': minStock,
+        'max': maxStock
+      },
+      margin: 1,
     })
 
     fSort.addEventListener('change', () => {
       console.log('Chosen sort option: ', fSort.value);
-      if (fSort.value !== SortOptions[0].id) {
-        mainOptions.set(keyToMainOptions.Sort, fSort.value);
-      } else {
+      if (fSort.value === SortOptions[0].id) {
         mainOptions.delete(keyToMainOptions.Sort);
+      } else {
+        mainOptions.set(keyToMainOptions.Sort, fSort.value);
       }
       setMainOptions();
-      window.location.hash = getMainAddress(mainOptions);
+      window.location.hash = getMainAddress();
     })
 
     return section;
