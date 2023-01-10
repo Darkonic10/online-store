@@ -98,7 +98,6 @@ export function getBookID(options: Options): number {
 }
 
 export function getBasketOpt(options: Options) {
-
   return options
 }
 
@@ -108,7 +107,7 @@ export const formatterUSD = new Intl.NumberFormat('en-US', {
   currency: 'USD',
 });
 
-export function getMainAddress (): string {
+export function getMainAddress(): string {
   setMainOptions();
   if (mainOptions.size === 0) {
     return `#${PageIds.MainPage}`;
@@ -120,7 +119,7 @@ export function getMainAddress (): string {
   return `#${PageIds.MainPage}?${arr.join('&')}`;
 }
 
-export function resetMainOptions (): void {
+export function resetMainOptions(): void {
   mainOptions = new Map();
   setMainOptions();
 }

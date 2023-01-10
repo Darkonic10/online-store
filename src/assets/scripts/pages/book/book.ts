@@ -24,8 +24,6 @@ class BookPage extends Page {
     
     const currentBook: book = checkBookId(this.chosenBookID);
 
-    // const test = document.createElement('a');
-
     const breadCrumps = createElementByTag('div', 'path', HTMLDivElement);
     const breadPublisher = createElementByTag('a', 'links', HTMLAnchorElement, currentBook.publisher);
     breadPublisher.href = `#${PageIds.MainPage}?${keysMain.Publisher}=${currentBook.publisher.replace(reg, '')}`;
