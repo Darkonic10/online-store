@@ -311,8 +311,6 @@ class Filters {
       const searchString = fsearchInput.value;
       if (searchString.length === 0) {
         mainOptions.delete(keysMain.Search);
-      } else if (searchString.length < 3) {
-        alert('At least 3 symbols!');
       } else {
         mainOptions.set(keysMain.Search, searchString);
         window.location.hash = getMainAddress();
