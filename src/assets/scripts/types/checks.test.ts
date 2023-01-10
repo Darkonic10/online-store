@@ -1,4 +1,4 @@
-import { checkBookId, createElementByTag, formatterUSD, getBookID, getHash, getLocalStorage, getMainAddress, getMainOptions, resetMainOptions } from "./checks"
+import { checkBookId, createElementByTag, formatterUSD, getBookID, getHash, getLocalStorage } from "./checks"
 
 const fakeLocalStorage = {
   getItem: (key: string) => {

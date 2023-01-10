@@ -8,7 +8,7 @@ class BookPage extends Page {
   private readonly chosenBookID: number;
   
   static TextObject = {
-    MainTitle: 'BookPage',
+    MainTitle: 'Book Page',
   };
 
   constructor(id: string, chosenBookID: number) {
@@ -21,7 +21,6 @@ class BookPage extends Page {
 
     const content: HTMLDivElement = document.createElement('div');
     content.className = 'main-div';
-    const title = this.createHeaderTitle(BookPage.TextObject.MainTitle);
     
     const currentBook: book = checkBookId(this.chosenBookID);
 
@@ -48,7 +47,7 @@ class BookPage extends Page {
     const desc: HTMLDivElement = document.createElement('div');
     desc.className = 'book__desc';
     const buttons: HTMLDivElement = document.createElement('div');
-    buttons.className = 'book__buttons'
+    buttons.className = 'book__buttons';
     const name: HTMLHeadingElement = document.createElement('h2');
     name.innerText = currentBook.title;
     const author: HTMLHeadingElement = document.createElement('h3');
@@ -65,7 +64,7 @@ class BookPage extends Page {
     price.innerText = `${formatterUSD.format(currentBook.price)}`;
     const addButton: HTMLButtonElement = document.createElement('button');
     addButton.className = 'button main__button-add';
-    if(!booksItemsMap.has(currentBook.id.toString())) {
+    if (!booksItemsMap.has(currentBook.id.toString())) {
       addButton.innerText = 'Add';
     } else {
       addButton.innerText = 'Remove';
@@ -75,7 +74,6 @@ class BookPage extends Page {
     buyButton.textContent = 'Buy Now';
     
     this.container.append(content);
-    content.appendChild(title)
 
     content.appendChild(breadCrumps);
     breadCrumps.appendChild(breadPublisher);
@@ -114,7 +112,7 @@ class BookPage extends Page {
     }
 
     addButton.addEventListener('click', () => {
-      if(!booksItemsMap.has(currentBook.id.toString())) {
+      if (!booksItemsMap.has(currentBook.id.toString())) {
         booksItemsMap.set(currentBook.id.toString(), 1);
         addButton.innerText = 'Remove';
       } else {

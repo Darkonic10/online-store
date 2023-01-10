@@ -40,13 +40,13 @@ class Filters {
     const fSliders: HTMLDivElement = createElementByTag('div', 'filters__sliders', HTMLDivElement);
     const fPrice: HTMLDivElement = createElementByTag('div', 'filters__price', HTMLDivElement);
     const fPriceTitle: HTMLHeadingElement = createElementByTag('h3', 'filters__price-title', HTMLHeadingElement, 'Price');
-    const minPriceHTMLMax: HTMLDivElement = createElementByTag('div', 'filters__price-minmax', HTMLDivElement)
+    const minPriceHTMLMax: HTMLDivElement = createElementByTag('div', 'filters__price-minmax', HTMLDivElement);
     const minPriceHTML: HTMLParagraphElement = createElementByTag('p', 'filters__price-min', HTMLParagraphElement, '0');
     const maxPriceHTML: HTMLParagraphElement = createElementByTag('p', 'filters__price-max', HTMLParagraphElement, '0');
     const sliderPrice: HTMLDivElement = createElementByTag('div', 'slider-price', HTMLDivElement);
     const fStock: HTMLDivElement = createElementByTag('div', 'filters__stock', HTMLDivElement);
     const fStockTitle: HTMLHeadingElement = createElementByTag('h3', 'filters__stock-title', HTMLHeadingElement, 'Stock');
-    const minStockHTMLMax: HTMLDivElement = createElementByTag('div', 'filters__stock-minmax', HTMLDivElement)
+    const minStockHTMLMax: HTMLDivElement = createElementByTag('div', 'filters__stock-minmax', HTMLDivElement);
     const minStockHTML: HTMLParagraphElement = createElementByTag('p', 'filters__stock-min', HTMLParagraphElement, '0');
     const maxStockHTML: HTMLParagraphElement = createElementByTag('p', 'filters__stock-max', HTMLParagraphElement, '0');
     const sliderStock: HTMLDivElement = createElementByTag('div', 'slider-stock', HTMLDivElement);
@@ -123,7 +123,7 @@ class Filters {
       fSort.appendChild(opt);
     }
 
-    fCopy.onclick = function(){
+    fCopy.onclick = function(): void {
       const url = window.location.href;
       navigator.clipboard.writeText(url).then(function() {
         fCopy.textContent = 'URL copied!';
@@ -135,7 +135,7 @@ class Filters {
     });
     }
 
-    fReset.onclick = function(){
+    fReset.onclick = function(): void {
       resetMainOptions();
       window.location.hash = getMainAddress();
     }
@@ -165,7 +165,7 @@ class Filters {
         const genreCheckboxItem: HTMLLIElement = document.createElement('li');
         const genreCheckboxInput: HTMLInputElement = document.createElement('input');
         const genreCheckboxLabel: HTMLLabelElement = document.createElement('label');
-        genreCheckboxItem.className = 'filters__genre-item'
+        genreCheckboxItem.className = 'filters__genre-item';
         genreCheckboxItem.append(genreCheckboxInput, genreCheckboxLabel);
         genreCheckboxInput.type = 'checkbox';
         genreCheckboxInput.id = book.genre.replace(/ /g, '');
@@ -201,7 +201,7 @@ class Filters {
         const publisherCheckboxItem: HTMLLIElement = document.createElement('li');
         const publisherCheckboxInput: HTMLInputElement = document.createElement('input');
         const publisherCheckboxLabel: HTMLLabelElement = document.createElement('label');
-        publisherCheckboxItem.className = 'filters__publisher-item'
+        publisherCheckboxItem.className = 'filters__publisher-item';
         publisherCheckboxItem.append(publisherCheckboxInput, publisherCheckboxLabel);
         publisherCheckboxInput.type = 'checkbox';
         publisherCheckboxInput.id = book.publisher.replace(reg, '');
@@ -234,7 +234,7 @@ class Filters {
       }
     }
     filterGenre.append(genreCheckboxList);
-    filterPublisher.append(publisherCheckboxList)
+    filterPublisher.append(publisherCheckboxList);
 
     const minPrice = Math.min(...prices);
     const maxPrice = Math.max(...prices);
@@ -252,7 +252,7 @@ class Filters {
         'max': maxPrice
       },
       step: 1,
-    })
+    });
 
     const priceLeftHandle: HTMLDivElement = getElementBySelector(sliderPrice, HTMLDivElement, '.noUi-handle-lower');
     const priceRightHandle: HTMLDivElement = getElementBySelector(sliderPrice, HTMLDivElement, '.noUi-handle-upper');
@@ -264,7 +264,7 @@ class Filters {
       curMaxPrice === maxPrice ? mainOptions.delete(keysMain.MaxPrice) : mainOptions.set(keysMain.MaxPrice, curMaxPrice.toString());
       window.location.hash = getMainAddress();
       }
-    )
+    );
 
     const minStock = Math.min(...stocks);
     const maxStock = Math.max(...stocks);
@@ -282,7 +282,7 @@ class Filters {
         'max': maxStock,
       },
       step: 1,
-    })
+    });
 
     const stockLeftHandle: HTMLDivElement = getElementBySelector(sliderStock, HTMLDivElement, '.noUi-handle-lower');
     const stockRightHandle: HTMLDivElement = getElementBySelector(sliderStock, HTMLDivElement, '.noUi-handle-upper');
@@ -294,7 +294,7 @@ class Filters {
       curMaxStock === maxStock ? mainOptions.delete(keysMain.MaxStock) : mainOptions.set(keysMain.MaxStock, curMaxStock.toString());
       window.location.hash = getMainAddress();
       }
-    )
+    );
 
     fSort.addEventListener('change', () => {
       console.log('Chosen sort option: ', fSort.value);
@@ -307,7 +307,7 @@ class Filters {
       window.location.hash = getMainAddress();
     })
 
-    function makeStringSearch() {
+    function makeStringSearch(): void {
       const searchString = fsearchInput.value;
       if (searchString.length === 0) {
         mainOptions.delete(keysMain.Search);

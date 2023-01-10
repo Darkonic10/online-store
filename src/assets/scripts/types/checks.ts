@@ -46,7 +46,7 @@ export function setMainOptions(): void {
 
 export function checkBookId(id: number): book {
   for (const book of books) {
-    if(book.id === id) {
+    if (book.id === id) {
       return book;
     }
   }

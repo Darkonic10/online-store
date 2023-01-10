@@ -29,16 +29,16 @@ class App {
       }
       page = new MainPage(idPage);
     } else if (idPage === PageIds.BasketPage) {
-      if(options && options.size !== 0) {
+      if (options && options.size !== 0) {
         const itemsPage = options.get('limit');
         const pageOptions = options.get('page');
-        if(typeof itemsPage !== 'undefined' && typeof pageOptions !== 'undefined') {
+        if (typeof itemsPage !== 'undefined' && typeof pageOptions !== 'undefined') {
           page = new BasketPage(idPage, +itemsPage, +pageOptions);
-        } else if(typeof itemsPage !== 'undefined' && typeof pageOptions === 'undefined') {
+        } else if (typeof itemsPage !== 'undefined' && typeof pageOptions === 'undefined') {
           page = new BasketPage(idPage, +itemsPage, 1);
-        } else if(typeof itemsPage === 'undefined' && typeof pageOptions !== 'undefined') {
+        } else if (typeof itemsPage === 'undefined' && typeof pageOptions !== 'undefined') {
           page = new BasketPage(idPage, 3, +pageOptions);
-        } else if(typeof itemsPage === 'undefined' && typeof pageOptions === 'undefined') {
+        } else if (typeof itemsPage === 'undefined' && typeof pageOptions === 'undefined') {
           page = new BasketPage(idPage, 3, 1);
         } else {
           page = new ErrorPage(idPage, ErrorTypes.Error_404);
@@ -69,7 +69,7 @@ class App {
   }
 
   private changedHash(): void {
-    function getPageHash() {
+    function getPageHash(): void {
       const hash = window.location.hash;
       const address = getHash(hash);
       const options = getOptions(decodeURIComponent(hash.slice(hash.indexOf('?') + 1)));
@@ -85,7 +85,7 @@ class App {
     window.addEventListener('load', getPageHash);
   }
 
-  run() {
+  run(): void {
     window.addEventListener('beforeunload', setMainOptions);
     window.addEventListener('load', getMainOptions);
     this.changedHash();

@@ -29,27 +29,27 @@ class MainPage extends Page {
         this.sort = sortFromLocal;
         switch (this.sort) {
           case SortOptions[1].id:
-            this.chosenBooks.sort((a, b) => a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1)
+            this.chosenBooks.sort((a, b) => a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1);
             break;
             
           case SortOptions[2].id:
-            this.chosenBooks.sort((a, b) => a.title.toLowerCase() < b.title.toLowerCase() ? 1 : -1)
+            this.chosenBooks.sort((a, b) => a.title.toLowerCase() < b.title.toLowerCase() ? 1 : -1);
             break;
 
           case SortOptions[3].id:
-            this.chosenBooks.sort((a, b) => a.author.toLowerCase() > b.author.toLowerCase() ? 1 : -1)
+            this.chosenBooks.sort((a, b) => a.author.toLowerCase() > b.author.toLowerCase() ? 1 : -1);
             break;
           
           case SortOptions[4].id:
-            this.chosenBooks.sort((a, b) => a.author.toLowerCase() < b.author.toLowerCase() ? 1 : -1)
+            this.chosenBooks.sort((a, b) => a.author.toLowerCase() < b.author.toLowerCase() ? 1 : -1);
             break;
 
           case SortOptions[5].id:
-            this.chosenBooks.sort((a, b) => a.price - b.price)
+            this.chosenBooks.sort((a, b) => a.price - b.price);
             break;
             
           case SortOptions[6].id:
-            this.chosenBooks.sort((a, b) => b.price - a.price)
+            this.chosenBooks.sort((a, b) => b.price - a.price);
             break;
         }
       }

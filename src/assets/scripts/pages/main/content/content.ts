@@ -11,7 +11,7 @@ class Content {
     content.appendChild(bookList);
     if (chosenBooks.length === 0) {
       const textMessage = 'No books by your search request! Please change your search request or Reset Filters.';
-      const message: HTMLHeadingElement = createElementByTag('h1', 'main__message', HTMLHeadingElement, textMessage)
+      const message: HTMLHeadingElement = createElementByTag('h1', 'main__message', HTMLHeadingElement, textMessage);
       bookList.appendChild(message);
     }
     const booksItemsMap: Map<string, number> = getMapBasketStorage('basketIds');
@@ -55,7 +55,7 @@ class Content {
       bookButtons.className = 'main__book-buttons';
       const bookButtonAdd: HTMLButtonElement = document.createElement('button');
       bookButtonAdd.className = 'button main__button-add';
-      if(!booksItemsMap.has(book.id.toString())) {
+      if (!booksItemsMap.has(book.id.toString())) {
         bookButtonAdd.innerText = 'Add';
       } else {
         bookButtonAdd.innerText = 'Remove';
@@ -72,8 +72,8 @@ class Content {
       bookButtonDetail.innerText = 'Detail';
 
       bookButtons.addEventListener('click', (event) => {
-        if(event.target === bookButtonAdd) {
-          if(!booksItemsMap.has(book.id.toString())) {
+        if (event.target === bookButtonAdd) {
+          if (!booksItemsMap.has(book.id.toString())) {
             booksItemsMap.set(book.id.toString(), 1);
             bookButtonAdd.innerText = 'Remove';
           } else {
@@ -87,7 +87,7 @@ class Content {
             totalPrice += checkBookId(+entry[0]).price * entry[1];
           }
           usdTotal = formatterUSD.format(totalPrice);
-          localStorage.setItem('basketIds', JSON.stringify(Object.fromEntries(booksItemsMap)))
+          localStorage.setItem('basketIds', JSON.stringify(Object.fromEntries(booksItemsMap)));
           basketCounter.innerText = `${countItems}`;
           totalPriceHTML.innerText = `${usdTotal}`;
         }
@@ -98,7 +98,7 @@ class Content {
         }
       })
 
-      bookButtons.append(bookButtonAdd, bookButtonDetail)
+      bookButtons.append(bookButtonAdd, bookButtonDetail);
 
       bookDiv.append(bookImg, bookInfo, bookButtons);
       bookList.append(bookDiv)

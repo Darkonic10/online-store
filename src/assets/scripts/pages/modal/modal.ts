@@ -3,7 +3,7 @@ import mir from '../../../images/basket-card/mir-en.svg';
 import visa from '../../../images/basket-card/visa.svg';
 import mastercard from '../../../images/basket-card/mastercard.svg';
 
-export function addModal(container: HTMLDivElement, button: HTMLButtonElement):void {
+export function addModal(container: HTMLDivElement, button: HTMLButtonElement): void {
   const modalContainer = document.createElement('div');
     modalContainer.className = 'modal__container';
     const modalContent = document.createElement('div');
@@ -95,7 +95,7 @@ export function addModal(container: HTMLDivElement, button: HTMLButtonElement):v
     cvvData.append(cvvText, cvvValid);
     cardOtherData.append(validData, cvvData);
     cardData.append(cardNumber, cardOtherData);
-    cardDetails.append(cardHead, cardData)
+    cardDetails.append(cardHead, cardData);
 
     const confirmButton = document.createElement('button');
     confirmButton.innerText = 'CONFIRM';
@@ -109,7 +109,7 @@ export function addModal(container: HTMLDivElement, button: HTMLButtonElement):v
     })
 
     modalContainer.addEventListener('click', (event) => {
-      if(event.target === modalContainer) {
+      if (event.target === modalContainer) {
         modalContainer.remove();
       }
     })
@@ -136,19 +136,19 @@ export function addModal(container: HTMLDivElement, button: HTMLButtonElement):v
       const checkLetters = /^[a-z\s]+$/i.test(inputValue);
       const splitValues = inputValue.split(' ');
       const checkLength = splitValues.every((e) => e.length >= 3);
-      const result = checkLetters && splitValues.length >= 2 && checkLength
-      if(!result) {
+      const result = checkLetters && splitValues.length >= 2 && checkLength;
+      if (!result) {
         nameDiv.append(spanError);
       } else {
         spanError.remove();
       }
 
-      return result
+      return result;
     }
 
     function checkInputNumber(): boolean {
-      const checkRegExp = /^[+]\d{9,}/.test(inputPhone.value)
-      if(!checkRegExp) {
+      const checkRegExp = /^[+]\d{9,}/.test(inputPhone.value);
+      if (!checkRegExp) {
         phoneDiv.append(spanError2);
       } else {
         spanError2.remove();
@@ -160,24 +160,24 @@ export function addModal(container: HTMLDivElement, button: HTMLButtonElement):v
       const inputValue = inputAddress.value;
       const checkLetters = /^[a-z\s]+$/i.test(inputValue);
       const splitValues = inputValue.split(' ');
-      const checkLength = splitValues.every((e) => e.length >= 5)
-      const result = checkLetters && splitValues.length >= 3 && checkLength
-      if(!result) {
+      const checkLength = splitValues.every((e) => e.length >= 5);
+      const result = checkLetters && splitValues.length >= 3 && checkLength;
+      if (!result) {
         addressDiv.append(spanError3);
       } else {
         spanError3.remove();
       }
-      return result
+      return result;
     }
 
     function checkInputEmail(): boolean {
       const result = /^\w[\w-.]*@[\w-]+\.[a-z]{2,4}$/i.test(inputEmail.value);
-      if(!result) {
+      if (!result) {
         emailDiv.append(spanError4);
       } else {
         spanError4.remove();
       }
-      return result
+      return result;
     }
 
     inputName.addEventListener('blur', () => {
@@ -199,9 +199,9 @@ export function addModal(container: HTMLDivElement, button: HTMLButtonElement):v
       Mastercard = 5,
     }
 
-    function checkCardNumber() {
+    function checkCardNumber(): boolean {
       const result = /^[245]\d{15}\b/.test(inputCardNumber.value);
-      if(!result) {
+      if (!result) {
         cardDetails.append(cardNumberErr);
       } else {
         cardNumberErr.remove();
@@ -209,9 +209,9 @@ export function addModal(container: HTMLDivElement, button: HTMLButtonElement):v
       return result;
     }
 
-    function checkCardDate() {
+    function checkCardDate(): boolean {
       const result = /(0[1-9]|1[012])\/(0[1-9]|[12][0-9]|3[01])/.test(inputValid.value);
-      if(!result) {
+      if (!result) {
         cardDetails.append(cardDataErr);
       } else {
         cardDataErr.remove();
@@ -219,9 +219,9 @@ export function addModal(container: HTMLDivElement, button: HTMLButtonElement):v
       return result;
     }
 
-    function checkCardCvv() {
+    function checkCardCvv(): boolean {
       const result = /\b\d{3}\b/i.test(cvvValid.value);
-      if(!result) {
+      if (!result) {
         cardDetails.append(cardCvvErr);
       } else {
         cardCvvErr.remove();
@@ -230,12 +230,15 @@ export function addModal(container: HTMLDivElement, button: HTMLButtonElement):v
     }
 
     inputCardNumber.addEventListener('input', () => {
+      if (inputCardNumber.value.length > 16) {
+        inputCardNumber.value = inputCardNumber.value.slice(0, 16);
+      }
       const paySystem = cards[+inputCardNumber.value[0]];
-      if(paySystem === 'Mir') {
+      if (paySystem === 'Mir') {
         cardImg.style.backgroundImage = `url("${mir as string}")`;
-      } else if(paySystem === 'Visa') {
+      } else if (paySystem === 'Visa') {
         cardImg.style.backgroundImage = `url("${visa as string}")`;
-      } else if(paySystem === 'Mastercard') {
+      } else if (paySystem === 'Mastercard') {
         cardImg.style.backgroundImage = `url("${mastercard as string}")`;
       } else {
         cardImg.style.backgroundImage = `url("${noLogo}")`;
@@ -248,19 +251,25 @@ export function addModal(container: HTMLDivElement, button: HTMLButtonElement):v
 
     inputValid.addEventListener('input', () => {
       inputValid.value = inputValid.value.replace(/[^\d|/]/g,'');
-      if(+(inputValid.value[0] + inputValid.value[1]) > 12) {
+      if (+(inputValid.value[0] + inputValid.value[1]) > 12) {
         inputValid.value = inputValid.value.replace((inputValid.value[0] + inputValid.value[1]), '12');
       }
-      if(inputValid.value.length === 2 && !inputValid.value.includes('/')) {
+      if (inputValid.value.length === 2 && !inputValid.value.includes('/')) {
         inputValid.value = inputValid.value + '/';
       }
-      if(inputValid.value.length > 5) {
+      if (inputValid.value.length > 5) {
         inputValid.value = inputValid.value.slice(0, 5);
       }
     })
 
     inputValid.addEventListener('blur', () => {
       checkCardDate();
+    })
+
+    cvvValid.addEventListener('input', () => {
+      if (cvvValid.value.length > 3) {
+          cvvValid.value = cvvValid.value.slice(0,3);
+      }
     })
 
     cvvValid.addEventListener('blur', () => {
@@ -278,14 +287,13 @@ export function addModal(container: HTMLDivElement, button: HTMLButtonElement):v
       checkCardNumber();
       checkCardDate();
       checkCardCvv();
-      if(checkInputName() && checkInputNumber() && checkInputAddress() && checkInputEmail() && checkCardNumber() && checkCardDate() && checkCardCvv()) {
+      if (checkInputName() && checkInputNumber() && checkInputAddress() && checkInputEmail() && checkCardNumber() && checkCardDate() && checkCardCvv()) {
         container.replaceChildren();
         container.append(successBuy);
         setTimeout(() => {
-          // booksItemsMap.clear();
           localStorage.setItem('basketIds', JSON.stringify(Object.fromEntries(new Map())));
           window.location.href = '#main-page'
-        }, 3000)
+        }, 3000);
       }
-    })
+    });
 }
