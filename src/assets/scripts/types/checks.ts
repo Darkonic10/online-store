@@ -123,3 +123,20 @@ export function resetMainOptions(): void {
   mainOptions = new Map();
   setMainOptions();
 }
+
+export function setHeaderCounters(): void {
+  const booksItemsMap: Map<string, number> = getMapBasketStorage('basketIds');
+  let totalPrice = 0;
+  let countItems = 0;
+
+  for (const entry of booksItemsMap) {
+    countItems += entry[1];
+    totalPrice += checkBookId(+entry[0]).price * entry[1];
+  }
+  const usdTotal: string = formatterUSD.format(totalPrice);
+
+  const basketCounter: HTMLSpanElement = getElementBySelector(document, HTMLSpanElement, '.header__counter-span');
+  basketCounter.innerText = countItems.toString();
+  const totalPriceHTML: HTMLSpanElement = getElementBySelector(document, HTMLSpanElement, '.header__price-value');
+  totalPriceHTML.innerText = usdTotal;
+}

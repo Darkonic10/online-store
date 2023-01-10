@@ -1,5 +1,5 @@
 import { book } from "../../../types/Interfaces";
-import { checkBookId, createElementByTag, formatterUSD, getElementBySelector, getMapBasketStorage } from "../../../types/checks";
+import { checkBookId, createElementByTag, formatterUSD, getElementBySelector, getMapBasketStorage, setHeaderCounters } from "../../../types/checks";
 import { PageIds } from "../../../types/enums";
 
 class Content {
@@ -18,16 +18,12 @@ class Content {
     let totalPrice = 0;
     let countItems = 0;
 
-    for (const entry of booksItemsMap) {
-      countItems += entry[1];
-      totalPrice += checkBookId(+entry[0]).price * entry[1];
-    }
     let usdTotal: string = formatterUSD.format(totalPrice);
 
     const basketCounter: HTMLSpanElement = getElementBySelector(document, HTMLSpanElement, '.header__counter-span');
-    basketCounter.innerText = `${countItems}`;
     const totalPriceHTML: HTMLSpanElement = getElementBySelector(document, HTMLSpanElement, '.header__price-value');
-    totalPriceHTML.innerText = `${usdTotal}`;
+
+    setHeaderCounters();
 
     for (const book of chosenBooks) {
       const bookDiv: HTMLDivElement = document.createElement('div');

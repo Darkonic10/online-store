@@ -1,5 +1,5 @@
 import Page from "../../core/page";
-import { checkBookId, formatterUSD, getElementBySelector, getMapBasketStorage } from "../../types/checks";
+import { checkBookId, formatterUSD, getElementBySelector, getMapBasketStorage, setHeaderCounters } from "../../types/checks";
 import { book } from "../../types/Interfaces";
 import { PageIds } from "../../types/enums";
 import noLogo from '../../../images/basket-card/no-logo.webp';
@@ -23,6 +23,8 @@ class BasketPage extends Page{
 
   private createMain(): HTMLElement {
     const title = this.createHeaderTitle(BasketPage.TextObject.MainTitle);
+
+    setHeaderCounters();
 
     const basket: HTMLDivElement = document.createElement('div');
     basket.className = 'basket';
@@ -181,6 +183,7 @@ class BasketPage extends Page{
             if(event.target === buttonPlus || event.target === buttonMinus) {
               getCounting();
             }
+            setHeaderCounters();
           })
         }
         i++;

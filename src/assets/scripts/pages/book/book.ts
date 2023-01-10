@@ -1,5 +1,5 @@
 import Page from "../../core/page";
-import { checkBookId, createElementByTag, formatterUSD } from "../../types/checks"; //getBookID - удалил, warning 'getBookID' is defined but never used
+import { checkBookId, createElementByTag, formatterUSD, getMapBasketStorage, setHeaderCounters } from "../../types/checks"; //getBookID - удалил, warning 'getBookID' is defined but never used
 
 import { keysMain, PageIds, reg } from "../../types/enums";
 import { book } from "../../types/Interfaces";
@@ -18,6 +18,8 @@ class BookPage extends Page {
   }
 
   render(): HTMLElement {
+    setHeaderCounters();
+
     const content: HTMLDivElement = document.createElement('div');
     content.className = 'main-div';
     const title = this.createHeaderTitle(BookPage.TextObject.MainTitle);
@@ -33,6 +35,8 @@ class BookPage extends Page {
     breadAuthor.href = `#${PageIds.MainPage}?${keysMain.Search}=${currentBook.author.toUpperCase()}`;
     const breadTitle = createElementByTag('a', 'links', HTMLAnchorElement, currentBook.title);
     breadTitle.href = `#${PageIds.MainPage}?${keysMain.Search}=${currentBook.title.toUpperCase()}`;
+
+    const booksItemsMap: Map<string, number> = getMapBasketStorage('basketIds');
 
     const mainDiv: HTMLDivElement = document.createElement('div');
     mainDiv.className = 'container main__container main__container_start';
@@ -62,7 +66,11 @@ class BookPage extends Page {
     price.innerText = `${formatterUSD.format(currentBook.price)}`;
     const addButton: HTMLButtonElement = document.createElement('button');
     addButton.className = 'button main__button-add';
-    addButton.textContent = 'Add to cart';
+    if(!booksItemsMap.has(currentBook.id.toString())) {
+      addButton.innerText = 'Add';
+    } else {
+      addButton.innerText = 'Remove';
+    }
     const buyButton: HTMLButtonElement = document.createElement('button');
     buyButton.className = 'button basket__buy-button';
     buyButton.textContent = 'Buy Now';
@@ -105,6 +113,20 @@ class BookPage extends Page {
         img.src = miniImg.src;
       })
     }
+
+    addButton.addEventListener('click', () => {
+      if(!booksItemsMap.has(currentBook.id.toString())) {
+        booksItemsMap.set(currentBook.id.toString(), 1);
+        addButton.innerText = 'Remove';
+      } else {
+        booksItemsMap.delete(currentBook.id.toString());
+        addButton.innerText = 'Add';
+      }
+      localStorage.setItem('basketIds', JSON.stringify(Object.fromEntries(booksItemsMap)));
+
+      setHeaderCounters();
+
+    })
 
     return this.container;
   }
