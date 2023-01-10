@@ -2,6 +2,7 @@ import { books } from "../../../data/books";
 import { createElementByTag, getElementBySelector, getMainAddress, mainOptions, resetMainOptions, setMainOptions } from "../../../types/checks";
 import noUiSlider from "nouislider";
 import { delimeter, keysMain, reg, SortOptions } from "../../../types/enums";
+import { book } from "../../../types/Interfaces";
 
 class Filters {
   private sort: string;
@@ -12,8 +13,10 @@ class Filters {
   private minStockOpt: number;
   private maxStockOpt: number;
   private searchString: string;
+  private mode: string;
 
-  constructor(sort: string, genre: string[], publisher: string[], minPrice: number, maxPrice: number, minStock: number, maxStock: number, searchString: string){
+  constructor(sort: string, genre: string[], publisher: string[], minPrice: number, maxPrice: number,
+    minStock: number, maxStock: number, searchString: string, mode: string) {
     this.sort = sort;
     this.genre = genre;
     this.publisher = publisher;
@@ -22,9 +25,10 @@ class Filters {
     this.minStockOpt = minStock;
     this.maxStockOpt = maxStock;
     this.searchString = searchString;
+    this.mode = mode;
   }
 
-  renderFilters(): HTMLElement {
+  renderFilters(chosenBooks: book[]): HTMLElement {
     const section: HTMLElement = document.createElement('section');
     section.className = 'filters';
     const baseDiv: HTMLDivElement = createElementByTag('div', 'container filters__container', HTMLDivElement);
@@ -36,13 +40,13 @@ class Filters {
     const fSliders: HTMLDivElement = createElementByTag('div', 'filters__sliders', HTMLDivElement);
     const fPrice: HTMLDivElement = createElementByTag('div', 'filters__price', HTMLDivElement);
     const fPriceTitle: HTMLHeadingElement = createElementByTag('h3', 'filters__price-title', HTMLHeadingElement, 'Price');
-    const minPriceHTMLMax: HTMLDivElement = createElementByTag('div', 'filters__price-minmax', HTMLDivElement)
+    const minPriceHTMLMax: HTMLDivElement = createElementByTag('div', 'filters__price-minmax', HTMLDivElement);
     const minPriceHTML: HTMLParagraphElement = createElementByTag('p', 'filters__price-min', HTMLParagraphElement, '0');
     const maxPriceHTML: HTMLParagraphElement = createElementByTag('p', 'filters__price-max', HTMLParagraphElement, '0');
     const sliderPrice: HTMLDivElement = createElementByTag('div', 'slider-price', HTMLDivElement);
     const fStock: HTMLDivElement = createElementByTag('div', 'filters__stock', HTMLDivElement);
     const fStockTitle: HTMLHeadingElement = createElementByTag('h3', 'filters__stock-title', HTMLHeadingElement, 'Stock');
-    const minStockHTMLMax: HTMLDivElement = createElementByTag('div', 'filters__stock-minmax', HTMLDivElement)
+    const minStockHTMLMax: HTMLDivElement = createElementByTag('div', 'filters__stock-minmax', HTMLDivElement);
     const minStockHTML: HTMLParagraphElement = createElementByTag('p', 'filters__stock-min', HTMLParagraphElement, '0');
     const maxStockHTML: HTMLParagraphElement = createElementByTag('p', 'filters__stock-max', HTMLParagraphElement, '0');
     const sliderStock: HTMLDivElement = createElementByTag('div', 'slider-stock', HTMLDivElement);
@@ -53,6 +57,24 @@ class Filters {
     const fSearch: HTMLDivElement = createElementByTag('div', 'filters__search', HTMLDivElement);
     const fSearchForm: HTMLFormElement = createElementByTag('form', 'filters__search-form', HTMLFormElement);
     const fsearchInput: HTMLInputElement = createElementByTag('input', 'filters__search-input', HTMLInputElement);
+    const infoWrapper: HTMLDivElement = createElementByTag('div', 'filters__wrapper', HTMLDivElement);
+    const infoFound: HTMLHeadingElement = createElementByTag('h3', 'filters__found', HTMLHeadingElement, `Found: ${chosenBooks.length}`);
+    const infoDisplay: HTMLDivElement = createElementByTag('div', 'filters__display', HTMLDivElement);
+
+    infoDisplay.textContent = this.mode === 'mini' ? 'Big' : 'Mini';
+
+    infoDisplay.addEventListener('click', () => {
+      if (this.mode === 'mini') {
+        infoDisplay.textContent = 'Mini';
+        this.mode = 'big';
+      } else {
+        infoDisplay.textContent = 'Big';
+        this.mode = 'mini';
+      }
+      mainOptions.set(keysMain.Mode, this.mode.toString());
+      window.location.hash = getMainAddress();
+    })
+
     fsearchInput.type = 'text';
     fsearchInput.placeholder = 'Search for books by keyword';
     if (this.searchString) {
@@ -61,7 +83,6 @@ class Filters {
     const fsearchSubmit: HTMLInputElement = createElementByTag('input', 'filters__search-submit', HTMLInputElement);
     fsearchSubmit.type = 'submit';
     fsearchSubmit.value = '';
-    
     section.appendChild(baseDiv);
     baseDiv.appendChild(fWrapper);
     fWrapper.appendChild(filterGenre);
@@ -90,6 +111,9 @@ class Filters {
     fSearchForm.appendChild(fsearchInput);
     fSearchForm.appendChild(fsearchSubmit);
 
+    infoWrapper.append(infoFound, infoDisplay);
+    baseDiv.append(infoWrapper);
+
     for (let i = 0; i < SortOptions.length; i++) {
       const element = SortOptions[i];
       const opt = new Option(element.name, element.id);
@@ -99,16 +123,19 @@ class Filters {
       fSort.appendChild(opt);
     }
 
-    fCopy.onclick = function(){
+    fCopy.onclick = function(): void {
       const url = window.location.href;
       navigator.clipboard.writeText(url).then(function() {
-        console.log('URL copied!');
+        fCopy.textContent = 'URL copied!';
+        setTimeout(() => {
+          fCopy.textContent = 'Copy link';
+        }, 1500);
     }, function() {
-        console.log('URL copy error')
+        throw new Error('URL copy error');
     });
     }
 
-    fReset.onclick = function(){
+    fReset.onclick = function(): void {
       resetMainOptions();
       window.location.hash = getMainAddress();
     }
@@ -121,6 +148,14 @@ class Filters {
     const arrAuthors: string[] = [];
     const prices: number[] = [];
     const stocks: number[] = [];
+    const pricesCur: number[] = [];
+    const stocksCur: number[] = [];
+
+    for (let i = 0; i < chosenBooks.length; i++) {
+      const book = chosenBooks[i];
+      pricesCur.push(book.price);
+      stocksCur.push(book.stock_balance);
+    }
 
     for (const book of books) {
       prices.push(book.price);
@@ -130,11 +165,16 @@ class Filters {
         const genreCheckboxItem: HTMLLIElement = document.createElement('li');
         const genreCheckboxInput: HTMLInputElement = document.createElement('input');
         const genreCheckboxLabel: HTMLLabelElement = document.createElement('label');
-        genreCheckboxItem.className = 'filters__genre-item'
+        genreCheckboxItem.className = 'filters__genre-item';
         genreCheckboxItem.append(genreCheckboxInput, genreCheckboxLabel);
         genreCheckboxInput.type = 'checkbox';
         genreCheckboxInput.id = book.genre.replace(/ /g, '');
-        genreCheckboxLabel.innerText = `${book.genre}`;
+        const allCount = books.filter((val) => val.genre === book.genre).length;
+        const curCount = chosenBooks.filter((val) => val.genre === book.genre).length;
+        if (!curCount) {
+          genreCheckboxLabel.classList.add('inactive');
+        }
+        genreCheckboxLabel.innerText = `${book.genre} (${curCount}/${allCount})`;
         genreCheckboxLabel.setAttribute('for', book.genre.replace(/ /g, ''));
         genreCheckboxList.append(genreCheckboxItem);
 
@@ -161,11 +201,16 @@ class Filters {
         const publisherCheckboxItem: HTMLLIElement = document.createElement('li');
         const publisherCheckboxInput: HTMLInputElement = document.createElement('input');
         const publisherCheckboxLabel: HTMLLabelElement = document.createElement('label');
-        publisherCheckboxItem.className = 'filters__publisher-item'
+        publisherCheckboxItem.className = 'filters__publisher-item';
         publisherCheckboxItem.append(publisherCheckboxInput, publisherCheckboxLabel);
         publisherCheckboxInput.type = 'checkbox';
         publisherCheckboxInput.id = book.publisher.replace(reg, '');
-        publisherCheckboxLabel.innerText = `${book.publisher}`;
+        const allCount = books.filter((val) => val.publisher === book.publisher).length;
+        const curCount = chosenBooks.filter((val) => val.publisher === book.publisher).length;
+        if (!curCount) {
+          publisherCheckboxLabel.classList.add('inactive');
+        }
+        publisherCheckboxLabel.innerText = `${book.publisher} (${curCount}/${allCount})`;
         publisherCheckboxLabel.setAttribute('for', book.publisher.replace(reg, ''));
         publisherCheckboxList.append(publisherCheckboxItem);
 
@@ -189,12 +234,14 @@ class Filters {
       }
     }
     filterGenre.append(genreCheckboxList);
-    filterPublisher.append(publisherCheckboxList)
+    filterPublisher.append(publisherCheckboxList);
 
     const minPrice = Math.min(...prices);
     const maxPrice = Math.max(...prices);
-    const curMinPrice = this.minPriceOpt ? this.minPriceOpt : minPrice;
-    const curMaxPrice = this.maxPriceOpt ? this.maxPriceOpt : maxPrice;
+    const minPriceCur = Math.min(...pricesCur);
+    const maxPriceCur = Math.max(...pricesCur);
+    const curMinPrice = this.minPriceOpt ? this.minPriceOpt : minPriceCur;
+    const curMaxPrice = this.maxPriceOpt ? this.maxPriceOpt : maxPriceCur;
     minPriceHTML.innerText = String(curMinPrice);
     maxPriceHTML.innerText = String(curMaxPrice);
     noUiSlider.create(sliderPrice, {
@@ -204,9 +251,8 @@ class Filters {
         'min': minPrice,
         'max': maxPrice
       },
-      margin: 1,
       step: 1,
-    })
+    });
 
     const priceLeftHandle: HTMLDivElement = getElementBySelector(sliderPrice, HTMLDivElement, '.noUi-handle-lower');
     const priceRightHandle: HTMLDivElement = getElementBySelector(sliderPrice, HTMLDivElement, '.noUi-handle-upper');
@@ -218,12 +264,14 @@ class Filters {
       curMaxPrice === maxPrice ? mainOptions.delete(keysMain.MaxPrice) : mainOptions.set(keysMain.MaxPrice, curMaxPrice.toString());
       window.location.hash = getMainAddress();
       }
-    )
+    );
 
     const minStock = Math.min(...stocks);
     const maxStock = Math.max(...stocks);
-    const curMinStock = this.minStockOpt ? this.minStockOpt : minStock;
-    const curMaxStock = this.maxStockOpt ? this.maxStockOpt : maxStock;
+    const minStockCur = Math.min(...stocksCur);
+    const maxStockCur = Math.max(...stocksCur);
+    const curMinStock = this.minStockOpt ? this.minStockOpt : minStockCur;
+    const curMaxStock = this.maxStockOpt ? this.maxStockOpt : maxStockCur;
     minStockHTML.innerText = String(curMinStock);
     maxStockHTML.innerText = String(curMaxStock);
     noUiSlider.create(sliderStock, {
@@ -233,9 +281,8 @@ class Filters {
         'min': minStock,
         'max': maxStock,
       },
-      margin: 1,
       step: 1,
-    })
+    });
 
     const stockLeftHandle: HTMLDivElement = getElementBySelector(sliderStock, HTMLDivElement, '.noUi-handle-lower');
     const stockRightHandle: HTMLDivElement = getElementBySelector(sliderStock, HTMLDivElement, '.noUi-handle-upper');
@@ -247,7 +294,7 @@ class Filters {
       curMaxStock === maxStock ? mainOptions.delete(keysMain.MaxStock) : mainOptions.set(keysMain.MaxStock, curMaxStock.toString());
       window.location.hash = getMainAddress();
       }
-    )
+    );
 
     fSort.addEventListener('change', () => {
       console.log('Chosen sort option: ', fSort.value);
@@ -260,12 +307,10 @@ class Filters {
       window.location.hash = getMainAddress();
     })
 
-    function makeStringSearch() {
+    function makeStringSearch(): void {
       const searchString = fsearchInput.value;
       if (searchString.length === 0) {
         mainOptions.delete(keysMain.Search);
-      } else if (searchString.length < 3) {
-        alert('At least 3 symbols!');
       } else {
         mainOptions.set(keysMain.Search, searchString);
         window.location.hash = getMainAddress();

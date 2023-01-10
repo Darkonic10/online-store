@@ -38,6 +38,11 @@ $alt-color: #041e41;
 .basket__pages-input {
   width: 2rem;
   text-align: center;
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 }
 
 .basket__items{
@@ -167,6 +172,11 @@ $alt-color: #041e41;
 
 .modal__card-input-number {
   width: 80%;
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 }
 
 .modal__other-valid, .modal__other-cvv {
@@ -178,4 +188,9 @@ $alt-color: #041e41;
 
 .modal__valid-input, .modal__cvv-input {
   width: 60%;
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 }

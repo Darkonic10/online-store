@@ -19,6 +19,7 @@ export const enum keysMain {
   MaxPrice = 'maxPrice',
   MinStock = 'minStock',
   MaxStock = 'maxStock',
+  Mode = 'mode',
 }
 
 export const SortOptions: stringObject[] = [

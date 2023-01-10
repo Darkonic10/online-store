@@ -18,6 +18,7 @@ class MainPage extends Page {
   private maxStock = 0;
   private searchWords: string[] = [];
   private searchString = '';
+  private mode = 'big';
   protected chosenBooks: book[] = [...books];
 
   constructor(id: string) {
@@ -28,27 +29,27 @@ class MainPage extends Page {
         this.sort = sortFromLocal;
         switch (this.sort) {
           case SortOptions[1].id:
-            this.chosenBooks.sort((a, b) => a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1)
+            this.chosenBooks.sort((a, b) => a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1);
             break;
             
           case SortOptions[2].id:
-            this.chosenBooks.sort((a, b) => a.title.toLowerCase() < b.title.toLowerCase() ? 1 : -1)
+            this.chosenBooks.sort((a, b) => a.title.toLowerCase() < b.title.toLowerCase() ? 1 : -1);
             break;
 
           case SortOptions[3].id:
-            this.chosenBooks.sort((a, b) => a.author.toLowerCase() > b.author.toLowerCase() ? 1 : -1)
+            this.chosenBooks.sort((a, b) => a.author.toLowerCase() > b.author.toLowerCase() ? 1 : -1);
             break;
           
           case SortOptions[4].id:
-            this.chosenBooks.sort((a, b) => a.author.toLowerCase() < b.author.toLowerCase() ? 1 : -1)
+            this.chosenBooks.sort((a, b) => a.author.toLowerCase() < b.author.toLowerCase() ? 1 : -1);
             break;
 
           case SortOptions[5].id:
-            this.chosenBooks.sort((a, b) => a.price - b.price)
+            this.chosenBooks.sort((a, b) => a.price - b.price);
             break;
             
           case SortOptions[6].id:
-            this.chosenBooks.sort((a, b) => b.price - a.price)
+            this.chosenBooks.sort((a, b) => b.price - a.price);
             break;
         }
       }
@@ -104,16 +105,21 @@ class MainPage extends Page {
         }
         this.chosenBooks = this.chosenBooks.filter((val) => chosenId.includes(val.id));
       }
+      const modefromLocal = mainOptions.get(keysMain.Mode);
+      if (modefromLocal) {
+        this.mode = modefromLocal;
+      }
     }
-    this.filters = new Filters(this.sort, this.genre, this.publisher, this.minPrice, this.maxPrice, this.minStock, this.maxStock, this.searchString);
+    this.filters = new Filters(this.sort, this.genre, this.publisher, this.minPrice, this.maxPrice,
+      this.minStock, this.maxStock, this.searchString, this.mode);
     this.content = new Content();
   }
 
   private createMain(): HTMLElement {
-    const section: HTMLElement = this.filters.renderFilters();
+    const section: HTMLElement = this.filters.renderFilters(this.chosenBooks);
     this.container.appendChild(section);
   
-    const content: HTMLDivElement = this.content.renderContent(this.chosenBooks);
+    const content: HTMLDivElement = this.content.renderContent(this.chosenBooks, this.mode);
     this.container.append(content);
     return this.container;
   }

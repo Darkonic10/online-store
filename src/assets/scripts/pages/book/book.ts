@@ -1,15 +1,14 @@
 import Page from "../../core/page";
-import { checkBookId, createElementByTag, formatterUSD } from "../../types/checks"; //getBookID - удалил, warning 'getBookID' is defined but never used
-
+import { checkBookId, createElementByTag, formatterUSD, getMapBasketStorage, setHeaderCounters } from "../../types/checks";
 import { keysMain, PageIds, reg } from "../../types/enums";
 import { book } from "../../types/Interfaces";
-
+import { addModal } from "../modal/modal";
 
 class BookPage extends Page {
   private readonly chosenBookID: number;
   
   static TextObject = {
-    MainTitle: 'BookPage',
+    MainTitle: 'Book Page',
   };
 
   constructor(id: string, chosenBookID: number) {
@@ -18,13 +17,12 @@ class BookPage extends Page {
   }
 
   render(): HTMLElement {
+    setHeaderCounters();
+
     const content: HTMLDivElement = document.createElement('div');
     content.className = 'main-div';
-    const title = this.createHeaderTitle(BookPage.TextObject.MainTitle);
     
     const currentBook: book = checkBookId(this.chosenBookID);
-
-    // const test = document.createElement('a');
 
     const breadCrumps = createElementByTag('div', 'path', HTMLDivElement);
     const breadPublisher = createElementByTag('a', 'links', HTMLAnchorElement, currentBook.publisher);
@@ -35,6 +33,8 @@ class BookPage extends Page {
     breadAuthor.href = `#${PageIds.MainPage}?${keysMain.Search}=${currentBook.author.toUpperCase()}`;
     const breadTitle = createElementByTag('a', 'links', HTMLAnchorElement, currentBook.title);
     breadTitle.href = `#${PageIds.MainPage}?${keysMain.Search}=${currentBook.title.toUpperCase()}`;
+
+    const booksItemsMap: Map<string, number> = getMapBasketStorage('basketIds');
 
     const mainDiv: HTMLDivElement = document.createElement('div');
     mainDiv.className = 'container main__container main__container_start';
@@ -47,7 +47,7 @@ class BookPage extends Page {
     const desc: HTMLDivElement = document.createElement('div');
     desc.className = 'book__desc';
     const buttons: HTMLDivElement = document.createElement('div');
-    buttons.className = 'book__buttons'
+    buttons.className = 'book__buttons';
     const name: HTMLHeadingElement = document.createElement('h2');
     name.innerText = currentBook.title;
     const author: HTMLHeadingElement = document.createElement('h3');
@@ -64,13 +64,16 @@ class BookPage extends Page {
     price.innerText = `${formatterUSD.format(currentBook.price)}`;
     const addButton: HTMLButtonElement = document.createElement('button');
     addButton.className = 'button main__button-add';
-    addButton.textContent = 'Add to cart';
+    if (!booksItemsMap.has(currentBook.id.toString())) {
+      addButton.innerText = 'Add';
+    } else {
+      addButton.innerText = 'Remove';
+    }
     const buyButton: HTMLButtonElement = document.createElement('button');
     buyButton.className = 'button basket__buy-button';
     buyButton.textContent = 'Buy Now';
     
     this.container.append(content);
-    content.appendChild(title)
 
     content.appendChild(breadCrumps);
     breadCrumps.appendChild(breadPublisher);
@@ -107,6 +110,22 @@ class BookPage extends Page {
         img.src = miniImg.src;
       })
     }
+
+    addButton.addEventListener('click', () => {
+      if (!booksItemsMap.has(currentBook.id.toString())) {
+        booksItemsMap.set(currentBook.id.toString(), 1);
+        addButton.innerText = 'Remove';
+      } else {
+        booksItemsMap.delete(currentBook.id.toString());
+        addButton.innerText = 'Add';
+      }
+      localStorage.setItem('basketIds', JSON.stringify(Object.fromEntries(booksItemsMap)));
+
+      setHeaderCounters();
+
+    })
+
+    addModal(this.container, buyButton);
 
     return this.container;
   }

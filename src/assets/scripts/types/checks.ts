@@ -46,7 +46,7 @@ export function setMainOptions(): void {
 
 export function checkBookId(id: number): book {
   for (const book of books) {
-    if(book.id === id) {
+    if (book.id === id) {
       return book;
     }
   }
@@ -97,18 +97,13 @@ export function getBookID(options: Options): number {
   return -1;
 }
 
-export function getBasketOpt(options: Options) {
-
-  return options
-}
-
 export const formatterUSD = new Intl.NumberFormat('en-US', {
   minimumFractionDigits: 2,
   style: 'currency',
   currency: 'USD',
 });
 
-export function getMainAddress (): string {
+export function getMainAddress(): string {
   setMainOptions();
   if (mainOptions.size === 0) {
     return `#${PageIds.MainPage}`;
@@ -120,7 +115,24 @@ export function getMainAddress (): string {
   return `#${PageIds.MainPage}?${arr.join('&')}`;
 }
 
-export function resetMainOptions (): void {
+export function resetMainOptions(): void {
   mainOptions = new Map();
   setMainOptions();
+}
+
+export function setHeaderCounters(): void {
+  const booksItemsMap: Map<string, number> = getMapBasketStorage('basketIds');
+  let totalPrice = 0;
+  let countItems = 0;
+
+  for (const entry of booksItemsMap) {
+    countItems += entry[1];
+    totalPrice += checkBookId(+entry[0]).price * entry[1];
+  }
+  const usdTotal: string = formatterUSD.format(totalPrice);
+
+  const basketCounter: HTMLSpanElement = getElementBySelector(document, HTMLSpanElement, '.header__counter-span');
+  basketCounter.innerText = countItems.toString();
+  const totalPriceHTML: HTMLSpanElement = getElementBySelector(document, HTMLSpanElement, '.header__price-value');
+  totalPriceHTML.innerText = usdTotal;
 }
