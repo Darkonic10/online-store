@@ -13,8 +13,10 @@ class Filters {
   private minStockOpt: number;
   private maxStockOpt: number;
   private searchString: string;
+  private mode: string;
 
-  constructor(sort: string, genre: string[], publisher: string[], minPrice: number, maxPrice: number, minStock: number, maxStock: number, searchString: string){
+  constructor(sort: string, genre: string[], publisher: string[], minPrice: number, maxPrice: number,
+    minStock: number, maxStock: number, searchString: string, mode: string) {
     this.sort = sort;
     this.genre = genre;
     this.publisher = publisher;
@@ -23,6 +25,7 @@ class Filters {
     this.minStockOpt = minStock;
     this.maxStockOpt = maxStock;
     this.searchString = searchString;
+    this.mode = mode;
   }
 
   renderFilters(chosenBooks: book[]): HTMLElement {
@@ -54,6 +57,24 @@ class Filters {
     const fSearch: HTMLDivElement = createElementByTag('div', 'filters__search', HTMLDivElement);
     const fSearchForm: HTMLFormElement = createElementByTag('form', 'filters__search-form', HTMLFormElement);
     const fsearchInput: HTMLInputElement = createElementByTag('input', 'filters__search-input', HTMLInputElement);
+    const infoWrapper: HTMLDivElement = createElementByTag('div', 'filters__wrapper', HTMLDivElement);
+    const infoFound: HTMLHeadingElement = createElementByTag('h3', 'filters__found', HTMLHeadingElement, `Found: ${chosenBooks.length}`);
+    const infoDisplay: HTMLDivElement = createElementByTag('div', 'filters__display', HTMLDivElement);
+
+    infoDisplay.textContent = this.mode === 'mini' ? 'Big' : 'Mini';
+
+    infoDisplay.addEventListener('click', () => {
+      if (this.mode === 'mini') {
+        infoDisplay.textContent = 'Mini';
+        this.mode = 'big';
+      } else {
+        infoDisplay.textContent = 'Big';
+        this.mode = 'mini';
+      }
+      mainOptions.set(keysMain.Mode, this.mode.toString());
+      window.location.hash = getMainAddress();
+    })
+
     fsearchInput.type = 'text';
     fsearchInput.placeholder = 'Search for books by keyword';
     if (this.searchString) {
@@ -90,6 +111,9 @@ class Filters {
     fSearchForm.appendChild(fsearchInput);
     fSearchForm.appendChild(fsearchSubmit);
 
+    infoWrapper.append(infoFound, infoDisplay);
+    baseDiv.append(infoWrapper);
+
     for (let i = 0; i < SortOptions.length; i++) {
       const element = SortOptions[i];
       const opt = new Option(element.name, element.id);
@@ -102,9 +126,12 @@ class Filters {
     fCopy.onclick = function(){
       const url = window.location.href;
       navigator.clipboard.writeText(url).then(function() {
-        console.log('URL copied!');
+        fCopy.textContent = 'URL copied!';
+        setTimeout(() => {
+          fCopy.textContent = 'Copy link';
+        }, 1500);
     }, function() {
-        console.log('URL copy error')
+        throw new Error('URL copy error');
     });
     }
 

@@ -18,6 +18,7 @@ class MainPage extends Page {
   private maxStock = 0;
   private searchWords: string[] = [];
   private searchString = '';
+  private mode = 'big';
   protected chosenBooks: book[] = [...books];
 
   constructor(id: string) {
@@ -104,9 +105,13 @@ class MainPage extends Page {
         }
         this.chosenBooks = this.chosenBooks.filter((val) => chosenId.includes(val.id));
       }
+      const modefromLocal = mainOptions.get(keysMain.Mode);
+      if (modefromLocal) {
+        this.mode = modefromLocal;
+      }
     }
     this.filters = new Filters(this.sort, this.genre, this.publisher, this.minPrice, this.maxPrice,
-      this.minStock, this.maxStock, this.searchString);
+      this.minStock, this.maxStock, this.searchString, this.mode);
     this.content = new Content();
   }
 
@@ -114,7 +119,7 @@ class MainPage extends Page {
     const section: HTMLElement = this.filters.renderFilters(this.chosenBooks);
     this.container.appendChild(section);
   
-    const content: HTMLDivElement = this.content.renderContent(this.chosenBooks);
+    const content: HTMLDivElement = this.content.renderContent(this.chosenBooks, this.mode);
     this.container.append(content);
     return this.container;
   }
