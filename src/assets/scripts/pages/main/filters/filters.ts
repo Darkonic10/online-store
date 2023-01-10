@@ -2,6 +2,7 @@ import { books } from "../../../data/books";
 import { createElementByTag, getElementBySelector, getMainAddress, mainOptions, resetMainOptions, setMainOptions } from "../../../types/checks";
 import noUiSlider from "nouislider";
 import { delimeter, keysMain, reg, SortOptions } from "../../../types/enums";
+import { book } from "../../../types/Interfaces";
 
 class Filters {
   private sort: string;
@@ -24,7 +25,7 @@ class Filters {
     this.searchString = searchString;
   }
 
-  renderFilters(): HTMLElement {
+  renderFilters(chosenBooks: book[]): HTMLElement {
     const section: HTMLElement = document.createElement('section');
     section.className = 'filters';
     const baseDiv: HTMLDivElement = createElementByTag('div', 'container filters__container', HTMLDivElement);
@@ -61,7 +62,6 @@ class Filters {
     const fsearchSubmit: HTMLInputElement = createElementByTag('input', 'filters__search-submit', HTMLInputElement);
     fsearchSubmit.type = 'submit';
     fsearchSubmit.value = '';
-    
     section.appendChild(baseDiv);
     baseDiv.appendChild(fWrapper);
     fWrapper.appendChild(filterGenre);
@@ -121,6 +121,14 @@ class Filters {
     const arrAuthors: string[] = [];
     const prices: number[] = [];
     const stocks: number[] = [];
+    const pricesCur: number[] = [];
+    const stocksCur: number[] = [];
+
+    for (let i = 0; i < chosenBooks.length; i++) {
+      const book = chosenBooks[i];
+      pricesCur.push(book.price);
+      stocksCur.push(book.stock_balance);
+    }
 
     for (const book of books) {
       prices.push(book.price);
@@ -134,7 +142,12 @@ class Filters {
         genreCheckboxItem.append(genreCheckboxInput, genreCheckboxLabel);
         genreCheckboxInput.type = 'checkbox';
         genreCheckboxInput.id = book.genre.replace(/ /g, '');
-        genreCheckboxLabel.innerText = `${book.genre}`;
+        const allCount = books.filter((val) => val.genre === book.genre).length;
+        const curCount = chosenBooks.filter((val) => val.genre === book.genre).length;
+        if (!curCount) {
+          genreCheckboxLabel.classList.add('inactive');
+        }
+        genreCheckboxLabel.innerText = `${book.genre} (${curCount}/${allCount})`;
         genreCheckboxLabel.setAttribute('for', book.genre.replace(/ /g, ''));
         genreCheckboxList.append(genreCheckboxItem);
 
@@ -165,7 +178,12 @@ class Filters {
         publisherCheckboxItem.append(publisherCheckboxInput, publisherCheckboxLabel);
         publisherCheckboxInput.type = 'checkbox';
         publisherCheckboxInput.id = book.publisher.replace(reg, '');
-        publisherCheckboxLabel.innerText = `${book.publisher}`;
+        const allCount = books.filter((val) => val.publisher === book.publisher).length;
+        const curCount = chosenBooks.filter((val) => val.publisher === book.publisher).length;
+        if (!curCount) {
+          publisherCheckboxLabel.classList.add('inactive');
+        }
+        publisherCheckboxLabel.innerText = `${book.publisher} (${curCount}/${allCount})`;
         publisherCheckboxLabel.setAttribute('for', book.publisher.replace(reg, ''));
         publisherCheckboxList.append(publisherCheckboxItem);
 
@@ -193,8 +211,10 @@ class Filters {
 
     const minPrice = Math.min(...prices);
     const maxPrice = Math.max(...prices);
-    const curMinPrice = this.minPriceOpt ? this.minPriceOpt : minPrice;
-    const curMaxPrice = this.maxPriceOpt ? this.maxPriceOpt : maxPrice;
+    const minPriceCur = Math.min(...pricesCur);
+    const maxPriceCur = Math.max(...pricesCur);
+    const curMinPrice = this.minPriceOpt ? this.minPriceOpt : minPriceCur;
+    const curMaxPrice = this.maxPriceOpt ? this.maxPriceOpt : maxPriceCur;
     minPriceHTML.innerText = String(curMinPrice);
     maxPriceHTML.innerText = String(curMaxPrice);
     noUiSlider.create(sliderPrice, {
@@ -204,7 +224,6 @@ class Filters {
         'min': minPrice,
         'max': maxPrice
       },
-      margin: 1,
       step: 1,
     })
 
@@ -222,8 +241,10 @@ class Filters {
 
     const minStock = Math.min(...stocks);
     const maxStock = Math.max(...stocks);
-    const curMinStock = this.minStockOpt ? this.minStockOpt : minStock;
-    const curMaxStock = this.maxStockOpt ? this.maxStockOpt : maxStock;
+    const minStockCur = Math.min(...stocksCur);
+    const maxStockCur = Math.max(...stocksCur);
+    const curMinStock = this.minStockOpt ? this.minStockOpt : minStockCur;
+    const curMaxStock = this.maxStockOpt ? this.maxStockOpt : maxStockCur;
     minStockHTML.innerText = String(curMinStock);
     maxStockHTML.innerText = String(curMaxStock);
     noUiSlider.create(sliderStock, {
@@ -233,7 +254,6 @@ class Filters {
         'min': minStock,
         'max': maxStock,
       },
-      margin: 1,
       step: 1,
     })
 

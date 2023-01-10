@@ -105,12 +105,13 @@ class MainPage extends Page {
         this.chosenBooks = this.chosenBooks.filter((val) => chosenId.includes(val.id));
       }
     }
-    this.filters = new Filters(this.sort, this.genre, this.publisher, this.minPrice, this.maxPrice, this.minStock, this.maxStock, this.searchString);
+    this.filters = new Filters(this.sort, this.genre, this.publisher, this.minPrice, this.maxPrice,
+      this.minStock, this.maxStock, this.searchString);
     this.content = new Content();
   }
 
   private createMain(): HTMLElement {
-    const section: HTMLElement = this.filters.renderFilters();
+    const section: HTMLElement = this.filters.renderFilters(this.chosenBooks);
     this.container.appendChild(section);
   
     const content: HTMLDivElement = this.content.renderContent(this.chosenBooks);
