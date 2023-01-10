@@ -97,10 +97,6 @@ export function getBookID(options: Options): number {
   return -1;
 }
 
-export function getBasketOpt(options: Options) {
-  return options
-}
-
 export const formatterUSD = new Intl.NumberFormat('en-US', {
   minimumFractionDigits: 2,
   style: 'currency',
