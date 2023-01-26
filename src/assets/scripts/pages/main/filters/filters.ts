@@ -79,39 +79,21 @@ class Filters {
     if (this.searchString) {
       fsearchInput.value = this.searchString;
     }
-    const fsearchSubmit: HTMLInputElement = createElementWithOptions('input', HTMLInputElement, {className: 'filters__search-submit'});
-    fsearchSubmit.type = 'submit';
-    fsearchSubmit.value = '';
-    section.appendChild(baseDiv);
-    baseDiv.appendChild(fWrapper);
-    fWrapper.appendChild(filterGenre);
-    filterGenre.appendChild(filterGenreTitle);
-    fWrapper.appendChild(filterPublisher);
-    filterPublisher.appendChild(filterPublisherTitle);
-    fWrapper.appendChild(fSliders);
-    fSliders.appendChild(fPrice);
-    fPrice.appendChild(fPriceTitle);
-    fPrice.appendChild(minPriceHTMLMax);
-    minPriceHTMLMax.appendChild(minPriceHTML);
-    minPriceHTMLMax.appendChild(maxPriceHTML);
-    fPrice.appendChild(sliderPrice);
-    fSliders.appendChild(fStock);
-    fStock.appendChild(fStockTitle);
-    fStock.appendChild(minStockHTMLMax);
-    minStockHTMLMax.appendChild(minStockHTML);
-    minStockHTMLMax.appendChild(maxStockHTML);
-    fStock.appendChild(sliderStock);
-    baseDiv.appendChild(SWrapper);
-    SWrapper.appendChild(fSort);
-    SWrapper.appendChild(fReset);
-    SWrapper.appendChild(fCopy);
-    baseDiv.appendChild(fSearch);
-    fSearch.appendChild(fSearchForm);
-    fSearchForm.appendChild(fsearchInput);
-    fSearchForm.appendChild(fsearchSubmit);
-
+    const fsearchSubmit: HTMLInputElement = createElementWithOptions('input', HTMLInputElement, {className: 'filters__search-submit', type: 'submit', value: ''});
+    section.append(baseDiv);
+    filterGenre.append(filterGenreTitle);
+    filterPublisher.append(filterPublisherTitle);
+    minPriceHTMLMax.append(minPriceHTML, maxPriceHTML);
+    fPrice.append(fPriceTitle, minPriceHTMLMax, sliderPrice);
+    minStockHTMLMax.append(minStockHTML, maxStockHTML);
+    fStock.append(fStockTitle, minStockHTMLMax, sliderStock);
+    fSliders.append(fPrice, fStock);
+    fWrapper.append(filterGenre, filterPublisher, fSliders);
+    SWrapper.append(fSort, fReset, fCopy);
+    fSearchForm.append(fsearchInput, fsearchSubmit);
+    fSearch.append(fSearchForm);
     infoWrapper.append(infoFound, infoDisplay);
-    baseDiv.append(infoWrapper);
+    baseDiv.append(fWrapper, SWrapper, fSearch, infoWrapper);
 
     for (let i = 0; i < SortOptions.length; i++) {
       const element = SortOptions[i];
@@ -119,7 +101,7 @@ class Filters {
       if (element.id === this.sort) {
         opt.selected = true;
       }
-      fSort.appendChild(opt);
+      fSort.append(opt);
     }
 
     fCopy.onclick = function(): void {

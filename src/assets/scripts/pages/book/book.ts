@@ -55,38 +55,26 @@ class BookPage extends Page {
     }
     const buyButton: HTMLButtonElement = createElementWithOptions('button', HTMLButtonElement, {className: 'button basket__buy-button'});
     buyButton.textContent = 'Buy Now';
-    
+
+    breadCrumps.append(breadPublisher);
+    breadCrumps.innerHTML += ' >> ';
+    breadCrumps.append(breadGenre);
+    breadCrumps.innerHTML += ' >> ';
+    breadCrumps.append(breadAuthor);
+    breadCrumps.innerHTML += ' >> ';
+    breadCrumps.append(breadTitle);
+
+    bigImg.append(img);
+    desc.append(name, author, description, genre, publisher, stock);
+    buttons.append(price, addButton, buyButton);
+    mainDiv.append(miniImgContainer, bigImg, desc, buttons);
+    content.append(breadCrumps, mainDiv);
     this.container.append(content);
-
-    content.appendChild(breadCrumps);
-    breadCrumps.appendChild(breadPublisher);
-    breadCrumps.innerHTML += ' >> ';
-    breadCrumps.appendChild(breadGenre);
-    breadCrumps.innerHTML += ' >> ';
-    breadCrumps.appendChild(breadAuthor);
-    breadCrumps.innerHTML += ' >> ';
-    breadCrumps.appendChild(breadTitle);
-
-    bigImg.appendChild(img);
-    mainDiv.appendChild(miniImgContainer);
-    mainDiv.appendChild(bigImg);
-    mainDiv.appendChild(desc);
-    desc.appendChild(name);
-    desc.appendChild(author);
-    desc.appendChild(description);
-    desc.appendChild(genre);
-    desc.appendChild(publisher);
-    desc.appendChild(stock);
-    mainDiv.appendChild(buttons);
-    buttons.appendChild(price);
-    buttons.appendChild(addButton);
-    buttons.appendChild(buyButton);
-    content.append(mainDiv);
 
     for (let i = 0; i < currentBook.book_image.length; i++) {
       const element = currentBook.book_image[i];
       const miniImg: HTMLImageElement = createElementWithOptions('img', HTMLImageElement, {className: 'book__mini-img', src: element});
-      miniImgContainer.appendChild(miniImg);
+      miniImgContainer.append(miniImg);
       miniImg.addEventListener('click', () => {
         img.src = miniImg.src;
       })
