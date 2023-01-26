@@ -1,5 +1,5 @@
 import Page from "../../core/page";
-import { checkBookId, createElementWithOptions, formatterUSD, getMapBasketStorage, setHeaderCounters } from "../../types/checks";
+import { getBookByID, createElementWithOptions, formatterUSD, getMapBasketStorage, setHeaderCounters } from "../../types/checks";
 import { keysMain, PageIds, reg } from "../../types/enums";
 import { book } from "../../types/Interfaces";
 import { addModal } from "../modal/modal";
@@ -20,7 +20,7 @@ class BookPage extends Page {
     setHeaderCounters();
 
     const content: HTMLDivElement = createElementWithOptions('div', HTMLDivElement, {className: 'main-div'});
-    const currentBook: book = checkBookId(this.chosenBookID);
+    const currentBook: book = getBookByID(this.chosenBookID);
 
     const breadCrumps = createElementWithOptions('div', HTMLDivElement, {className: 'path'});
     let href = `#${PageIds.MainPage}?${keysMain.Publisher}=${currentBook.publisher.replace(reg, '')}`;

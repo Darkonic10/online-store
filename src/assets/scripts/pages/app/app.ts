@@ -1,4 +1,4 @@
-import { getBookID, getElementBySelector, getHash, getMainAddress, getMainOptions, getOptions, mainOptions, setMainOptions } from "../../types/checks";
+import { getBookIdFromOptions, getElementBySelector, getHash, getMainAddress, getMainOptions, getOptions, mainOptions, setMainOptions } from "../../types/checks";
 import MainPage from "../main/main";
 import Page from "../../core/page";
 import BasketPage from "../basket/basket";
@@ -46,7 +46,7 @@ class App {
       }
     } else if (idPage === PageIds.BookPage) {
       if (options) {
-        const idBook = getBookID(options);
+        const idBook = getBookIdFromOptions(options);
         if (idBook > 0) {
           page = new BookPage(idPage, idBook);
         }

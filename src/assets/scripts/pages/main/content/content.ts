@@ -1,5 +1,5 @@
 import { book } from "../../../types/Interfaces";
-import { checkBookId, createElementWithOptions, formatterUSD, getElementBySelector, getMapBasketStorage, setHeaderCounters } from "../../../types/checks";
+import { createElementWithOptions, getMapBasketStorage, setHeaderCounters } from "../../../types/checks";
 import { PageIds } from "../../../types/enums";
 
 class Content {
@@ -13,13 +13,6 @@ class Content {
       bookList.appendChild(message);
     }
     const booksItemsMap: Map<string, number> = getMapBasketStorage('basketIds');
-    let totalPrice = 0;
-    let countItems = 0;
-
-    let usdTotal: string = formatterUSD.format(totalPrice);
-
-    const basketCounter: HTMLSpanElement = getElementBySelector(document, HTMLSpanElement, '.header__counter-span');
-    const totalPriceHTML: HTMLSpanElement = getElementBySelector(document, HTMLSpanElement, '.header__price-value');
 
     setHeaderCounters();
 
@@ -61,16 +54,8 @@ class Content {
             booksItemsMap.delete(book.id.toString());
             bookButtonAdd.innerText = 'Add';
           }
-          totalPrice = 0;
-          countItems = 0;
-          for (const entry of booksItemsMap) {
-            countItems += entry[1];
-            totalPrice += checkBookId(+entry[0]).price * entry[1];
-          }
-          usdTotal = formatterUSD.format(totalPrice);
           localStorage.setItem('basketIds', JSON.stringify(Object.fromEntries(booksItemsMap)));
-          basketCounter.innerText = `${countItems}`;
-          totalPriceHTML.innerText = `${usdTotal}`;
+          setHeaderCounters();
         }
 
         if (event.target === bookButtonDetail) {

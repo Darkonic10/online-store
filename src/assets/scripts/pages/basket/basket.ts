@@ -1,5 +1,5 @@
 import Page from "../../core/page";
-import { checkBookId, createElementWithOptions, formatterUSD, getElementBySelector, getMapBasketStorage, setHeaderCounters } from "../../types/checks";
+import { getBookByID, createElementWithOptions, formatterUSD, getElementBySelector, getMapBasketStorage, setHeaderCounters } from "../../types/checks";
 import { book } from "../../types/Interfaces";
 import { PageIds } from "../../types/enums";
 import { addModal } from "../modal/modal";
@@ -82,7 +82,7 @@ class BasketPage extends Page{
       const end = start + itemsPage;
       for (const entry of booksItemsMap) {
         if (i >= start && i < end) {
-          const currBook: book = checkBookId(+entry[0]);
+          const currBook: book = getBookByID(+entry[0]);
           const bookItem: HTMLDivElement = createElementWithOptions('div', HTMLDivElement, {className: `basket__item item-${i + 1}`});
           const listNumb: HTMLDivElement = createElementWithOptions('div', HTMLDivElement, {className: 'basket__item-number', innerText: String(i + 1)});
 
@@ -213,7 +213,7 @@ class BasketPage extends Page{
       countItems = 0;
       for (const entry of booksItemsMap) {
         countItems += entry[1];
-        totalPrice += checkBookId(+entry[0]).price * entry[1];
+        totalPrice += getBookByID(+entry[0]).price * entry[1];
       }
       basketProducts.innerText = `Products: ${countItems}`;
       totalPriceHTML.innerText = `Total: ${formatterUSD.format(totalPrice)}`;
