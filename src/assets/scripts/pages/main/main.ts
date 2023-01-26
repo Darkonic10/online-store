@@ -1,10 +1,10 @@
-import Page from "../../core/page";
-import Filters from "./filters/filters";
-import Content from "./content/content";
-import { books } from "../../data/books";
-import { book } from "../../types/Interfaces";
-import { delimeter, keysMain, reg, SortOptions } from "../../types/enums";
-import { mainOptions } from "../../types/checks";
+import Page from '../../core/page';
+import Filters from './filters/filters';
+import Content from './content/content';
+import { books } from '../../data/books';
+import { book } from '../../types/Interfaces';
+import { delimeter, keysMain, reg, SortOptions } from '../../types/enums';
+import { mainOptions } from '../../types/checks';
 
 class MainPage extends Page {
   protected filters: Filters;
@@ -31,7 +31,7 @@ class MainPage extends Page {
           case SortOptions[1].id:
             this.chosenBooks.sort((a, b) => a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1);
             break;
-            
+
           case SortOptions[2].id:
             this.chosenBooks.sort((a, b) => a.title.toLowerCase() < b.title.toLowerCase() ? 1 : -1);
             break;
@@ -39,7 +39,7 @@ class MainPage extends Page {
           case SortOptions[3].id:
             this.chosenBooks.sort((a, b) => a.author.toLowerCase() > b.author.toLowerCase() ? 1 : -1);
             break;
-          
+
           case SortOptions[4].id:
             this.chosenBooks.sort((a, b) => a.author.toLowerCase() < b.author.toLowerCase() ? 1 : -1);
             break;
@@ -47,7 +47,7 @@ class MainPage extends Page {
           case SortOptions[5].id:
             this.chosenBooks.sort((a, b) => a.price - b.price);
             break;
-            
+
           case SortOptions[6].id:
             this.chosenBooks.sort((a, b) => b.price - a.price);
             break;
@@ -118,14 +118,14 @@ class MainPage extends Page {
     this.content = new Content();
   }
 
-  private createMain(): HTMLElement {
+  private createMain(): HTMLDivElement {
     const section: HTMLElement = this.filters.renderFilters(this.chosenBooks);
     const content: HTMLDivElement = this.content.renderContent(this.chosenBooks, this.mode);
     this.container.append(section, content);
     return this.container;
   }
 
-  render(): HTMLElement {
+  render(): HTMLDivElement {
     return this.createMain();
   }
 }

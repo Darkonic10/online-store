@@ -1,12 +1,18 @@
-import Page from "../../core/page";
-import { getBookByID, createElementWithOptions, formatterUSD, getMapBasketStorage, setHeaderCounters } from "../../types/checks";
-import { keysMain, PageIds, reg } from "../../types/enums";
-import { book } from "../../types/Interfaces";
-import { addModal } from "../modal/modal";
+import Page from '../../core/page';
+import {
+  getBookByID,
+  createElementWithOptions,
+  formatterUSD,
+  getMapBasketStorage,
+  setHeaderCounters,
+} from '../../types/checks';
+import { keysMain, PageIds, reg } from '../../types/enums';
+import { book } from '../../types/Interfaces';
+import { addModal } from '../modal/modal';
 
 class BookPage extends Page {
   private readonly chosenBookID: number;
-  
+
   static TextObject = {
     MainTitle: 'Book Page',
   };
@@ -16,44 +22,63 @@ class BookPage extends Page {
     this.chosenBookID = chosenBookID;
   }
 
-  render(): HTMLElement {
+  render(): HTMLDivElement {
     setHeaderCounters();
 
-    const content: HTMLDivElement = createElementWithOptions('div', HTMLDivElement, {className: 'main-div'});
+    const content: HTMLDivElement = createElementWithOptions('div', HTMLDivElement, { className: 'main-div' });
     const currentBook: book = getBookByID(this.chosenBookID);
 
-    const breadCrumps = createElementWithOptions('div', HTMLDivElement, {className: 'path'});
+    const breadCrumps = createElementWithOptions('div', HTMLDivElement, { className: 'path' });
     let href = `#${PageIds.MainPage}?${keysMain.Publisher}=${currentBook.publisher.replace(reg, '')}`;
-    const breadPublisher = createElementWithOptions('a', HTMLAnchorElement, {className: 'links', textContent: currentBook.publisher, href: href});
+    const breadPublisher = createElementWithOptions('a', HTMLAnchorElement, {
+      className: 'links',
+      textContent: currentBook.publisher,
+      href: href,
+    });
     href = `#${PageIds.MainPage}?${keysMain.Genre}=${currentBook.genre.replace(/ /g, '')}`;
-    const breadGenre = createElementWithOptions('a', HTMLAnchorElement, {className: 'links', textContent: currentBook.genre, href: href});
+    const breadGenre = createElementWithOptions('a', HTMLAnchorElement, {
+      className: 'links',
+      textContent: currentBook.genre,
+      href: href,
+    });
     href = `#${PageIds.MainPage}?${keysMain.Search}=${currentBook.author.toUpperCase()}`;
-    const breadAuthor = createElementWithOptions('a', HTMLAnchorElement, {className: 'links', textContent: currentBook.author, href: href});
+    const breadAuthor = createElementWithOptions('a', HTMLAnchorElement, {
+      className: 'links',
+      textContent: currentBook.author,
+      href: href,
+    });
     href = `#${PageIds.MainPage}?${keysMain.Search}=${currentBook.title.toUpperCase()}`;
-    const breadTitle = createElementWithOptions('a', HTMLAnchorElement, {className: 'links', textContent: currentBook.title, href: href});
+    const breadTitle = createElementWithOptions('a', HTMLAnchorElement, {
+      className: 'links',
+      textContent: currentBook.title,
+      href: href,
+    });
 
     const booksItemsMap: Map<string, number> = getMapBasketStorage('basketIds');
 
-    const mainDiv: HTMLDivElement = createElementWithOptions('div', HTMLDivElement, {className: 'container main__container main__container_start'});
-    const miniImgContainer: HTMLDivElement = createElementWithOptions('div', HTMLDivElement, {className: 'book_mini-img-container'});
+    const mainDiv: HTMLDivElement = createElementWithOptions('div', HTMLDivElement, { className: 'container main__container main__container_start' });
+    const miniImgContainer: HTMLDivElement = createElementWithOptions('div', HTMLDivElement, { className: 'book_mini-img-container' });
     const bigImg: HTMLDivElement = createElementWithOptions('div', HTMLDivElement);
-    const img: HTMLImageElement = createElementWithOptions('img', HTMLImageElement, {className: 'book__big-img', src: currentBook.book_image[0]});
-    const desc: HTMLDivElement = createElementWithOptions('div', HTMLDivElement, {className: 'book__desc'});
-    const buttons: HTMLDivElement = createElementWithOptions('div', HTMLDivElement, {className: 'book__buttons'});
-    const name: HTMLHeadingElement = createElementWithOptions('h2', HTMLHeadingElement, {innerText: currentBook.title});
-    const author: HTMLHeadingElement = createElementWithOptions('h3', HTMLHeadingElement, {innerText: currentBook.author});
-    const description: HTMLParagraphElement = createElementWithOptions('p', HTMLParagraphElement, {innerText: currentBook.description});
-    const genre: HTMLParagraphElement = createElementWithOptions('p', HTMLParagraphElement, {innerText: `Genre: ${currentBook.genre}`});
-    const publisher: HTMLParagraphElement = createElementWithOptions('p', HTMLParagraphElement, {innerText: `Publisher: ${currentBook.publisher}`});
-    const stock: HTMLParagraphElement = createElementWithOptions('p', HTMLParagraphElement, {innerText: `Stock: ${currentBook.stock_balance.toString()}`});
-    const price: HTMLHeadingElement = createElementWithOptions('h1', HTMLHeadingElement, {innerText: `${formatterUSD.format(currentBook.price)}`});
-    const addButton: HTMLButtonElement = createElementWithOptions('button', HTMLButtonElement, {className: 'button main__button-add'});
+    const img: HTMLImageElement = createElementWithOptions('img', HTMLImageElement, {
+      className: 'book__big-img',
+      src: currentBook.book_image[0],
+    });
+    const desc: HTMLDivElement = createElementWithOptions('div', HTMLDivElement, { className: 'book__desc' });
+    const buttons: HTMLDivElement = createElementWithOptions('div', HTMLDivElement, { className: 'book__buttons' });
+    const name: HTMLHeadingElement = createElementWithOptions('h2', HTMLHeadingElement, { innerText: currentBook.title });
+    const author: HTMLHeadingElement = createElementWithOptions('h3', HTMLHeadingElement, { innerText: currentBook.author });
+    const description: HTMLParagraphElement = createElementWithOptions('p', HTMLParagraphElement, { innerText: currentBook.description });
+    const genre: HTMLParagraphElement = createElementWithOptions('p', HTMLParagraphElement, { innerText: `Genre: ${currentBook.genre}` });
+    const publisher: HTMLParagraphElement = createElementWithOptions('p', HTMLParagraphElement, { innerText: `Publisher: ${currentBook.publisher}` });
+    const stock: HTMLParagraphElement = createElementWithOptions('p', HTMLParagraphElement, { innerText: `Stock: ${currentBook.stock_balance.toString()}` });
+    const price: HTMLHeadingElement = createElementWithOptions('h1', HTMLHeadingElement, { innerText: `${formatterUSD.format(currentBook.price)}` });
+    const addButton: HTMLButtonElement = createElementWithOptions('button', HTMLButtonElement, { className: 'button main__button-add' });
     if (!booksItemsMap.has(currentBook.id.toString())) {
       addButton.innerText = 'Add';
     } else {
       addButton.innerText = 'Remove';
     }
-    const buyButton: HTMLButtonElement = createElementWithOptions('button', HTMLButtonElement, {className: 'button basket__buy-button'});
+    const buyButton: HTMLButtonElement = createElementWithOptions('button', HTMLButtonElement, { className: 'button basket__buy-button' });
     buyButton.textContent = 'Buy Now';
 
     breadCrumps.append(breadPublisher);
@@ -73,11 +98,14 @@ class BookPage extends Page {
 
     for (let i = 0; i < currentBook.book_image.length; i++) {
       const element = currentBook.book_image[i];
-      const miniImg: HTMLImageElement = createElementWithOptions('img', HTMLImageElement, {className: 'book__mini-img', src: element});
+      const miniImg: HTMLImageElement = createElementWithOptions('img', HTMLImageElement, {
+        className: 'book__mini-img',
+        src: element,
+      });
       miniImgContainer.append(miniImg);
       miniImg.addEventListener('click', () => {
         img.src = miniImg.src;
-      })
+      });
     }
 
     addButton.addEventListener('click', () => {
@@ -92,7 +120,7 @@ class BookPage extends Page {
 
       setHeaderCounters();
 
-    })
+    });
 
     addModal(this.container, buyButton);
 
