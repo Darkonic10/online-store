@@ -1,10 +1,10 @@
-import { books } from "../data/books";
-import { PageIds } from "./enums";
-import { book, elementOptions, Options } from "./Interfaces";
+import { books } from '../data/books';
+import { PageIds } from './enums';
+import { book, elementOptions, Options } from './Interfaces';
 
 export const locStMainOptions = 'mainOptions';
 
-export function getElementBySelector <T extends typeof Element>(
+export function getElementBySelector<T extends typeof Element>(
   element: DocumentFragment | HTMLElement | Document,
   type: T,
   selector: string): InstanceType<T> {
@@ -18,7 +18,7 @@ export function getElementBySelector <T extends typeof Element>(
   return result as InstanceType<T>;
 }
 
-export function getLocalStorage (element: Storage, selector: string): string {
+export function getLocalStorage(element: Storage, selector: string): string {
   const result = element.getItem(selector);
   if (!result && selector === 'totalPrice') {
     return '0';
@@ -62,19 +62,7 @@ export function getHash(hash: string): string {
   return hash.slice(1, posOptions);
 }
 
-export function createElementByTag <T extends typeof HTMLElement>(tagName: string, classNames: string, type: T, content?: string): InstanceType<T> {
-  const result = document.createElement(tagName);
-  result.className = classNames;
-  if (content) {
-    result.textContent = content;
-  }
-  if (!(result instanceof type)) {
-    throw new TypeError(`Selector ${tagName} have wrong type`);
-  }
-  return result as InstanceType<T>;
-}
-
-export function createElementWithOptions <T extends typeof HTMLElement>(tagName: string, type: T, options?: elementOptions): InstanceType<T> {
+export function createElementWithOptions<T extends typeof HTMLElement>(tagName: string, type: T, options?: elementOptions): InstanceType<T> {
   const element = document.createElement(tagName);
   const result = options ? Object.assign(element, options) : element;
   if (!(result instanceof type)) {
@@ -112,6 +100,22 @@ export const formatterUSD = new Intl.NumberFormat('en-US', {
   currency: 'USD',
 });
 
+export function changeQuantity(currQuantity: HTMLSpanElement,
+                               itemPrice: HTMLSpanElement,
+                               currBook: book,
+                               booksItemsMap: Map<string, number>,
+                               entry: [string, number],
+                               operation: '+' | '-'): void {
+  if (operation === '+') {
+    currQuantity.innerText = String(+currQuantity.innerText + 1);
+  } else if (operation === '-') {
+    currQuantity.innerText = String(+currQuantity.innerText - 1);
+  }
+  itemPrice.innerText = `${String(formatterUSD.format(currBook.price * +currQuantity.innerText))}`;
+  booksItemsMap.set(entry[0], +currQuantity.innerText);
+  localStorage.setItem('basketIds', JSON.stringify(Object.fromEntries(booksItemsMap)));
+}
+
 export function getMainAddress(): string {
   setMainOptions();
   if (mainOptions.size === 0) {
@@ -120,7 +124,7 @@ export function getMainAddress(): string {
   const arr: string[] = [];
   mainOptions.forEach((val, key) => {
     arr.push(`${key}=${val}`);
-  })
+  });
   return `#${PageIds.MainPage}?${arr.join('&')}`;
 }
 

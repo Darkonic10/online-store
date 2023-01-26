@@ -53,6 +53,13 @@ export const SortOptions: stringObject[] = [
   },
 ]
 
+export const enum promoCodes {
+  RS = 'Rolling Scopes School',
+  RS_DISCOUNT = 10,
+  EPM = 'EPAM Systems',
+  EPM_DISCOUNT = 10,
+}
+
 export const enum ErrorTypes {
   Error_404 = 404,
 }

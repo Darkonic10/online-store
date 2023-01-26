@@ -1,16 +1,25 @@
-import { getBookIdFromOptions, getElementBySelector, getHash, getMainAddress, getMainOptions, getOptions, mainOptions, setMainOptions } from "../../types/checks";
-import MainPage from "../main/main";
-import Page from "../../core/page";
-import BasketPage from "../basket/basket";
-import BookPage from "../book/book";
-import { ErrorTypes, PageIds } from "../../types/enums";
-import ErrorPage from "../page404/page404";
-import { Options } from "../../types/Interfaces";
+import {
+  getBookIdFromOptions,
+  getElementBySelector,
+  getHash,
+  getMainAddress,
+  getMainOptions,
+  getOptions,
+  mainOptions,
+  setMainOptions,
+} from '../../types/checks';
+import MainPage from '../main/main';
+import Page from '../../core/page';
+import BasketPage from '../basket/basket';
+import BookPage from '../book/book';
+import { ErrorTypes, PageIds } from '../../types/enums';
+import ErrorPage from '../page404/page404';
+import { Options } from '../../types/Interfaces';
 
 class App {
   private static container: HTMLElement = getElementBySelector(document, HTMLElement, 'main');
   private static defaultPageID = 'current-page';
-  
+
   static renderNewPage(idPage: string, options?: Options): void {
     const currentPage = document.querySelector(`#${this.defaultPageID}`);
     if (currentPage) {
@@ -73,6 +82,7 @@ class App {
         App.renderNewPage(address, options);
       }
     }
+
     window.addEventListener('hashchange', getPageHash);
     window.addEventListener('load', getPageHash);
   }
@@ -84,4 +94,4 @@ class App {
   }
 }
 
-export default App
+export default App;

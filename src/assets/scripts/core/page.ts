@@ -12,9 +12,9 @@ abstract class Page {
     return headerTitle;
   }
 
-  render(): HTMLElement {
+  render(): HTMLDivElement {
     return this.container;
   }
 }
 
-export default Page
+export default Page;
