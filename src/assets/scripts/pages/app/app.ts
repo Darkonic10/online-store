@@ -17,7 +17,7 @@ class App {
       currentPage.remove();
     }
 
-    let page: Page | null = null;
+    let page: Page = new ErrorPage(idPage, ErrorTypes.Error_404);
     if (idPage === PageIds.MainPage) {
       if ((!options || options.size === 0) && mainOptions.size !== 0) {
         window.location.hash = getMainAddress();
@@ -40,8 +40,6 @@ class App {
           page = new BasketPage(idPage, 3, +pageOptions);
         } else if (typeof itemsPage === 'undefined' && typeof pageOptions === 'undefined') {
           page = new BasketPage(idPage, 3, 1);
-        } else {
-          page = new ErrorPage(idPage, ErrorTypes.Error_404);
         }
       } else {
         page = new BasketPage(idPage, 3, 1);
@@ -51,14 +49,8 @@ class App {
         const idBook = getBookID(options);
         if (idBook > 0) {
           page = new BookPage(idPage, idBook);
-        } else {
-          page = new ErrorPage(idPage, ErrorTypes.Error_404);
         }
-      } else {
-        page = new ErrorPage(idPage, ErrorTypes.Error_404);
       }
-    } else {
-      page = new ErrorPage(idPage, ErrorTypes.Error_404);
     }
 
     if (page) {
