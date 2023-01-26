@@ -1,5 +1,5 @@
 import { book } from "../../../types/Interfaces";
-import { createElementWithOptions, getMapBasketStorage, setHeaderCounters } from "../../../types/checks";
+import { createElementWithOptions, formatterUSD, getMapBasketStorage, setHeaderCounters } from "../../../types/checks";
 import { PageIds } from "../../../types/enums";
 
 class Content {
@@ -25,7 +25,7 @@ class Content {
       bookInfo.append(bookTitle, bookAuthor);
       if (mode !== 'mini') {
         const bookGenre: HTMLParagraphElement = createElementWithOptions('p', HTMLParagraphElement, {innerText: `Genre: ${book.genre}`});
-        const bookPrice: HTMLParagraphElement = createElementWithOptions('p', HTMLParagraphElement, {innerText: `Price: $${book.price}`});
+        const bookPrice: HTMLParagraphElement = createElementWithOptions('p', HTMLParagraphElement, {innerText: `Price: ${formatterUSD.format(book.price)}`});
         const bookStock: HTMLParagraphElement = createElementWithOptions('p', HTMLParagraphElement, {innerText: `Stock: ${book.stock_balance}`});
         bookInfo.append(bookGenre, bookPrice, bookStock);
       }
