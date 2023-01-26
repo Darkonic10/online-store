@@ -1,4 +1,4 @@
-import { getBookID, getElementBySelector, getHash, getMainAddress, getMainOptions, getOptions, mainOptions, setMainOptions } from "../../types/checks";
+import { getBookIdFromOptions, getElementBySelector, getHash, getMainAddress, getMainOptions, getOptions, mainOptions, setMainOptions } from "../../types/checks";
 import MainPage from "../main/main";
 import Page from "../../core/page";
 import BasketPage from "../basket/basket";
@@ -17,7 +17,7 @@ class App {
       currentPage.remove();
     }
 
-    let page: Page | null = null;
+    let page: Page = new ErrorPage(idPage, ErrorTypes.Error_404);
     if (idPage === PageIds.MainPage) {
       if ((!options || options.size === 0) && mainOptions.size !== 0) {
         window.location.hash = getMainAddress();
@@ -40,25 +40,17 @@ class App {
           page = new BasketPage(idPage, 3, +pageOptions);
         } else if (typeof itemsPage === 'undefined' && typeof pageOptions === 'undefined') {
           page = new BasketPage(idPage, 3, 1);
-        } else {
-          page = new ErrorPage(idPage, ErrorTypes.Error_404);
         }
       } else {
         page = new BasketPage(idPage, 3, 1);
       }
     } else if (idPage === PageIds.BookPage) {
       if (options) {
-        const idBook = getBookID(options);
+        const idBook = getBookIdFromOptions(options);
         if (idBook > 0) {
           page = new BookPage(idPage, idBook);
-        } else {
-          page = new ErrorPage(idPage, ErrorTypes.Error_404);
         }
-      } else {
-        page = new ErrorPage(idPage, ErrorTypes.Error_404);
       }
-    } else {
-      page = new ErrorPage(idPage, ErrorTypes.Error_404);
     }
 
     if (page) {

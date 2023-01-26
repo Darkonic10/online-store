@@ -1,4 +1,4 @@
-import { checkBookId, createElementByTag, formatterUSD, getBookID, getHash, getLocalStorage } from "./checks"
+import { getBookByID, formatterUSD, getBookIdFromOptions, getHash, getLocalStorage } from "./checks"
 
 const fakeLocalStorage = {
   getItem: (key: string) => {
@@ -25,13 +25,13 @@ const fakeLocalStorage = {
 
 describe('Check function tests', () => {
   it('should check is this book id exist', () => {
-    expect(checkBookId(5)).toBeDefined();
+    expect(getBookByID(5)).toBeDefined();
   }, 3000);
 
   it('should get book id if it exists', () => {
     const options = new Map([['id', '18']]);
     const result = '18'
-    expect(getBookID(options)).toMatchSnapshot(result);
+    expect(getBookIdFromOptions(options)).toMatchSnapshot(result);
   }, 3000);
 
   it('should return formatted price', () => {
@@ -40,11 +40,15 @@ describe('Check function tests', () => {
     expect(formatterUSD.format(price)).toEqual(result);
   }, 3000);
 
+  it('should return a stryng type object', () => {
+    const url = '#main-page?maxStock=11&publisher=QuillTree↕SimonSchuster';
+    expect(typeof getHash(url) === 'string').toBeTruthy();
+  }, 3000);
+
   it('should return clean page address without query parameters', () => {
     const url = '#main-page?maxStock=11&publisher=QuillTree↕SimonSchuster';
     const result = 'main-page'
     expect(getHash(url)).toEqual(result);
-    expect(typeof getHash(url) === 'string').toBeTruthy();
   }, 3000);
 
   it('should return HTML element of given type', () => {
@@ -53,5 +57,5 @@ describe('Check function tests', () => {
 });
 
 test('throw an error if no such a book was found', () => {
-  expect(() => {checkBookId(0)}).toThrowError();
+  expect(() => {getBookByID(0)}).toThrowError();
 });

@@ -2,88 +2,44 @@ import noLogo from '../../../images/basket-card/no-logo.webp';
 import mir from '../../../images/basket-card/mir-en.svg';
 import visa from '../../../images/basket-card/visa.svg';
 import mastercard from '../../../images/basket-card/mastercard.svg';
+import { createElementWithOptions } from '../../types/checks';
 
 export function addModal(container: HTMLDivElement, button: HTMLButtonElement): void {
-  const modalContainer = document.createElement('div');
-    modalContainer.className = 'modal__container';
-    const modalContent = document.createElement('div');
-    modalContent.className = 'modal__content';
+  const modalContainer = createElementWithOptions('div', HTMLDivElement, {className: 'modal__container'});
+    const modalContent = createElementWithOptions('div', HTMLDivElement, {className: 'modal__content'});
     modalContainer.append(modalContent);
 
-    const contentForm = document.createElement('form');
-    contentForm.className = 'modal__content-form';
+    const contentForm = createElementWithOptions('form', HTMLFormElement, {className: 'modal__content-form'});
 
-    const personDetails = document.createElement('div');
-    personDetails.className = 'modal__detail';
-    const detailsHead = document.createElement('h2');
-    detailsHead.innerText = 'Personal details';
-    detailsHead.className = 'modal__detail-head';
+    const personDetails = createElementWithOptions('div', HTMLDivElement, {className: 'modal__detail'});
+    const detailsHead = createElementWithOptions('h2', HTMLHeadingElement, {innerText: 'Personal details', className: 'modal__detail-head'});
 
-    const nameDiv = document.createElement('div');
-    nameDiv.className = 'modal__div-name';
-    const phoneDiv = document.createElement('div');
-    phoneDiv.className = 'modal__div-phone';
-    const addressDiv = document.createElement('div');
-    addressDiv.className = 'modal__div-address';
-    const emailDiv = document.createElement('div');
-    emailDiv.className = 'modal__div-emailDiv';
+    const nameDiv = createElementWithOptions('div', HTMLDivElement, {className: 'modal__div-name'});
+    const phoneDiv = createElementWithOptions('div', HTMLDivElement, {className: 'modal__div-phone'});
+    const addressDiv = createElementWithOptions('div', HTMLDivElement, {className: 'modal__div-address'});
+    const emailDiv = createElementWithOptions('div', HTMLDivElement, {className: 'modal__div-emailDiv'});
 
-    const inputName = document.createElement('input');
-    inputName.type = 'text';
-    inputName.placeholder = 'Name';
-    inputName.className = 'input modal__input-name';
-    const inputPhone = document.createElement('input');
-    inputPhone.type = 'tel';
-    inputPhone.placeholder = 'Phone number';
-    inputPhone.min = '9';
-    inputPhone.className = 'input modal__input-phone';
-    const inputAddress = document.createElement('input');
-    inputAddress.type = 'text';
-    inputAddress.placeholder = 'Delivery address';
-    inputAddress.className = 'input modal__input-address';
-    const inputEmail = document.createElement('input');
-    inputEmail.type = 'email';
-    inputEmail.placeholder = 'E-mail';
-    inputEmail.className = 'input modal__input-email';
+    const inputName = createElementWithOptions('input', HTMLInputElement, {type: 'text', placeholder: 'Name', className: 'input modal__input-name'});
+    const inputPhone = createElementWithOptions('input', HTMLInputElement, {type: 'tel', placeholder: 'Phone number', min: '9', className: 'input modal__input-phone'});
+    const inputAddress = createElementWithOptions('input', HTMLInputElement, {type: 'text', placeholder: 'Delivery address', className: 'input modal__input-address'});
+    const inputEmail = createElementWithOptions('input', HTMLInputElement, {type: 'email', placeholder: 'E-mail', className: 'input modal__input-email'});
 
-    const cardDetails = document.createElement('div');
-    cardDetails.className = 'modal__card-details';
-    const cardHead = document.createElement('h2');
-    cardHead.innerText = 'Credit card details';
-    cardHead.className = 'modal__card-head';
-    const cardData = document.createElement('div');
-    cardData.className = 'modal__card-data';
+    const cardDetails = createElementWithOptions('div', HTMLDivElement, {className: 'modal__card-details'});
+    const cardHead = createElementWithOptions('h2', HTMLHeadingElement, {className: 'modal__card-head', innerText: 'Credit card details'});
+    const cardData = createElementWithOptions('div', HTMLDivElement, {className: 'modal__card-data'});
 
-    const cardNumber = document.createElement('div');
-    cardNumber.className = 'modal__card-number';
-    const cardImg = document.createElement('div');
-    cardImg.className = 'modal__card-img'
-    const inputCardNumber = document.createElement('input');
-    inputCardNumber.type = 'number';
-    inputCardNumber.placeholder = 'Card number';
-    inputCardNumber.className = 'modal__card-input-number'
+    const cardNumber = createElementWithOptions('div', HTMLDivElement, {className: 'modal__card-number'});
+    const cardImg = createElementWithOptions('div', HTMLDivElement, {className: 'modal__card-img'});
+    const inputCardNumber = createElementWithOptions('input', HTMLInputElement, {type: 'number', placeholder: 'Card number', className: 'modal__card-input-number'});
 
-    const cardOtherData = document.createElement('div');
-    cardOtherData.className = 'modal__card-other';
-    const validData = document.createElement('div');
-    validData.className = 'modal__other-valid';
-    const validText = document.createElement('span');
-    validText.innerText = 'VALID:';
-    validText.className = 'modal__valid-text';
-    const inputValid = document.createElement('input');
-    inputValid.type = 'text';
-    inputValid.placeholder = 'Valid date';
-    inputValid.className = 'modal__valid-input';
+    const cardOtherData = createElementWithOptions('div', HTMLDivElement, {className: 'modal__card-other'});
+    const validData = createElementWithOptions('div', HTMLDivElement, {className: 'modal__other-valid'});
+    const validText = createElementWithOptions('span', HTMLSpanElement, {innerText: 'VALID:', className: 'modal__valid-text'});
+    const inputValid = createElementWithOptions('input', HTMLInputElement, {type: 'text', placeholder: 'Valid date', className: 'modal__valid-input'});
 
-    const cvvData = document.createElement('div');
-    cvvData.className = 'modal__other-cvv';
-    const cvvText = document.createElement('span');
-    cvvText.innerText = 'CVV:';
-    cvvText.className = 'modal__cvv-text';
-    const cvvValid = document.createElement('input');
-    cvvValid.type = 'number';
-    cvvValid.placeholder = 'Code';
-    cvvValid.className = 'modal__cvv-input';
+    const cvvData = createElementWithOptions('div', HTMLDivElement, {className: 'modal__other-cvv'});
+    const cvvText = createElementWithOptions('span', HTMLSpanElement, {innerText: 'CVV:', className: 'modal__cvv-text'});
+    const cvvValid = createElementWithOptions('input', HTMLInputElement, {type: 'number', placeholder: 'Code', className: 'modal__cvv-input'});
 
     nameDiv.append(inputName);
     phoneDiv.append(inputPhone);
@@ -97,9 +53,7 @@ export function addModal(container: HTMLDivElement, button: HTMLButtonElement): 
     cardData.append(cardNumber, cardOtherData);
     cardDetails.append(cardHead, cardData);
 
-    const confirmButton = document.createElement('button');
-    confirmButton.innerText = 'CONFIRM';
-    confirmButton.className = 'modal__confirm';
+    const confirmButton = createElementWithOptions('button', HTMLButtonElement, {innerText: 'CONFIRM', className: 'modal__confirm'});
 
     contentForm.append(personDetails, cardDetails, confirmButton);
     modalContent.append(contentForm);
@@ -115,20 +69,20 @@ export function addModal(container: HTMLDivElement, button: HTMLButtonElement): 
     })
 
 
-    const spanError = document.createElement('span');
+    const spanError = createElementWithOptions('span', HTMLSpanElement, {});
     spanError.innerText = 'error';
-    const spanError2 = document.createElement('span');
+    const spanError2 = createElementWithOptions('span', HTMLSpanElement, {});
     spanError2.innerText = 'error';
-    const spanError3 = document.createElement('span');
+    const spanError3 = createElementWithOptions('span', HTMLSpanElement, {});
     spanError3.innerText = 'error';
-    const spanError4 = document.createElement('span');
+    const spanError4 = createElementWithOptions('span', HTMLSpanElement, {});
     spanError4.innerText = 'error';
 
-    const cardNumberErr = document.createElement('span');
+    const cardNumberErr = createElementWithOptions('span', HTMLSpanElement, {});
     cardNumberErr.innerText = 'Card number - error';
-    const cardDataErr = document.createElement('span');
+    const cardDataErr = createElementWithOptions('span', HTMLSpanElement, {});
     cardDataErr.innerText = 'Card date - error';
-    const cardCvvErr = document.createElement('span');
+    const cardCvvErr = createElementWithOptions('span', HTMLSpanElement, {});
     cardCvvErr.innerText = 'Card cvv - error';
 
     function checkInputName(): boolean {
@@ -276,7 +230,7 @@ export function addModal(container: HTMLDivElement, button: HTMLButtonElement): 
       checkCardCvv();
     })
 
-    const successBuy = document.createElement('h1');
+    const successBuy = createElementWithOptions('h1', HTMLHeadingElement, {});
     successBuy.innerText = 'Your order has been completed. You will be redirected to the main page in 3 seconds.';
 
     confirmButton.addEventListener('click', () => {

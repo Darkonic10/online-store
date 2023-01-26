@@ -1,6 +1,6 @@
 import { books } from "../data/books";
 import { PageIds } from "./enums";
-import { book, Options } from "./Interfaces";
+import { book, elementOptions, Options } from "./Interfaces";
 
 export const locStMainOptions = 'mainOptions';
 
@@ -44,7 +44,7 @@ export function setMainOptions(): void {
   localStorage.setItem(locStMainOptions, opt);
 }
 
-export function checkBookId(id: number): book {
+export function getBookByID(id: number): book {
   for (const book of books) {
     if (book.id === id) {
       return book;
@@ -74,6 +74,15 @@ export function createElementByTag <T extends typeof HTMLElement>(tagName: strin
   return result as InstanceType<T>;
 }
 
+export function createElementWithOptions <T extends typeof HTMLElement>(tagName: string, type: T, options?: elementOptions): InstanceType<T> {
+  const element = document.createElement(tagName);
+  const result = options ? Object.assign(element, options) : element;
+  if (!(result instanceof type)) {
+    throw new TypeError(`Selector ${tagName} have wrong type`);
+  }
+  return result as InstanceType<T>;
+}
+
 export function getOptions(opt: string): Options {
   const result = new Map();
   const arr = opt.split('&');
@@ -86,7 +95,7 @@ export function getOptions(opt: string): Options {
   return result as Map<string, string>;
 }
 
-export function getBookID(options: Options): number {
+export function getBookIdFromOptions(options: Options): number {
   const res = options.get('id');
   if (typeof res === 'string') {
     const result = parseInt(res);
@@ -127,7 +136,7 @@ export function setHeaderCounters(): void {
 
   for (const entry of booksItemsMap) {
     countItems += entry[1];
-    totalPrice += checkBookId(+entry[0]).price * entry[1];
+    totalPrice += getBookByID(+entry[0]).price * entry[1];
   }
   const usdTotal: string = formatterUSD.format(totalPrice);
 

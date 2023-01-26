@@ -51,6 +51,9 @@ class MainPage extends Page {
           case SortOptions[6].id:
             this.chosenBooks.sort((a, b) => b.price - a.price);
             break;
+
+          default:
+            break;
         }
       }
       const genreFromLocal = mainOptions.get(keysMain.Genre);
@@ -117,10 +120,8 @@ class MainPage extends Page {
 
   private createMain(): HTMLElement {
     const section: HTMLElement = this.filters.renderFilters(this.chosenBooks);
-    this.container.appendChild(section);
-  
     const content: HTMLDivElement = this.content.renderContent(this.chosenBooks, this.mode);
-    this.container.append(content);
+    this.container.append(section, content);
     return this.container;
   }
 

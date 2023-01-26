@@ -1,5 +1,5 @@
 import Page from "../../core/page";
-import { checkBookId, formatterUSD, getElementBySelector, getMapBasketStorage, setHeaderCounters } from "../../types/checks";
+import { getBookByID, createElementWithOptions, formatterUSD, getElementBySelector, getMapBasketStorage, setHeaderCounters } from "../../types/checks";
 import { book } from "../../types/Interfaces";
 import { PageIds } from "../../types/enums";
 import { addModal } from "../modal/modal";
@@ -18,13 +18,12 @@ class BasketPage extends Page{
     this.page = page;
   }
 
-  private createMain(): HTMLElement {
+  private createMain() {
     const title = this.createHeaderTitle(BasketPage.TextObject.MainTitle);
 
     setHeaderCounters();
 
-    const basket: HTMLDivElement = document.createElement('div');
-    basket.className = 'basket';
+    const basket: HTMLDivElement = createElementWithOptions('div', HTMLDivElement, {className: 'basket'});
     basket.innerHTML = `
     <div class="container basket__container">
       <div class="basket__products">
@@ -55,9 +54,7 @@ class BasketPage extends Page{
     let totalPrice = 0;
     let countItems = 0;
 
-    const emptyBasket = document.createElement('h1');
-    emptyBasket.innerText = 'The basket is empty';
-    emptyBasket.className = 'basket__empty';
+    const emptyBasket = createElementWithOptions('h1', HTMLHeadingElement, {innerText: 'The basket is empty', className: 'basket__empty'});
     if (booksItemsMap.size === 0) {
       this.container.append(emptyBasket);
     } else {
@@ -85,24 +82,15 @@ class BasketPage extends Page{
       const end = start + itemsPage;
       for (const entry of booksItemsMap) {
         if (i >= start && i < end) {
-          const currBook: book = checkBookId(+entry[0]);
-          const bookItem: HTMLDivElement = document.createElement('div');
-          bookItem.className = `basket__item item-${i + 1}`;
-          const listNumb: HTMLDivElement = document.createElement('div');
-          listNumb.className = 'basket__item-number';
-          listNumb.innerText = String(i + 1);
+          const currBook: book = getBookByID(+entry[0]);
+          const bookItem: HTMLDivElement = createElementWithOptions('div', HTMLDivElement, {className: `basket__item item-${i + 1}`});
+          const listNumb: HTMLDivElement = createElementWithOptions('div', HTMLDivElement, {className: 'basket__item-number', innerText: String(i + 1)});
 
-          const itemInfo: HTMLDivElement = document.createElement('div');
-          itemInfo.className = 'basket__item-info';
-          const bookImg: HTMLImageElement = document.createElement('img');
-          bookImg.className = 'basket__item-img';
-          bookImg.src = currBook.book_image[0];
-          const itemDetail: HTMLDivElement = document.createElement('div');
-          itemDetail.className = 'basket__item-detail';
-          const itemTitle: HTMLHeadingElement = document.createElement('h3');
-          itemTitle.innerText = currBook.title;
-          const itemDescription: HTMLParagraphElement = document.createElement('p');
-          itemDescription.innerText = currBook.description;
+          const itemInfo: HTMLDivElement = createElementWithOptions('div', HTMLDivElement, {className: 'basket__item-info'});
+          const bookImg: HTMLImageElement = createElementWithOptions('img', HTMLImageElement, {className: 'basket__item-img', src: currBook.book_image[0]});
+          const itemDetail: HTMLDivElement = createElementWithOptions('div', HTMLDivElement, {className: 'basket__item-detail'});
+          const itemTitle: HTMLHeadingElement = createElementWithOptions('h3', HTMLHeadingElement, {innerText: currBook.title});
+          const itemDescription: HTMLParagraphElement = createElementWithOptions('p', HTMLParagraphElement, {innerText: currBook.description});
           itemDetail.append(itemTitle, itemDescription);
           itemInfo.append(bookImg, itemDetail);
 
@@ -110,29 +98,15 @@ class BasketPage extends Page{
             window.location.hash = `#${PageIds.BookPage}?id=${currBook.id}`;
           })
 
-          const itemControl: HTMLDivElement = document.createElement('div');
-          itemControl.className = 'basket__item-control';
-          const stockDiv: HTMLDivElement = document.createElement('div');
-          stockDiv.className = 'basket__item-stock';
-          const stockValue: HTMLSpanElement = document.createElement('span');
-          stockValue.className = 'basket__stock-value';
-          stockValue.innerText = `Stock: ${String(currBook.stock_balance)}`;
-          const itemNumberDiv: HTMLDivElement = document.createElement('div');
-          itemNumberDiv.className = 'basket__item-number-div';
-          const buttonPlus: HTMLButtonElement = document.createElement('button');
-          buttonPlus.className = 'basket__item-add';
-          buttonPlus.innerText = '+';
-          const currQuantity: HTMLSpanElement = document.createElement('span');
-          currQuantity.className = 'basket__item-quantity';
-          currQuantity.innerText = String(entry[1]);
-          const buttonMinus: HTMLButtonElement = document.createElement('button');
-          buttonMinus.className = 'basket__item-delete';
-          buttonMinus.innerText = '-';
-          const itemPriceDiv: HTMLDivElement = document.createElement('div');
-          itemPriceDiv.className = 'basket__item-price';
-          const itemPrice: HTMLSpanElement = document.createElement('span');
-          itemPrice.className = 'basket__price-value';
-          itemPrice.innerText = `${String(formatterUSD.format(currBook.price * entry[1]))}`;
+          const itemControl: HTMLDivElement = createElementWithOptions('div', HTMLDivElement, {className: 'basket__item-control'});
+          const stockDiv: HTMLDivElement = createElementWithOptions('div', HTMLDivElement, {className: 'basket__item-stock'});
+          const stockValue: HTMLSpanElement = createElementWithOptions('span', HTMLSpanElement, {className: 'basket__stock-value', innerText: `Stock: ${String(currBook.stock_balance)}`});
+          const itemNumberDiv: HTMLDivElement = createElementWithOptions('div', HTMLDivElement, {className: 'basket__item-number-div'});
+          const buttonPlus: HTMLButtonElement = createElementWithOptions('button', HTMLButtonElement, {className: 'basket__item-add', innerText: '+'});
+          const currQuantity: HTMLSpanElement = createElementWithOptions('span', HTMLSpanElement, {className: 'basket__item-quantity', innerText: String(entry[1])});
+          const buttonMinus: HTMLButtonElement = createElementWithOptions('button', HTMLButtonElement, {className: 'basket__item-delete', innerText: '-'});
+          const itemPriceDiv: HTMLDivElement = createElementWithOptions('div', HTMLDivElement, {className: 'basket__item-price'});
+          const itemPrice: HTMLSpanElement = createElementWithOptions('span', HTMLSpanElement, {className: 'basket__price-value', innerText: `${String(formatterUSD.format(currBook.price * entry[1]))}`});
           stockDiv.append(stockValue);
           itemNumberDiv.append(buttonMinus, currQuantity, buttonPlus);
           itemPriceDiv.append(itemPrice);
@@ -189,30 +163,16 @@ class BasketPage extends Page{
     pagination(this.itemsPage, this.page);
 
     const basketSummary: HTMLDivElement = getElementBySelector(basket, HTMLDivElement, '.basket__summary');
-    const basketProducts: HTMLParagraphElement = document.createElement('p');
-    basketProducts.className = 'basket__items-count';
-    basketProducts.innerText = `Products: ${countItems}`;
-    const totalPriceHTML: HTMLParagraphElement = document.createElement('p');
-    totalPriceHTML.className = 'basket__items-total';
-    totalPriceHTML.innerText = `Total: ${formatterUSD.format(totalPrice)}`;
-    const inputPromo: HTMLInputElement = document.createElement('input');
-    inputPromo.className = 'basket__promo';
-    inputPromo.type = 'text';
-    inputPromo.placeholder = 'Enter promo code';
-    const testPromo: HTMLSpanElement = document.createElement('span');
-    testPromo.innerText = 'Promo for test: \'RS\', \'EPM\'';
-    const buyButton: HTMLButtonElement = document.createElement('button');
-    buyButton.className = 'basket__buy-button';
-    buyButton.innerText = 'BUY NOW';
+    const basketProducts: HTMLParagraphElement = createElementWithOptions('p', HTMLParagraphElement, {className: 'basket__items-count', innerText: `Products: ${countItems}`});
+    const totalPriceHTML: HTMLParagraphElement = createElementWithOptions('p', HTMLParagraphElement, {className: 'basket__items-total', innerText: `Total: ${formatterUSD.format(totalPrice)}`});
+    const inputPromo: HTMLInputElement = createElementWithOptions('input', HTMLInputElement, {className: 'basket__promo', type: 'text', placeholder: 'Enter promo code'});
+    const testPromo: HTMLSpanElement = createElementWithOptions('span', HTMLSpanElement, {innerText: 'Promo for test: \'RS\', \'EPM\''});
+    const buyButton: HTMLButtonElement = createElementWithOptions('button', HTMLButtonElement, {className: 'basket__buy-button', innerText: 'BUY NOW'});
     basketSummary.append(basketProducts, totalPriceHTML);
 
-    const promoDiv = document.createElement('div');
-    promoDiv.className = 'basket__promo-result';
-    const promoDetail = document.createElement('span');
-    promoDetail.className = 'basket__promo-info';
-    const promoAdd = document.createElement('button');
-    promoAdd.className = 'basket__promo-add';
-    promoAdd.innerText = 'ADD';
+    const promoDiv = createElementWithOptions('div', HTMLDivElement, {className: 'basket__promo-result'});
+    const promoDetail = createElementWithOptions('span', HTMLSpanElement, {className: 'basket__promo-info'});
+    const promoAdd = createElementWithOptions('button', HTMLButtonElement, {className: 'basket__promo-add', innerText: 'ADD'});
     const countPromo: Map<string, number> = getMapBasketStorage('promo');
 
     function checkPromo(): void {
@@ -243,13 +203,9 @@ class BasketPage extends Page{
 
     getDiscount();
 
-    const totalPriceNew: HTMLParagraphElement = document.createElement('p');
-    totalPriceNew.className = 'basket__price-promo';
-    totalPriceNew.innerText = `Total: ${formatterUSD.format(totalPrice * discount)}`;
-    const applyPromo = document.createElement('div');
-    applyPromo.className = 'basket__apply-promo';
-    const applyHead = document.createElement('h3');
-    applyHead.innerText = 'Applied codes';
+    const totalPriceNew: HTMLParagraphElement = createElementWithOptions('p', HTMLParagraphElement, {className: 'basket__price-promo', innerText: `Total: ${formatterUSD.format(totalPrice * discount)}`});
+    const applyPromo = createElementWithOptions('div', HTMLDivElement, {className: 'basket__apply-promo'});
+    const applyHead = createElementWithOptions('h3', HTMLHeadingElement, {innerText: 'Applied codes'});
     applyPromo.append(applyHead);
 
     function getCounting(): void {
@@ -257,7 +213,7 @@ class BasketPage extends Page{
       countItems = 0;
       for (const entry of booksItemsMap) {
         countItems += entry[1];
-        totalPrice += checkBookId(+entry[0]).price * entry[1];
+        totalPrice += getBookByID(+entry[0]).price * entry[1];
       }
       basketProducts.innerText = `Products: ${countItems}`;
       totalPriceHTML.innerText = `Total: ${formatterUSD.format(totalPrice)}`;
@@ -275,11 +231,9 @@ class BasketPage extends Page{
     }
 
     for (const entry of countPromo) {
-      const currentsPromo = document.createElement('div');
-      currentsPromo.className = 'basket__applied-promo';
-      const namePromo = document.createElement('span');
-      const deletePromoBtn = document.createElement('button');
-      deletePromoBtn.innerText = 'DROP';
+      const currentsPromo = createElementWithOptions('div', HTMLDivElement, {className: 'basket__applied-promo'});
+      const namePromo = createElementWithOptions('span', HTMLSpanElement);
+      const deletePromoBtn = createElementWithOptions('button', HTMLButtonElement, {innerText: 'DROP'});
 
       if (entry[0] === 'RS') {
         namePromo.innerText = 'Rolling Scopes School - 10% - ';
@@ -314,11 +268,9 @@ class BasketPage extends Page{
       totalPriceHTML.classList.add('old-price');
 
       totalPriceHTML.after(totalPriceNew, applyPromo);
-      const namePromo = document.createElement('span');
-      const currentsPromo = document.createElement('div');
-      currentsPromo.className = 'basket__applied-promo';
-      const deletePromoBtn = document.createElement('button');
-      deletePromoBtn.innerText = 'DROP';
+      const namePromo = createElementWithOptions('span', HTMLSpanElement);
+      const currentsPromo = createElementWithOptions('div', HTMLDivElement, {className: 'basket__applied-promo'});
+      const deletePromoBtn = createElementWithOptions('button', HTMLButtonElement, {innerText: 'DROP'});
       if (inputPromo.value.toUpperCase() === 'RS') {
         countPromo.set('RS', 0.1);
         namePromo.innerText = 'Rolling Scopes School - 10% - ';
