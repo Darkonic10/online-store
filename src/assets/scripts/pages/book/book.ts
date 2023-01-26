@@ -1,5 +1,5 @@
 import Page from "../../core/page";
-import { checkBookId, createElementByTag, formatterUSD, getMapBasketStorage, setHeaderCounters } from "../../types/checks";
+import { checkBookId, createElementWithOptions, formatterUSD, getMapBasketStorage, setHeaderCounters } from "../../types/checks";
 import { keysMain, PageIds, reg } from "../../types/enums";
 import { book } from "../../types/Interfaces";
 import { addModal } from "../modal/modal";
@@ -19,58 +19,41 @@ class BookPage extends Page {
   render(): HTMLElement {
     setHeaderCounters();
 
-    const content: HTMLDivElement = document.createElement('div');
-    content.className = 'main-div';
-    
+    const content: HTMLDivElement = createElementWithOptions('div', HTMLDivElement, {className: 'main-div'});
     const currentBook: book = checkBookId(this.chosenBookID);
 
-    const breadCrumps = createElementByTag('div', 'path', HTMLDivElement);
-    const breadPublisher = createElementByTag('a', 'links', HTMLAnchorElement, currentBook.publisher);
-    breadPublisher.href = `#${PageIds.MainPage}?${keysMain.Publisher}=${currentBook.publisher.replace(reg, '')}`;
-    const breadGenre = createElementByTag('a', 'links', HTMLAnchorElement, currentBook.genre);
-    breadGenre.href = `#${PageIds.MainPage}?${keysMain.Genre}=${currentBook.genre.replace(/ /g, '')}`;
-    const breadAuthor = createElementByTag('a', 'links', HTMLAnchorElement, currentBook.author);
-    breadAuthor.href = `#${PageIds.MainPage}?${keysMain.Search}=${currentBook.author.toUpperCase()}`;
-    const breadTitle = createElementByTag('a', 'links', HTMLAnchorElement, currentBook.title);
-    breadTitle.href = `#${PageIds.MainPage}?${keysMain.Search}=${currentBook.title.toUpperCase()}`;
+    const breadCrumps = createElementWithOptions('div', HTMLDivElement, {className: 'path'});
+    let href = `#${PageIds.MainPage}?${keysMain.Publisher}=${currentBook.publisher.replace(reg, '')}`;
+    const breadPublisher = createElementWithOptions('a', HTMLAnchorElement, {className: 'links', textContent: currentBook.publisher, href: href});
+    href = `#${PageIds.MainPage}?${keysMain.Genre}=${currentBook.genre.replace(/ /g, '')}`;
+    const breadGenre = createElementWithOptions('a', HTMLAnchorElement, {className: 'links', textContent: currentBook.genre, href: href});
+    href = `#${PageIds.MainPage}?${keysMain.Search}=${currentBook.author.toUpperCase()}`;
+    const breadAuthor = createElementWithOptions('a', HTMLAnchorElement, {className: 'links', textContent: currentBook.author, href: href});
+    href = `#${PageIds.MainPage}?${keysMain.Search}=${currentBook.title.toUpperCase()}`;
+    const breadTitle = createElementWithOptions('a', HTMLAnchorElement, {className: 'links', textContent: currentBook.title, href: href});
 
     const booksItemsMap: Map<string, number> = getMapBasketStorage('basketIds');
 
-    const mainDiv: HTMLDivElement = document.createElement('div');
-    mainDiv.className = 'container main__container main__container_start';
-    const miniImgContainer: HTMLDivElement = document.createElement('div');
-    miniImgContainer.className = 'book_mini-img-container';
-    const bigImg: HTMLDivElement = document.createElement('div');
-    const img: HTMLImageElement = document.createElement('img');
-    img.className = 'book__big-img';
-    img.src = currentBook.book_image[0];
-    const desc: HTMLDivElement = document.createElement('div');
-    desc.className = 'book__desc';
-    const buttons: HTMLDivElement = document.createElement('div');
-    buttons.className = 'book__buttons';
-    const name: HTMLHeadingElement = document.createElement('h2');
-    name.innerText = currentBook.title;
-    const author: HTMLHeadingElement = document.createElement('h3');
-    author.innerText = currentBook.author;
-    const description: HTMLParagraphElement = document.createElement('p');
-    description.innerText = currentBook.description;
-    const genre: HTMLParagraphElement = document.createElement('p');
-    genre.innerText = `Genre: ${currentBook.genre}`;
-    const publisher: HTMLParagraphElement = document.createElement('p');
-    publisher.innerText = `Publisher: ${currentBook.publisher}`;
-    const stock: HTMLParagraphElement = document.createElement('p');
-    stock.innerText = `Stock: ${currentBook.stock_balance.toString()}`;
-    const price: HTMLHeadingElement = document.createElement('h1');
-    price.innerText = `${formatterUSD.format(currentBook.price)}`;
-    const addButton: HTMLButtonElement = document.createElement('button');
-    addButton.className = 'button main__button-add';
+    const mainDiv: HTMLDivElement = createElementWithOptions('div', HTMLDivElement, {className: 'container main__container main__container_start'});
+    const miniImgContainer: HTMLDivElement = createElementWithOptions('div', HTMLDivElement, {className: 'book_mini-img-container'});
+    const bigImg: HTMLDivElement = createElementWithOptions('div', HTMLDivElement);
+    const img: HTMLImageElement = createElementWithOptions('img', HTMLImageElement, {className: 'book__big-img', src: currentBook.book_image[0]});
+    const desc: HTMLDivElement = createElementWithOptions('div', HTMLDivElement, {className: 'book__desc'});
+    const buttons: HTMLDivElement = createElementWithOptions('div', HTMLDivElement, {className: 'book__buttons'});
+    const name: HTMLHeadingElement = createElementWithOptions('h2', HTMLHeadingElement, {innerText: currentBook.title});
+    const author: HTMLHeadingElement = createElementWithOptions('h3', HTMLHeadingElement, {innerText: currentBook.author});
+    const description: HTMLParagraphElement = createElementWithOptions('p', HTMLParagraphElement, {innerText: currentBook.description});
+    const genre: HTMLParagraphElement = createElementWithOptions('p', HTMLParagraphElement, {innerText: `Genre: ${currentBook.genre}`});
+    const publisher: HTMLParagraphElement = createElementWithOptions('p', HTMLParagraphElement, {innerText: `Publisher: ${currentBook.publisher}`});
+    const stock: HTMLParagraphElement = createElementWithOptions('p', HTMLParagraphElement, {innerText: `Stock: ${currentBook.stock_balance.toString()}`});
+    const price: HTMLHeadingElement = createElementWithOptions('h1', HTMLHeadingElement, {innerText: `${formatterUSD.format(currentBook.price)}`});
+    const addButton: HTMLButtonElement = createElementWithOptions('button', HTMLButtonElement, {className: 'button main__button-add'});
     if (!booksItemsMap.has(currentBook.id.toString())) {
       addButton.innerText = 'Add';
     } else {
       addButton.innerText = 'Remove';
     }
-    const buyButton: HTMLButtonElement = document.createElement('button');
-    buyButton.className = 'button basket__buy-button';
+    const buyButton: HTMLButtonElement = createElementWithOptions('button', HTMLButtonElement, {className: 'button basket__buy-button'});
     buyButton.textContent = 'Buy Now';
     
     this.container.append(content);
@@ -102,9 +85,7 @@ class BookPage extends Page {
 
     for (let i = 0; i < currentBook.book_image.length; i++) {
       const element = currentBook.book_image[i];
-      const miniImg: HTMLImageElement = document.createElement('img');
-      miniImg.className = 'book__mini-img';
-      miniImg.src = element;
+      const miniImg: HTMLImageElement = createElementWithOptions('img', HTMLImageElement, {className: 'book__mini-img', src: element});
       miniImgContainer.appendChild(miniImg);
       miniImg.addEventListener('click', () => {
         img.src = miniImg.src;

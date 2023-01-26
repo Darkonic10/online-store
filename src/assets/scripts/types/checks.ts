@@ -1,6 +1,6 @@
 import { books } from "../data/books";
 import { PageIds } from "./enums";
-import { book, Options } from "./Interfaces";
+import { book, elementOptions, Options } from "./Interfaces";
 
 export const locStMainOptions = 'mainOptions';
 
@@ -68,6 +68,15 @@ export function createElementByTag <T extends typeof HTMLElement>(tagName: strin
   if (content) {
     result.textContent = content;
   }
+  if (!(result instanceof type)) {
+    throw new TypeError(`Selector ${tagName} have wrong type`);
+  }
+  return result as InstanceType<T>;
+}
+
+export function createElementWithOptions <T extends typeof HTMLElement>(tagName: string, type: T, options?: elementOptions): InstanceType<T> {
+  const element = document.createElement(tagName);
+  const result = options ? Object.assign(element, options) : element;
   if (!(result instanceof type)) {
     throw new TypeError(`Selector ${tagName} have wrong type`);
   }

@@ -12,6 +12,20 @@ interface book {
 
 type stringObject = { [key: string]: string };
 
+type elementOptions = {
+  className?: string,
+  textContent?: string,
+  href?: string,
+  value?: string,
+  type?: string,
+  id?: string,
+  innerText?: string,
+  src?: string,
+  placeholder?: string,
+  alt?: string,
+  min?: string,
+}
+
 type Options = Map<string, string>;
 
-export { book, stringObject, Options }
+export { book, stringObject, Options, elementOptions }

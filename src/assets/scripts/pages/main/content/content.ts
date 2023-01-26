@@ -1,17 +1,15 @@
 import { book } from "../../../types/Interfaces";
-import { checkBookId, createElementByTag, formatterUSD, getElementBySelector, getMapBasketStorage, setHeaderCounters } from "../../../types/checks";
+import { checkBookId, createElementWithOptions, formatterUSD, getElementBySelector, getMapBasketStorage, setHeaderCounters } from "../../../types/checks";
 import { PageIds } from "../../../types/enums";
 
 class Content {
   renderContent(chosenBooks: book[], mode: string): HTMLDivElement {
-    const content: HTMLDivElement = document.createElement('div');
-    content.className = 'main-div';
-    const bookList: HTMLDivElement = document.createElement('div');
-    bookList.className = 'container main__container main__container_flex';
+    const content: HTMLDivElement = createElementWithOptions('div', HTMLDivElement, {className: 'main-div'});
+    const bookList: HTMLDivElement = createElementWithOptions('div', HTMLDivElement, {className: 'container main__container main__container_flex'});
     content.appendChild(bookList);
     if (chosenBooks.length === 0) {
       const textMessage = 'No books by your search request! Please change your search request or Reset Filters.';
-      const message: HTMLHeadingElement = createElementByTag('h1', 'main__message', HTMLHeadingElement, textMessage);
+      const message: HTMLHeadingElement = createElementWithOptions('h1', HTMLHeadingElement, {className: 'main__message', textContent: textMessage});
       bookList.appendChild(message);
     }
     const booksItemsMap: Map<string, number> = getMapBasketStorage('basketIds');
@@ -26,35 +24,20 @@ class Content {
     setHeaderCounters();
 
     for (const book of chosenBooks) {
-      const bookDiv: HTMLDivElement = document.createElement('div');
-      bookDiv.className = 'main__book-card';
-      bookDiv.id = `id-book-${book.id}`;
-      const bookImg: HTMLImageElement = document.createElement('img');
-      bookImg.className = 'main__book-img';
-      bookImg.src = book.book_image[0];
-      bookImg.alt = `Image of the book ${book.title}`;
-      const bookInfo: HTMLDivElement = document.createElement('div');
-      bookInfo.className = 'main__book-info';
-      const bookTitle: HTMLParagraphElement = document.createElement('p');
-      bookTitle.innerText = `${book.title}`;
-      bookTitle.className = 'main__book-title';
-      const bookAuthor: HTMLParagraphElement = document.createElement('p');
-      bookAuthor.innerText = `Author: ${book.author}`;
-      bookAuthor.classList.add('bold');
+      const bookDiv: HTMLDivElement = createElementWithOptions('div', HTMLDivElement, {className: 'main__book-card', id: `id-book-${book.id}`});
+      const bookImg: HTMLImageElement = createElementWithOptions('img', HTMLImageElement, {className: 'main__book-img', src: book.book_image[0], alt: `Image of the book ${book.title}`});
+      const bookInfo: HTMLDivElement = createElementWithOptions('div', HTMLDivElement, {className: 'main__book-info'});
+      const bookTitle: HTMLParagraphElement = createElementWithOptions('p', HTMLParagraphElement, {innerText: `${book.title}`, className: 'main__book-title'});
+      const bookAuthor: HTMLParagraphElement = createElementWithOptions('p', HTMLParagraphElement, {innerText: `Author: ${book.author}`, className: 'bold'});
       bookInfo.append(bookTitle, bookAuthor);
       if (mode !== 'mini') {
-        const bookGenre: HTMLParagraphElement = document.createElement('p');
-        bookGenre.innerText = `Genre: ${book.genre}`;
-        const bookPrice: HTMLParagraphElement = document.createElement('p');
-        bookPrice.innerText = `Price: $${book.price}`;
-        const bookStock: HTMLParagraphElement = document.createElement('p');
-        bookStock.innerText = `Stock: ${book.stock_balance}`;
+        const bookGenre: HTMLParagraphElement = createElementWithOptions('p', HTMLParagraphElement, {innerText: `Genre: ${book.genre}`});
+        const bookPrice: HTMLParagraphElement = createElementWithOptions('p', HTMLParagraphElement, {innerText: `Price: $${book.price}`});
+        const bookStock: HTMLParagraphElement = createElementWithOptions('p', HTMLParagraphElement, {innerText: `Stock: ${book.stock_balance}`});
         bookInfo.append(bookGenre, bookPrice, bookStock);
       }
-      const bookButtons: HTMLDivElement = document.createElement('div');
-      bookButtons.className = 'main__book-buttons';
-      const bookButtonAdd: HTMLButtonElement = document.createElement('button');
-      bookButtonAdd.className = 'button main__button-add';
+      const bookButtons: HTMLDivElement = createElementWithOptions('div', HTMLDivElement, {className: 'main__book-buttons'});
+      const bookButtonAdd: HTMLButtonElement = createElementWithOptions('button', HTMLButtonElement, {className: 'button main__button-add'});
       if (!booksItemsMap.has(book.id.toString())) {
         bookButtonAdd.innerText = 'Add';
       } else {
@@ -67,9 +50,7 @@ class Content {
         bookInfo.classList.add('main__book-info-mini');
       }
 
-      const bookButtonDetail: HTMLButtonElement = document.createElement('button');
-      bookButtonDetail.className = 'button main__button-detail';
-      bookButtonDetail.innerText = 'Detail';
+      const bookButtonDetail: HTMLButtonElement = createElementWithOptions('button', HTMLButtonElement, {className: 'button main__button-detail', innerText: 'Detail'});
 
       bookButtons.addEventListener('click', (event) => {
         if (event.target === bookButtonAdd) {
