@@ -1,4 +1,4 @@
-import { checkBookId, createElementByTag, formatterUSD, getBookID, getHash, getLocalStorage } from "./checks"
+import { checkBookId, formatterUSD, getBookID, getHash, getLocalStorage } from "./checks"
 
 const fakeLocalStorage = {
   getItem: (key: string) => {
@@ -40,11 +40,15 @@ describe('Check function tests', () => {
     expect(formatterUSD.format(price)).toEqual(result);
   }, 3000);
 
+  it('should return a stryng type object', () => {
+    const url = '#main-page?maxStock=11&publisher=QuillTree↕SimonSchuster';
+    expect(typeof getHash(url) === 'string').toBeTruthy();
+  }, 3000);
+
   it('should return clean page address without query parameters', () => {
     const url = '#main-page?maxStock=11&publisher=QuillTree↕SimonSchuster';
     const result = 'main-page'
     expect(getHash(url)).toEqual(result);
-    expect(typeof getHash(url) === 'string').toBeTruthy();
   }, 3000);
 
   it('should return HTML element of given type', () => {
