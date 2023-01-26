@@ -51,6 +51,9 @@ class MainPage extends Page {
           case SortOptions[6].id:
             this.chosenBooks.sort((a, b) => b.price - a.price);
             break;
+
+          default:
+            break;
         }
       }
       const genreFromLocal = mainOptions.get(keysMain.Genre);
