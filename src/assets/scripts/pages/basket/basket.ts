@@ -233,20 +233,17 @@ class BasketPage extends Page {
       checkPromo();
     });
 
-    let discount = 1;
-
-    function getDiscount(): void {
-      discount = 1;
+    function getDiscount(): number {
+      let discount = 1;
       for (const value of countPromo.values()) {
         discount -= value;
       }
+      return discount;
     }
-
-    getDiscount();
 
     const totalPriceNew: HTMLParagraphElement = createElementWithOptions('p', HTMLParagraphElement, {
       className: 'basket__price-promo',
-      innerText: `Total: ${formatterUSD.format(totalPrice * discount)}`,
+      innerText: `Total: ${formatterUSD.format(totalPrice * getDiscount())}`,
     });
     const applyPromo = createElementWithOptions('div', HTMLDivElement, { className: 'basket__apply-promo' });
     const applyHead = createElementWithOptions('h3', HTMLHeadingElement, { innerText: 'Applied codes' });
@@ -262,7 +259,7 @@ class BasketPage extends Page {
       basketProducts.innerText = `Products: ${countItems}`;
       totalPriceHTML.innerText = `Total: ${formatterUSD.format(totalPrice)}`;
       getDiscount();
-      totalPriceNew.innerText = `Total: ${formatterUSD.format(totalPrice * discount)}`;
+      totalPriceNew.innerText = `Total: ${formatterUSD.format(totalPrice * getDiscount())}`;
     }
 
     getCounting();
@@ -297,7 +294,7 @@ class BasketPage extends Page {
         currentsPromo.remove();
         checkPromo();
         getDiscount();
-        totalPriceNew.innerText = `Total: ${formatterUSD.format(totalPrice * discount)}`;
+        totalPriceNew.innerText = `Total: ${formatterUSD.format(totalPrice * getDiscount())}`;
         if (countPromo.size === 0) {
           applyPromo.remove();
           totalPriceNew.remove();
@@ -331,7 +328,7 @@ class BasketPage extends Page {
         localStorage.setItem('promo', JSON.stringify(Object.fromEntries(countPromo)));
       }
       getDiscount();
-      totalPriceNew.innerText = `Total: ${formatterUSD.format(totalPrice * discount)}`;
+      totalPriceNew.innerText = `Total: ${formatterUSD.format(totalPrice * getDiscount())}`;
 
       deletePromoBtn.addEventListener('click', () => {
         if (namePromo.innerText === `${promoCodes.RS} - ${promoCodes.RS_DISCOUNT}% - `) {
@@ -343,7 +340,7 @@ class BasketPage extends Page {
         currentsPromo.remove();
         checkPromo();
         getDiscount();
-        totalPriceNew.innerText = `Total: ${formatterUSD.format(totalPrice * discount)}`;
+        totalPriceNew.innerText = `Total: ${formatterUSD.format(totalPrice * getDiscount())}`;
         if (countPromo.size === 0) {
           totalPriceNew.remove();
           applyPromo.remove();
