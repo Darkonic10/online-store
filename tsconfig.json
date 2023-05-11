@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "es6",
+    "moduleResolution": "node",
+    "allowJs": true,
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "skipLibCheck": true
+  },
+  "files": ["./src/assets/scripts/types/declare.d.ts"],
+  "include": ["src/**/*.ts"]
+}

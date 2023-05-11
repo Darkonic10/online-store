@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Check function tests should get book id if it exists: 18 1`] = `18`;

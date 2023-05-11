@@ -1,0 +1,30 @@
+.main__container_start {
+  align-items: flex-start;
+}
+
+.book_mini-img-container {
+  width: 50px;
+}
+
+.book__mini-img {
+  margin: 0 10px;
+  width: 50px;
+  transition: 0.5s;
+  &:hover{
+    cursor: pointer;
+    transform: scale(2);
+  }
+}
+
+.book__big-img {
+  width: 256px;
+}
+
+.book__desc {
+  width: 45%;
+}
+
+.book__buttons{
+  width: 200px;
+  text-align: center;
+}
